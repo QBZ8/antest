@@ -1,0 +1,15 @@
+{
+  "workspace": {
+    "path": "${workspaceFolder}\\diankong2\\NRF24L01无线通信模块\\03-商家资料\\USB无线串口V2.0\\客户单片机测试程序\\MSP430单片机参考代码\\24L01_发送\\24l01_fasong.eww"
+  },
+  "workspaces": {
+    "${workspaceFolder}\\diankong2\\NRF24L01无线通信模块\\03-商家资料\\USB无线串口V2.0\\客户单片机测试程序\\MSP430单片机参考代码\\24L01_发送\\24l01_fasong.eww": {
+      "configs": {
+        "${workspaceFolder}\\diankong2\\NRF24L01无线通信模块\\03-商家资料\\USB无线串口V2.0\\客户单片机测试程序\\MSP430单片机参考代码\\24L01_发送\\24L01_fasong.ewp": "Debug"
+      },
+      "selected": {
+        "path": "${workspaceFolder}\\diankong2\\NRF24L01无线通信模块\\03-商家资料\\USB无线串口V2.0\\客户单片机测试程序\\MSP430单片机参考代码\\24L01_发送\\24L01_fasong.ewp"
+      }
+    }
+  }
+}
