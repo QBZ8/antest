@@ -1,0 +1,260 @@
+.stabs "startup_code.",0x3c,0,0,0
+.stabs "__sn_main:F15",36,0,0,     33679
+.stabs "__sn_end:F15",36,0,0,     32809
+.stabs "__sn_exception:F15",36,0,0,     32810
+.stabs "E:\lingyang\SPI_nRF24L01_TX/", 0x64,0,0,0
+.stabs "E:\lingyang\SPI_nRF24L01_TX\Resource.asm", 0x64,0,0,0
+.stabs "unsigned int:t1=r1;0;65535;",128,0,0,0
+.stabs "long long int:t2=r1;-2147483648;2147483647;",128,0,0,0
+.stabs "float:t3=r1;2;0;",128,0,0,0
+.stabs "double:t4=r1;4;0;",128,0,0,0
+.stabn 0xc0,0,0,         0
+.stabn 0xe0,0,0,         0
+.stabn 0xc0,0,0,         0
+.stabn 0xe0,0,0,         0
+.stabs "E:\\lingyang\\SPI_nRF24L01_TX/",0x64,0,0,     32811
+.stabs "E:/lingyang/SPI_nRF24L01_TX/main.c",0x64,0,0,     32811
+.stabs "int:t1=r1;-32768;32767;",128,0,0,0
+.stabs "char:t2=r2;0;127;",128,0,0,0
+.stabs "long int:t3=r3;-2147483648;2147483647;",128,0,0,0
+.stabs "unsigned int:t4=r4;0;65535;",128,0,0,0
+.stabs "long unsigned int:t5=r5;0;4294967295;",128,0,0,0
+.stabs "long long int:t6=r6;-2147483648;2147483647;",128,0,0,0
+.stabs "long long unsigned int:t7=r7;0;4294967295;",128,0,0,0
+.stabs "short int:t8=r8;-32768;32767;",128,0,0,0
+.stabs "short unsigned int:t9=r9;0;65535;",128,0,0,0
+.stabs "signed char:t10=r10;-32768;32767;",128,0,0,0
+.stabs "unsigned char:t11=r11;0;65535;",128,0,0,0
+.stabs "float:t12=r1;2;0;",128,0,0,0
+.stabs "double:t13=r1;2;0;",128,0,0,0
+.stabs "long double:t14=r1;2;0;",128,0,0,0
+.stabs "complex int:t15=s2real:1,0,16;imag:1,16,16;;",128,0,0,0
+.stabs "complex float:t16=r16;2;0;",128,0,0,0
+.stabs "complex double:t17=r17;2;0;",128,0,0,0
+.stabs "complex long double:t18=r18;2;0;",128,0,0,0
+.stabs "void:t19=19",128,0,0,0
+.stabs "Buffer:G20=ar1;0;4;11",32,0,0,        17
+.stabs "TX_ADDRESS:G21=ar1;0;4;11",32,0,0,     32777
+.stabs "Tx_Buffer:G20",32,0,0,        22
+.stabs "Initial_IOB:F19",36,0,0,     32811
+.stabn 0x44,0,74,         0
+.stabn 0x44,0,75,         5
+.stabn 0x44,0,76,         8
+.stabn 0x44,0,77,        11
+.stabn 0x44,0,79,        14
+.stabn 0x44,0,79,        14
+.stabf         16
+.stabs "delay1us:F19",36,0,0,     32827
+.stabn 0x44,0,81,         0
+.stabn 0x44,0,82,         5
+.stabn 0x44,0,83,        18
+.stabn 0x44,0,84,        23
+.stabn 0x44,0,84,        23
+.stabs "t:p11",160,0,0,3
+.stabf         25
+.stabs "SPI_RW:F11",36,0,0,     32852
+.stabn 0x44,0,86,         0
+.stabn 0x44,0,87,         6
+.stabn 0x44,0,89,         6
+.stabn 0x44,0,91,        15
+.stabn 0x44,0,92,        23
+.stabn 0x44,0,94,        31
+.stabn 0x44,0,95,        37
+.stabn 0x44,0,96,        42
+.stabn 0x44,0,97,        48
+.stabn 0x44,0,98,        62
+.stabn 0x44,0,89,        68
+.stabn 0x44,0,102,        74
+.stabn 0x44,0,103,        79
+.stabn 0x44,0,103,        79
+.stabs "byte:p11",160,0,0,4
+.stabn 0xc0,0,0,         6
+.stabs "bit_ctr:11",128,0,0,0
+.stabn 0xe0,0,0,        79
+.stabf         82
+.stabs "SPI_Read:F11",36,0,0,     32934
+.stabn 0x44,0,105,         0
+.stabn 0x44,0,106,         7
+.stabn 0x44,0,108,         7
+.stabn 0x44,0,109,        13
+.stabn 0x44,0,110,        19
+.stabn 0x44,0,111,        25
+.stabn 0x44,0,113,        31
+.stabn 0x44,0,114,        35
+.stabn 0x44,0,114,        35
+.stabs "reg:p11",160,0,0,5
+.stabn 0xc0,0,0,         7
+.stabs "reg_val:11",128,0,0,0
+.stabn 0xe0,0,0,        35
+.stabf         38
+.stabs "SPI_RW_Reg:F11",36,0,0,     32972
+.stabn 0x44,0,118,         0
+.stabn 0x44,0,119,         7
+.stabn 0x44,0,120,         7
+.stabn 0x44,0,121,        13
+.stabn 0x44,0,122,        20
+.stabn 0x44,0,123,        30
+.stabn 0x44,0,124,        36
+.stabn 0x44,0,125,        40
+.stabn 0x44,0,125,        40
+.stabs "reg:p11",160,0,0,5
+.stabs "value:p11",160,0,0,6
+.stabn 0xc0,0,0,         7
+.stabs "status:11",128,0,0,0
+.stabn 0xe0,0,0,        40
+.stabf         43
+.stabs "SPI_Read_Buf:F11",36,0,0,     33015
+.stabn 0x44,0,128,         0
+.stabn 0x44,0,129,         7
+.stabn 0x44,0,130,         7
+.stabn 0x44,0,131,        13
+.stabn 0x44,0,132,        20
+.stabn 0x44,0,133,        42
+.stabn 0x44,0,132,        62
+.stabn 0x44,0,134,        79
+.stabn 0x44,0,135,        85
+.stabn 0x44,0,136,        89
+.stabn 0x44,0,136,        89
+.stabs "reg:p11",160,0,0,7
+.stabs "pBuf:p22=*11",160,0,0,8
+.stabs "bytes:p11",160,0,0,9
+.stabn 0xc0,0,0,         7
+.stabs "status:11",128,0,0,0
+.stabs "byte_ctr:11",128,0,0,1
+.stabn 0xe0,0,0,        89
+.stabf         92
+.stabs "SPI_Write_Buf:F11",36,0,0,     33107
+.stabn 0x44,0,139,         0
+.stabn 0x44,0,140,         7
+.stabn 0x44,0,141,         7
+.stabn 0x44,0,142,        13
+.stabn 0x44,0,143,        18
+.stabn 0x44,0,144,        25
+.stabn 0x44,0,145,        47
+.stabn 0x44,0,144,        62
+.stabn 0x44,0,146,        79
+.stabn 0x44,0,147,        85
+.stabn 0x44,0,148,        90
+.stabn 0x44,0,149,        94
+.stabn 0x44,0,149,        94
+.stabs "reg:p11",160,0,0,6
+.stabs "pBuf:p22",160,0,0,7
+.stabs "bytes:p11",160,0,0,8
+.stabn 0xc0,0,0,         7
+.stabs "status:11",128,0,0,0
+.stabs "byte_ctr:11",128,0,0,1
+.stabn 0xe0,0,0,        94
+.stabf         97
+.stabs "nRF24L01RxPacket:F11",36,0,0,     33204
+.stabn 0x44,0,152,         0
+.stabn 0x44,0,153,         7
+.stabn 0x44,0,154,        13
+.stabn 0x44,0,155,        20
+.stabn 0x44,0,156,        26
+.stabn 0x44,0,158,        31
+.stabn 0x44,0,159,        37
+.stabn 0x44,0,161,        44
+.stabn 0x44,0,162,        50
+.stabn 0x44,0,163,        62
+.stabn 0x44,0,165,        68
+.stabn 0x44,0,166,        75
+.stabn 0x44,0,168,        83
+.stabn 0x44,0,168,        83
+.stabs "rx_buf:p22",160,0,0,6
+.stabn 0xc0,0,0,         7
+.stabs "sta:11",128,0,0,0
+.stabs "revale:11",128,0,0,1
+.stabn 0xe0,0,0,        83
+.stabf         86
+.stabs "nRF24L01_TxPacket:F19",36,0,0,     33290
+.stabn 0x44,0,171,         0
+.stabn 0x44,0,172,         7
+.stabn 0x44,0,173,        13
+.stabn 0x44,0,174,        23
+.stabn 0x44,0,175,        33
+.stabn 0x44,0,176,        44
+.stabn 0x44,0,177,        51
+.stabn 0x44,0,178,        57
+.stabn 0x44,0,179,        62
+.stabn 0x44,0,180,        68
+.stabn 0x44,0,180,        68
+.stabs "tx_buf:p22",160,0,0,4
+.stabf         71
+.stabs "RX_Mode:F19",36,0,0,     33361
+.stabn 0x44,0,182,         0
+.stabn 0x44,0,183,         7
+.stabn 0x44,0,184,        13
+.stabn 0x44,0,185,        18
+.stabn 0x44,0,186,        28
+.stabn 0x44,0,187,        38
+.stabn 0x44,0,189,        49
+.stabn 0x44,0,190,        56
+.stabn 0x44,0,191,        63
+.stabn 0x44,0,192,        70
+.stabn 0x44,0,193,        77
+.stabn 0x44,0,194,        84
+.stabn 0x44,0,197,        91
+.stabn 0x44,0,198,        97
+.stabn 0x44,0,201,       102
+.stabn 0x44,0,201,       102
+.stabf        105
+.stabs "TX_Mode:F19",36,0,0,     33466
+.stabn 0x44,0,203,         0
+.stabn 0x44,0,204,         7
+.stabn 0x44,0,205,        13
+.stabn 0x44,0,206,        18
+.stabn 0x44,0,207,        28
+.stabn 0x44,0,208,        38
+.stabn 0x44,0,210,        49
+.stabn 0x44,0,211,        56
+.stabn 0x44,0,212,        63
+.stabn 0x44,0,213,        70
+.stabn 0x44,0,214,        77
+.stabn 0x44,0,215,        84
+.stabn 0x44,0,217,        91
+.stabn 0x44,0,218,        97
+.stabn 0x44,0,219,       102
+.stabn 0x44,0,219,       102
+.stabf        105
+.stabs "nRF24L01_Initial:F19",36,0,0,     33571
+.stabn 0x44,0,221,         0
+.stabn 0x44,0,222,         5
+.stabn 0x44,0,223,        11
+.stabn 0x44,0,224,        17
+.stabn 0x44,0,227,        23
+.stabn 0x44,0,227,        23
+.stabf         25
+.stabs "nRF24L01_Config:F19",36,0,0,     33596
+.stabn 0x44,0,230,         0
+.stabn 0x44,0,232,         7
+.stabn 0x44,0,233,        13
+.stabn 0x44,0,234,        19
+.stabn 0x44,0,235,        25
+.stabn 0x44,0,236,        31
+.stabn 0x44,0,237,        38
+.stabn 0x44,0,238,        45
+.stabn 0x44,0,239,        52
+.stabn 0x44,0,240,        59
+.stabn 0x44,0,241,        66
+.stabn 0x44,0,242,        73
+.stabn 0x44,0,243,        80
+.stabn 0x44,0,243,        80
+.stabf         83
+.stabs "main:F1",36,0,0,     33679
+.stabn 0x44,0,245,         0
+.stabn 0x44,0,246,         7
+.stabn 0x44,0,247,         7
+.stabn 0x44,0,248,         9
+.stabn 0x44,0,250,        11
+.stabn 0x44,0,254,        15
+.stabn 0x44,0,255,        17
+.stabn 0x44,0,256,        23
+.stabn 0x44,0,257,        26
+.stabn 0x44,0,258,        28
+.stabn 0x44,0,258,        28
+.stabn 0xc0,0,0,         7
+.stabs "a:1",128,0,0,0
+.stabn 0xe0,0,0,        28
+.stabf         31
+.stabs "SPI_ReceiveData:G11",32,0,0,         0
+.stabs "RX:G23=ar1;0;15;11",32,0,0,         1

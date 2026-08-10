@@ -1,0 +1,37 @@
+/************************************************************************************
+;copyrightn   :shenzhen coolwaveasia 
+;filename     :lcd.h
+;start date   :2008.7.24
+;end date     :
+;writeby      :dengyihong
+;revision     :A
+;*************************************************************************************/
+
+#ifndef _LCD_H
+#define	_LCD_H
+
+#include "maindef.h"
+#include "io.h"
+
+
+#define   LEN_MASK     0x38
+#define   COL_MASK     0x07
+#define   ROW_MASK     0xC0
+#define   ROW_COL      (ROW_MASK|COL_MASK)
+	
+#define   HexDisp(x)   HexDispArray[x]
+#define   BYTE_LOW(x)  (x & 0x0F) 
+#define   BYTE_HIGH(x) ((x & 0xF0)>>0x04)
+
+
+void ini_lcd(void);
+void lcd_printf_char(U8 disp_char, U8 row_col);
+void lcd_printf_string(U8 *disp_str, U8 row_len_col);
+void lcd_write_reg(U8 command);
+void lcd_write_data(U8 value);
+void lcd_wait(void);
+
+extern void delay_2us(U16 delay_cnt);
+
+
+#endif

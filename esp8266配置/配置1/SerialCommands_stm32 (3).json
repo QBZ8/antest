@@ -1,0 +1,81 @@
+{
+  "version": "2.0",
+  "serial": {
+    "baud": "115200",
+    "dataBits": "8",
+    "stopBits": "1",
+    "parity": "none"
+  },
+  "chart": {
+    "enable": false,
+    "legends": "",
+    "maxPoints": "500"
+  },
+  "rx": {
+    "hex": false,
+    "autoScroll": true
+  },
+  "tx": {
+    "timerEnable": false,
+    "interval": "1000",
+    "addCRLF": true,
+    "hex": false
+  },
+  "commands": [
+    {
+      "cmd": "AT+RST",
+      "remark": "0. 模块复位 (注:代码中建议盲发不等待回复, 或盲等2秒)",
+      "active": true
+    },
+    {
+      "cmd": "AT",
+      "remark": "1. 模块测试与打招呼",
+      "active": false
+    },
+    {
+      "cmd": "AT+CWMODE=1",
+      "remark": "2. 设置为 Station 模式",
+      "active": false
+    },
+    {
+      "cmd": "AT+CWJAP=\"moshaoyu\",\"QBZ2670380792\"",
+      "remark": "3. 连接 WiFi，wifi为2.4ghz,wifi名称不要有中文和空格",
+      "active": false
+    },
+    {
+      "cmd": "AT+MQTTUSERCFG=0,1,\"stm32\",\"c72VG1b5n6\",\"version=2018-10-31&res=products%2Fc72VG1b5n6%2Fdevices%2Fstm32&et=1806567000&method=md5&sign=1lfFR3Ps1uKgxo%2FLII2jwA%3D%3D\",0,0,\"\"",
+      "remark": "4. 配置 MQTT 用户信息（报错，看BV1prjvzFEPn这个视频烧录固件）",
+      "active": false
+    },
+    {
+      "cmd": "AT+MQTTCONN=0,\"mqtts.heclouds.com\",1883,1",
+      "remark": "5. 连接 OneNet MQTT 服务器",
+      "active": false
+    },
+    {
+      "cmd": "AT+MQTTSUB=0,\"$sys/c72VG1b5n6/stm32/thing/property/post/reply\",0",
+      "remark": "6. 订阅 Reply 主题 (接收云端下发回复)",
+      "active": false
+    },
+    {
+      "cmd": "AT+MQTTPUB=0,\"$sys/c72VG1b5n6/stm32/thing/property/post\",\"{\\\"id\\\":\\\"123\\\"\\,\\\"version\\\":\\\"1.0\\\"\\,\\\"params\\\":{\\\"IsBusy\\\":{\\\"value\\\":true}\\,\\\"Time\\\":{\\\"value\\\":123456}\\,\\\"Money\\\":{\\\"value\\\":12.256}}}\",0,0",
+      "remark": "7. 上报物模型数据 (已转义格式)",
+      "active": false
+    },
+    {
+      "cmd": "AT+MQTTSUB=0,\"$sys/c72VG1b5n6/stm32/thing/property/set\",0",
+      "remark": "8. 订阅命令下发话题 (接收云端主动下发)",
+      "active": false
+    },
+    {
+      "cmd": "AT+MQTTPUB=0,\"$sys/c72VG1b5n6/stm32/thing/property/set_reply\",\"{\\\"id\\\":\\\"6\\\"\\,\\\"code\\\":200\\,\\\"msg\\\":\\\"success\\\"}\",0,0",
+      "remark": "9. 回复云端命令下发 (返回成功状态)",
+      "active": false
+    },
+    {
+      "cmd": "AT+MQTTCLEAN=0",
+      "remark": "10. 断开MQTT连接",
+      "active": false
+    }
+  ]
+}

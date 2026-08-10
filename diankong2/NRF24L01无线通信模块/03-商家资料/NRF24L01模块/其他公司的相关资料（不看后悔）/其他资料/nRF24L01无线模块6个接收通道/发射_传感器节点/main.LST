@@ -1,0 +1,54 @@
+C51 COMPILER V7.00  MAIN                                                                   04/05/2010 10:41:29 PAGE 1   
+
+
+C51 COMPILER V7.00, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND
+
+stmt level    source
+
+   1          #include "nRF24L01.h"
+   2          
+   3          /**************************************************
+   4          函数：main()
+   5          
+   6          描述：
+   7              主函数
+   8          /**************************************************/
+   9          void main(void)
+  10          {
+  11   1          EX0=1;
+  12   1              IT0=1;
+  13   1              EA=1;
+  14   1      //      led=0x00;
+  15   1              init_io();                            // 初始化IO
+  16   1              StartUART();
+  17   1              R_S_Byte(2);
+  18   1              RX_Mode();                            // 设置为接收模式
+  19   1         //TX_Mode(TX_BUF);
+  20   1      
+  21   1              TX_Mode(TX_BUF);                        // 把nRF24L01设置为发送模式并发送数据
+  22   1              Check_ACK(1);               // 等待发送完毕，清除TX FIFO
+  23   1              delay_ms(250);
+  24   1              delay_ms(250);
+  25   1              RX_Mode();                              // 设置为接收模式
+  26   1      
+  27   1              while(1)
+  28   1              {
+  29   2                      CheckButtons();           // 按键扫描
+  30   2              }
+  31   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     52    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,395 @@
+XL
+H 4 areas 1A global symbols
+M jieshou.c
+S push_gset1 Ref0000
+S push_gset2 Ref0000
+S push_gset4 Ref0000
+S pop_gset1 Ref0000
+S pop_gset2 Ref0000
+S pop_gset4 Ref0000
+A text size 246 flags 0
+dbfile F:\开发板配套资料\开发板备份\AVR24L01\无线AD传感\接收\jieshou.c
+dbfunc e Delay 0 fV
+dbsym r i 14 i
+dbsym r s 10 I
+dbline FFFFFFFF 4
+dbline 79 4
+dbline 7B 4
+dbline 7B A
+dbline 7B A
+dbline 7B E
+dbline 7C 14
+dbline 7C 1A
+dbline 7C 1A
+dbline 7C 1E
+dbline FFFFFFFE 24
+dbline 0 28
+dbfunc e SPI_RW 2A fc
+dbsym r temp 14 c
+dbsym r i 16 c
+dbsym r data 10 c
+dbline FFFFFFFF 2E
+dbline 84 2E
+dbline 85 2E
+dbline 86 30
+dbline 87 34
+dbline 88 34
+dbline 89 38
+dbline 8A 38
+dbline 8B 3A
+dbline 8D 3C
+dbline 8E 3C
+dbline 8F 3E
+dbline 90 3E
+dbline 91 40
+dbline 92 42
+dbline 93 44
+dbline 93 48
+dbline 94 4A
+dbline 95 4C
+dbline 86 4C
+dbline 86 4E
+dbline 96 52
+dbline FFFFFFFE 54
+dbline 0 58
+dbfunc e SPI_Read 5A fc
+dbsym r reg_val 14 c
+dbsym r reg 14 c
+dbline FFFFFFFF 60
+dbline 9D 60
+dbline A0 60
+dbline A1 62
+dbline A2 66
+dbline A3 6C
+dbline A5 6E
+dbline FFFFFFFE 6E
+dbline 0 72
+dbfunc e SPI_RW_Reg 74 fc
+dbsym r status 14 c
+dbsym r value 16 c
+dbsym r reg 14 c
+dbline FFFFFFFF 7C
+dbline AB 7C
+dbline AE 7C
+dbline AF 7E
+dbline B0 84
+dbline B1 88
+dbline B3 8A
+dbline FFFFFFFE 8C
+dbline 0 90
+dbfunc e SPI_Read_Buf 92 fc
+dbsym r status1 14 I
+dbsym r uchar_ctr 16 I
+dbsym r uchars A c
+dbsym r pBuf C pc
+dbsym r reg 14 c
+dbline FFFFFFFF 9C
+dbline BA 9C
+dbline BD 9C
+dbline BE 9E
+dbline C0 A6
+dbline C1 AC
+dbline C0 B8
+dbline C0 BC
+dbline C3 C6
+dbline C5 C8
+dbline FFFFFFFE CA
+dbline 0 CE
+dbfunc e SPI_Write_Buf D0 fc
+dbsym r status1 14 c
+dbsym r uchar_ctr 16 c
+dbsym r uchars A c
+dbsym r pBuf C pc
+dbsym r reg 14 c
+dbline FFFFFFFF DA
+dbline CC DA
+dbline CF DA
+dbline D0 DC
+dbline D1 E2
+dbline D2 E6
+dbline D1 EE
+dbline D1 F0
+dbline D3 F4
+dbline D4 F6
+dbline FFFFFFFE F8
+dbline 0 FC
+dbfunc e SetRX_Mode FE fV
+dbline FFFFFFFF FE
+dbline DB FE
+dbline DC FE
+dbline DE 100
+dbline DF 102
+dbline FFFFFFFE 108
+dbline 0 108
+dbfunc e nRF24L01_RxPacket 10A fc
+dbsym r revale 14 c
+dbsym r rx_buf 16 pc
+dbline FFFFFFFF 112
+dbline E6 112
+dbline E7 112
+dbline E8 114
+dbline E9 11C
+dbline EA 120
+dbline EB 120
+dbline EC 122
+dbline ED 12C
+dbline EE 12E
+dbline EF 12E
+dbline F0 136
+dbline FFFFFFFE 138
+dbline 0 13E
+dbfunc e init_NRF24L01 140 fV
+dbline FFFFFFFF 142
+dbline F7 142
+dbline F9 142
+dbline FA 144
+dbline FB 146
+dbline FC 148
+dbline FD 154
+dbline FE 160
+dbline FF 166
+dbline 100 16C
+dbline 101 172
+dbline 102 178
+dbline 103 17E
+dbline 104 184
+dbline FFFFFFFE 18A
+dbline 0 18C
+dbfunc e StartUART 18E fV
+dbline FFFFFFFF 18E
+dbline 108 18E
+dbline 109 18E
+dbline 10A 192
+dbline 10B 196
+dbline 10C 19A
+dbline 10D 19E
+dbline 10E 1A0
+dbline FFFFFFFE 1A2
+dbline 0 1A2
+dbfunc e R_S_Byte 1A4 fV
+dbsym r R_Byte 10 c
+dbline FFFFFFFF 1A4
+dbline 112 1A4
+dbline 113 1A4
+dbline FFFFFFFE 1A6
+dbline 0 1A6
+dbfunc e display 1A8 fV
+dbline FFFFFFFF 1A8
+dbline 117 1A8
+dbline 118 1A8
+dbline 119 1BA
+dbline 119 1BC
+dbline 11A 1BC
+dbline 11A 1BE
+dbline 11B 1BE
+dbline 11B 1C0
+dbline 11C 1C0
+dbline 11C 1C2
+dbline 11D 1C2
+dbline 11E 1C8
+dbline 11E 1CA
+dbline 120 1CA
+dbline 121 1DC
+dbline 121 1DE
+dbline 122 1DE
+dbline 123 1E4
+dbline 123 1E6
+dbline 125 1E6
+dbline 126 1F8
+dbline 126 1FA
+dbline 127 1FA
+dbline 128 200
+dbline 128 202
+dbline 12A 202
+dbline 12B 206
+dbline 12B 208
+dbline 12C 208
+dbline 12D 20E
+dbline 12D 210
+dbline FFFFFFFE 210
+dbline 0 210
+dbfunc e main 212 fI
+dbsym l i 1 c
+dbline FFFFFFFF 212
+dbline 132 212
+dbline 134 212
+dbline 135 216
+dbline 136 21A
+dbline 137 21E
+dbline 138 222
+dbline 139 226
+dbline 13A 22A
+dbline 13A 22C
+dbline 13B 22C
+dbline 13D 22E
+dbline 13E 230
+dbline 140 234
+dbline 141 234
+dbline 142 236
+dbline 143 240
+dbline 14C 240
+dbline 14D 240
+dbline 14E 242
+dbline 13F 242
+dbline FFFFFFFE 244
+dbline 0 244
+S _main Def0212
+S _SetRX_Mode Def00FE
+S _SPI_Read Def005A
+S _SPI_Write_Buf Def00D0
+S _Delay Def0000
+S _SPI_RW Def002A
+S _display Def01A8
+S _R_S_Byte Def01A4
+S _init_NRF24L01 Def0140
+S _SPI_Read_Buf Def0092
+S _StartUART Def018E
+S _SPI_RW_Reg Def0074
+S _nRF24L01_RxPacket Def010A
+A data size 1E flags 20
+dbfile F:\开发板配套资料\开发板备份\AVR24L01\无线AD传感\接收\jieshou.c
+dbsym e seg 0 A[10:10]c
+dbsym e seg1 A A[10:10]c
+dbsym e TX_ADDRESS 14 A[5:5]c
+dbsym e RX_ADDRESS 19 A[5:5]c
+S _RX_ADDRESS Def0019
+S _TX_ADDRESS Def0014
+S _seg Def0000
+S _seg1 Def000A
+A idata size 1E flags 0
+A bss size 27 flags 20
+dbfile F:\开发板配套资料\开发板备份\AVR24L01\无线AD传感\接收\jieshou.c
+dbsym e sta 0 c
+dbsym e RxBuf 1 A[32:32]c
+dbsym e temp 21 A[6:6]c
+S _temp Def0021
+S _RxBuf Def0001
+S _sta Def0000
+T 00 00 C0 CF
+R 00 00 02 00
+T 02 00 A4 B0
+R 00 00 02 00
+T 04 00 99 92
+R 00 00 02 00
+T 06 00 82 F8
+R 00 00 02 00
+T 08 00 80 90
+R 00 00 02 00
+T 0A 00 40 4F
+R 00 00 02 00
+T 0C 00 24 30
+R 00 00 02 00
+T 0E 00 19 12
+R 00 00 02 00
+T 10 00 02 78
+R 00 00 02 00
+T 12 00 00 10
+R 00 00 02 00
+T 14 00 34 43
+R 00 00 02 00
+T 16 00 10 10
+R 00 00 02 00
+T 18 00 01
+R 00 00 02 00
+T 19 00 34 43
+R 00 00 02 00
+T 1B 00 10 10
+R 00 00 02 00
+T 1D 00 01
+R 00 00 02 00
+T 00 00 0E 94 00 00 44 27 55 27 02 C0 4F 5F 5F 4F
+R 00 00 00 00 12 04 00 00
+T 0E 00 40 17 51 07 D8 F3 44 27 55 27 02 C0 4F 5F
+R 00 00 00 00
+T 1C 00 5F 4F 40 17 51 07 D8 F3 0E 94 00 00 08 95
+R 00 00 00 00 12 0C 03 00
+T 2A 00 0E 94 00 00 44 27 66 27 0D C0 07 FF 02 C0
+R 00 00 00 00 12 04 01 00
+T 38 00 C2 9A 01 C0 C2 98 00 0F 44 0F C6 9A B4 9B
+R 00 00 00 00
+T 46 00 01 C0 43 95 C6 98 63 95 68 30 88 F3 04 2F
+R 00 00 00 00
+T 54 00 0E 94 00 00 08 95
+R 00 00 00 00 12 04 04 00
+T 5A 00 0E 94 00 00 40 2F C7 98 04 2F E2 DF 00 27
+R 00 00 00 00 12 04 00 00
+T 68 00 E0 DF 40 2F C7 9A 0E 94 00 00 08 95
+R 00 00 00 00 12 0A 03 00
+T 74 00 0E 94 00 00 62 2F 40 2F C7 98 04 2F D4 DF
+R 00 00 00 00 12 04 01 00
+T 82 00 40 2F 06 2F D1 DF C7 9A 04 2F 0E 94 00 00
+R 00 00 00 00 12 0E 04 00
+T 90 00 08 95
+R 00 00 00 00
+T 92 00 0E 94 00 00 69 01 40 2F A8 84 C7 98 04 2F
+R 00 00 00 00 12 04 02 00
+T A0 00 C4 DF 40 2F 55 27 66 27 77 27 08 C0 00 27
+R 00 00 00 00
+T AE 00 BD DF FB 01 EC 0D FD 1D 00 83 6F 5F 7F 4F
+R 00 00 00 00
+T BC 00 2A 2C 33 24 62 15 73 05 9C F3 C7 9A 04 2F
+R 00 00 00 00
+T CA 00 0E 94 00 00 08 95
+R 00 00 00 00 12 04 05 00
+T D0 00 0E 94 00 00 69 01 40 2F A8 84 C7 98 04 2F
+R 00 00 00 00 12 04 02 00
+T DE 00 A5 DF 40 2F 66 27 05 C0 F6 01 01 91 6F 01
+R 00 00 00 00
+T EC 00 9E DF 63 95 6A 15 C8 F3 C7 9A 04 2F 0E 94
+R 00 00 00 00
+T FA 00 00 00 08 95
+R 00 00 00 00 12 02 05 00
+T FE 00 C5 98 C5 9A 08 EE 13 E0 7C DF 08 95
+R 00 00 00 00
+T 0A 01 0E 94 00 00 B8 01 21 97 44 27 07 E0 A1 DF
+R 00 00 00 00 12 04 01 00
+T 18 01 00 93 00 00 06 FF 07 C0 C5 98 80 E2 88 83
+R 00 00 00 00 00 04 03 00
+T 26 01 9B 01 01 E6 B3 DF 41 E0 20 91 00 00 07 E2
+R 00 00 00 00 00 0C 03 00
+T 34 01 9F DF 04 2F 21 96 0E 94 00 00 08 95
+R 00 00 00 00 12 0A 04 00
+T 40 01 21 97 C5 98 C7 9A C6 98 85 E0 88 83 20 E0
+R 00 00 00 00 20 0E 01 00 14 00
+T 4E 01 30 E0 00 E3 BE DF 85 E0 88 83 20 E0
+R 00 00 00 00 40 02 01 00 14 00 20 0C 01 00 19 00
+T 5A 01 30 E0 0A E2 B8 DF 21 E0 01 E2 87 DF 21 E0
+R 00 00 00 00 40 02 01 00 19 00
+T 68 01 02 E2 84 DF 22 27 05 E2 81 DF 20 E2 01 E3
+R 00 00 00 00
+T 76 01 7E DF 27 E0 06 E2 7B DF 2F E0 00 E2 78 DF
+R 00 00 00 00
+T 84 01 00 E7 17 E1 3B DF 21 96 08 95
+R 00 00 00 00
+T 8E 01 22 24 2B B8 88 E1 8A B9 86 E0 80 BD 87 E6
+R 00 00 00 00
+T 9C 01 89 B9 20 BC 5B 9A 08 95
+R 00 00 00 00
+T A4 01 0C B9 08 95
+R 00 00 00 00
+T A8 01 80 E0 90 E0 E0 91
+R 00 00 00 00 20 02 01 00 00 00 40 04 01 00 00 00
+T AE 01 02 00 FF 27 E8 0F F9 1F 20 80 25 BA DC 9A
+R 00 00 00 00 00 02 03 00
+T BC 01 DB 9A DA 9A D9 98 04 E6 10 E0 1C DF D9 9A
+R 00 00 00 00
+T CA 01 80 E0 90 E0 E0 91
+R 00 00 00 00 20 02 01 00 0A 00 40 04 01 00 0A 00
+T D0 01 03 00 FF 27 E8 0F F9 1F 20 80 25 BA DA 98
+R 00 00 00 00 00 02 03 00
+T DE 01 04 E6 10 E0 0E DF DA 9A 80 E0 90 E0 E0 91
+R 00 00 00 00 20 0A 01 00 00 00 40 0C 01 00 00 00
+T EC 01 04 00 FF 27 E8 0F F9 1F 20 80 25 BA DB 98
+R 00 00 00 00 00 02 03 00
+T FA 01 04 E6 10 E0 00 DF DB 9A 81 EC 85 BB DC 98
+R 00 00 00 00
+T 08 02 04 E6 10 E0 F9 DE DC 9A 08 95
+R 00 00 00 00
+T 12 02 84 EE 87 BB 8F EF 84 BB 8E E1 8A BB 82 EB
+R 00 00 00 00
+T 20 02 81 BB 22 24 2B BA 8F EB 85 BB 95 9A 97 9A
+R 00 00 00 00
+T 2E 02 AF DF 87 DF 07 C0 64 DF 00 E0 10 E0 67 DF
+R 00 00 00 00 20 0A 03 00 01 00 40 0C 03 00 01 00
+T 3C 02 00 23 01 F0 B3 DF F8 CF 08 95
+R 00 00 00 00

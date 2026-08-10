@@ -1,0 +1,303 @@
+实验时收发双方都采用相同的电路 
+发送方程序如下： 
+                org        0000H         
+                AJMP        START 
+
+;延时1/4s子程序 
+YANSHI1S:        MOV        R7,#250 
+YANSHI1S1:        MOV        R6,#250 
+YANSHI1S2:        NOP 
+                NOP 
+                DJNZ        R6,YANSHI1S2 
+                DJNZ        R7,YANSHI1S1 
+                RET 
+
+
+;将58开始的单或多字节（字节数在R3中）写入芯片 
+XIENB:                MOV        R0,#58H 
+                CLR        P1.7                ;SCN变低 
+XIE00:                ACALL        XIE1B 
+                INC        R0 
+                DJNZ        R3,XIE00 
+                SETB        P1.7 
+                RET 
+
+;;将R0所指1单元按SPI时序写入模块,调用该子程序前，应将CSN线变低 
+;单次或多次调用完成后将CSN线变高 
+XIE1B:                MOV        R2,#8 
+                MOV        A,@R0 
+XIE1B1:                RLC        A 
+                MOV        P1.5,C                ;数据送上MOSI线 
+                SETB        P1.4                ;数据移入模块 
+                CLR        P1.4 
+                DJNZ        R2,XIE1B1 
+                RET 
+
+;读芯片状态字        将芯片状态字读到5FH 
+DUZT:                MOV        R2,#8 
+                SETB        P1.5 
+                CLR        P1.7                ;CSN变低， 
+DUZT1:                SETB        P1.4                ;时钟上升 
+                MOV        C,P1.3                ;读入MISO线上的数据 
+                MOV        A,5FH 
+                RLC        A                ;数据移入5FH寄存器 
+                MOV        5FH,A 
+                CLR        P1.4                         
+                DJNZ        R2,DUZT1 
+                SETB        P1.7                ;CSN变高，完成一次命令 
+                RET 
+
+
+
+
+
+
+START:                MOV        P1,#0AFH        ;模块待机 
+                MOV        58H,#20H        ;准备写0寄存器 
+                MOV        59H,#0EH        ;上电，发射模式 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#21H        ;01寄存器 
+                MOV        59H,#03H        ;0，1通道允许自动应答 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#22H        ;02 
+                MOV        59H,#03H 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#23H        ;03寄存器 
+                MOV        59H,#03H        ;5字节地址宽带 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#24H        ;04 
+                MOV        59H,#14H        ;重发等待500uS，重发4次,1A则重发10次，在206c处 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#25H        ;05寄存器 
+                MOV        59H,#07H        ;射频频率(汇编后在2076处） 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#26H        ;06 
+                MOV        59H,#27H        ;07为1M传输速率，0dB增益，27则为250k传输速率 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#27H        ;07 
+                MOV        59H,#70H        ;清模块内中断 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#2AH        ;0A寄存器(通道0） 
+                MOV        59H,#02H        ;配置地址 
+                MOV        5AH,#3AH 
+                MOV        5BH,#39H 
+                MOV        5CH,#38H 
+                MOV        5DH,#37H 
+                MOV        R3,#06H 
+                ACALL        XIENB 
+                MOV        58H,#30H        ;10寄存器 
+                MOV        R3,#06H                ;发送地址 
+                ACALL        XIENB 
+                MOV        58H,#2BH        ;0B寄存器（通道1） 
+                MOV        59H,#01H        ;本机地址 
+                MOV        R3,#06H 
+                ACALL        XIENB 
+                MOV        58H,#31H        ;11寄存器 
+                MOV        59H,#10H        ;0通道有效数据宽带16字节 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#32H        ;12寄存器 
+                MOV        59H,#10H        ;1通道有效数据宽度16字节 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+XIEFS:                MOV        58H,#0A0H        ;写发送数据到芯片 
+                MOV        R0,#58H 
+                MOV        R3,#10H 
+                CLR        P1.7 
+                ACALL        XIE1B 
+                MOV        R0,#70H 
+XIEXUN:                ACALL        XIE1B 
+                INC        R0 
+                DJNZ        R3,XIEXUN 
+                SETB        P1.7         
+                SETB        P1.6                ;启动发射 
+                MOV        R7,#5 
+                DJNZ        R7,$ 
+                CLR        P1.6 
+                JB        P3.2,$ 
+                cpl        p1.0 
+                ACALL        DUZT                ;读状态寄存器 
+                MOV        58H,#27H        ;07 
+                MOV        59H,#70H        ;清中断 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#0E1H        ;清模块发送缓冲区 
+                MOV        R3,#01H         
+                ACALL        XIENB 
+                ACALL        YANSHI1S 
+                SJMP        XIEFS 
+                 
+         
+end 
+
+接收端程序： 
+
+                org        0000H         
+                AJMP        START 
+
+                org        0003H 
+                AJMP        EXINT0 
+
+;延时1/4s子程序 
+YANSHI1S:        MOV        R7,#250 
+YANSHI1S1:        MOV        R6,#250 
+YANSHI1S2:        NOP 
+                NOP 
+                DJNZ        R6,YANSHI1S2 
+                DJNZ        R7,YANSHI1S1 
+                RET 
+
+
+;将58开始的单或多字节（字节数在R3中）写入芯片 
+XIENB:                MOV        R0,#58H 
+                CLR        P1.7                ;SCN变低 
+XIE00:                ACALL        XIE1B 
+                INC        R0 
+                DJNZ        R3,XIE00 
+                SETB        P1.7 
+                RET 
+
+;;将R0所指1单元按SPI时序写入模块,调用该子程序前，应将CSN线变低 
+;单次或多次调用完成后将CSN线变高 
+XIE1B:                MOV        R2,#8 
+                MOV        A,@R0 
+XIE1B1:                RLC        A 
+                MOV        P1.5,C                ;数据送上MOSI线 
+                SETB        P1.4                ;数据移入模块 
+                CLR        P1.4 
+                DJNZ        R2,XIE1B1 
+                RET 
+
+;按SPI时序读模块一字节入单片机R0所指单元,调用该子程序前，应将CSN线变低 
+;单次或多次调用完成后将CSN线变高 
+DU1B:                MOV        R2,#8 
+DU1B1:                SETB        P1.4 
+                MOV        C,P1.3 
+                RLC        A 
+                CLR        P1.4 
+                DJNZ        R2,DU1B1 
+                MOV        @R0,A 
+                RET 
+
+;按SPI时序读模块接收缓冲区数据入单片机R0所指单元，字节数在R3中 
+DUNB:                PUSH        00H 
+                MOV        58H,#61H        ;写一字节命令 
+                MOV        R0,#58H 
+                CLR        P1.7 
+                ACALL        XIE1B 
+                POP        00H                ;R0指向接收缓冲区首地址 
+DUXUN:                ACALL        DU1B 
+                INC        R0 
+                DJNZ        R3,DUXUN 
+                SETB        P1.7 
+                RET         
+
+;读芯片状态字        将芯片状态字读到5FH 
+DUZT:                MOV        R2,#8 
+                SETB        P1.5                ;输入芯片1 
+                CLR        P1.7                ;CSN变低， 
+DUZT1:                SETB        P1.4                ;时钟上升 
+                MOV        C,P1.3                ;读入MISO线上的数据 
+                MOV        A,5FH 
+                RLC        A                ;数据移入5FH寄存器 
+                MOV        5FH,A 
+                CLR        P1.4                         
+                DJNZ        R2,DUZT1 
+                SETB        P1.7                ;CSN变高，完成一次命令 
+                RET 
+
+
+
+
+
+
+START:                MOV        P1,#0AFH        ;模块待机 
+                SETB        0A8H                ;允许外部中断0 
+                CLR        88H                ;电平触发 
+                SETB        0B8H                ;高优先级 
+                SETB         0AFH                ;CPU开中断 
+
+                MOV        58H,#20H        ;准备写0寄存器 
+                MOV        59H,#0FH        ;上电，接收模式（发射时，设置为0EH） 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#21H        ;01寄存器 
+                MOV        59H,#03H        ;0，1通道允许自动应答 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#22H        ;02 
+                MOV        59H,#03H        ;允许0，1通道接收 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#23H        ;03寄存器 
+                MOV        59H,#03H        ;5字节地址宽带 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#24H        ;04 
+                MOV        59H,#14H        ;重发等待500uS，重发4次 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#25H        ;05寄存器 
+                MOV        59H,#07H        ;射频频率 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#26H        ;06 
+                MOV        59H,#27H        ;设置为07为1M传输速率，0dB增益(若为27，则是250kpbs，0dB） 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#27H        ;07 
+                MOV        59H,#70H        ;清模块内中断 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#2AH        ;0A寄存器(通道0） 
+                MOV        59H,#01H        ;配置地址（对方地址） 
+                MOV        5AH,#3AH 
+                MOV        5BH,#39H 
+                MOV        5CH,#38H 
+                MOV        5DH,#37H 
+                MOV        R3,#06H 
+                ACALL        XIENB 
+                MOV        58H,#30H        ;10寄存器 
+                MOV        R3,#06H                ;发送地址 
+                ACALL        XIENB 
+                MOV        58H,#2BH        ;0B寄存器（通道1） 
+                MOV        59H,#02H        ;本机地址 
+                MOV        R3,#06H 
+                ACALL        XIENB 
+                MOV        58H,#31H        ;11寄存器 
+                MOV        59H,#10H        ;0通道有效数据宽带16字节 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        58H,#32H        ;12寄存器 
+                MOV        59H,#10H        ;1通道有效数据宽度16字节 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                SETB        P1.6                ;启动接收 
+HALT:                SJMP        HALT 
+
+
+EXINT0:                PUSH        ACC 
+                PUSH        PSW 
+                ACALL        DUZT                ;读状态寄存器 
+                MOV        58H,#27H        ;07 
+                MOV        59H,#70H        ;清中断 
+                MOV        R3,#02H 
+                ACALL        XIENB 
+                MOV        R0,#60H                ;读接收数据到60H到6FH 
+                MOV        R3,#10H 
+                ACALL        DUNB 
+                CPL        P1.0 
+FANHUI:                POP        PSW 
+                POP        ACC 
+                RETI 
+         
+         
+end 

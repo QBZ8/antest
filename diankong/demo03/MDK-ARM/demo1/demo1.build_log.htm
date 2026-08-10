@@ -1,0 +1,90 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: ¦ÌVision V5.29.0.0
+Copyright (C) 2019 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: mo shaoyu, moshaoyu, LIC=GMZI6-DJI2R-GKTBG-VU6FZ-E4BUD-46SKA
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.29.0.0
+Toolchain Path:  D:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 6 (build 750)
+Assembler:       Armasm.exe V5.06 update 6 (build 750)
+Linker/Locator:  ArmLink.exe V5.06 update 6 (build 750)
+Library Manager: ArmAr.exe V5.06 update 6 (build 750)
+Hex Converter:   FromElf.exe V5.06 update 6 (build 750)
+CPU DLL:         SARMCM3.DLL V5.29.0.0
+Dialog DLL:      DCM.DLL V1.17.3.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.7.0
+Dialog DLL:      TCM.DLL V1.36.5.0
+ 
+<h2>Project:</h2>
+D:\STM32work\diankong\demo03\MDK-ARM\demo1.uvprojx
+Project File Date:  11/20/2025
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 6 (build 750)', folder: 'D:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'demo1'
+assembling startup_stm32f103xb.s...
+compiling main.c...
+../Core/Inc/oled.h(13): warning:  #1295-D: Deprecated declaration OLED_Init - give arg types
+  void OLED_Init();
+../Core/Inc/oled.h(14): warning:  #1295-D: Deprecated declaration OLED_DisPlay_On - give arg types
+  void OLED_DisPlay_On();
+../Core/Inc/oled.h(15): warning:  #1295-D: Deprecated declaration OLED_DisPlay_Off - give arg types
+  void OLED_DisPlay_Off();
+../Core/Inc/oled.h(17): warning:  #1295-D: Deprecated declaration OLED_NewFrame - give arg types
+  void OLED_NewFrame();
+../Core/Inc/oled.h(18): warning:  #1295-D: Deprecated declaration OLED_ShowFrame - give arg types
+  void OLED_ShowFrame();
+../Core/Inc/oled.h(35): warning:  #1-D: last line of file ends without a newline
+  #endif // __OLED_H__
+../Core/Src/main.c(166): warning:  #177-D: variable "MPU_DATA"  was declared but never referenced
+    uint8_t MPU_DATA[14]="";
+../Core/Src/main.c(167): warning:  #177-D: variable "StartAddress"  was declared but never referenced
+    uint8_t StartAddress=0x3B;
+../Core/Src/main.c(168): warning:  #177-D: variable "ACCEL_XOUT"  was declared but never referenced
+    double ACCEL_XOUT=0.0,ACCEL_YOUT=0.0,ACCEL_ZOUT=0.0;
+../Core/Src/main.c(168): warning:  #177-D: variable "ACCEL_YOUT"  was declared but never referenced
+    double ACCEL_XOUT=0.0,ACCEL_YOUT=0.0,ACCEL_ZOUT=0.0;
+../Core/Src/main.c(168): warning:  #177-D: variable "ACCEL_ZOUT"  was declared but never referenced
+    double ACCEL_XOUT=0.0,ACCEL_YOUT=0.0,ACCEL_ZOUT=0.0;
+../Core/Src/main.c(169): warning:  #177-D: variable "GYRO_XOUT"  was declared but never referenced
+    double GYRO_XOUT=0.0,GYRO_YOUT=0.0,GYRO_ZOUT=0.0;
+../Core/Src/main.c(169): warning:  #177-D: variable "GYRO_YOUT"  was declared but never referenced
+    double GYRO_XOUT=0.0,GYRO_YOUT=0.0,GYRO_ZOUT=0.0;
+../Core/Src/main.c(169): warning:  #177-D: variable "GYRO_ZOUT"  was declared but never referenced
+    double GYRO_XOUT=0.0,GYRO_YOUT=0.0,GYRO_ZOUT=0.0;
+../Core/Src/main.c: 14 warnings, 0 errors
+linking...
+Program Size: Code=14720 RO-data=2216 RW-data=40 ZI-data=3104  
+FromELF: creating hex file...
+"demo1\demo1.axf" - 0 Error(s), 14 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: ARM
+                http://www.keil.com/pack/ARM.CMSIS.5.6.0.pack
+                ARM.CMSIS.5.6.0
+                CMSIS (Cortex Microcontroller Software Interface Standard)
+   * Component: CORE Version: 5.3.0
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F1xx_DFP.2.3.0.pack
+                Keil.STM32F1xx_DFP.2.3.0
+                STMicroelectronics STM32F1 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  .\RTE\_demo1
+  D:\Keil_v5\ARM\PACK\ARM\CMSIS\5.6.0\CMSIS\Core\Include
+  D:\Keil_v5\ARM\PACK\Keil\STM32F1xx_DFP\2.3.0\Device\Include
+
+<h2>Collection of Component Files used:</h2>
+
+   * Component: ARM::CMSIS:CORE:5.3.0
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>

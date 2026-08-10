@@ -1,0 +1,62 @@
+/*****************************************************************************
+;copyright	:shenzhen coolwaveasia 
+;filename 	:io.h
+;mcu        :W78E52B
+;RF         :A7105
+;LCD		:TC802B-01
+;writeby    :dengyihong
+;*****************************************************************************
+;                            --------------------
+;                     P1.0  |1                 40|  VCC                  
+;                     P1.1  |2                 39|  P0.0    
+; RF_SCK  ----        P1.2  |3                 38|  P0.1   
+; RF_MOSI ----        P1.3  |4                 37|  P0.2       
+;                     P1.4  |5                 36|  P0.3    
+; RF_CSN  ----        P1.5  |6                 35|  P0.4     
+;                     P1.6  |7                 34|  P0.5     
+;                     P1.7  |8                 33|  P0.6      
+;                  RST/Vpd  |9                 32|  P0.7     
+;                 RXD/P3.0  |10                31|  /EA/Vpp
+;                 TXD/P3.1  |11                30|  ALE/PROG
+; RF_IRQ  ----  /INT0/P3.2  |12                29|  /PSEN
+; RF_CE   ----  /INT1/P3.3  |13                28|  P2.7     ----  KEY4 (send)
+;                  T0/P3.4  |14                27|  P2.6     ----  KEY3 (+)
+; RF_MISO ----     T1/P3.5  |15                26|  P2.5     ----  KEY2 (-)
+;                 /WR/P3.6  |16                25|  P2.4     ----  KEY1 (mode)
+;                 /RD/P3.7  |17                24|  P2.3
+;                    XTAL2  |18                23|  P2.2     
+;                    XTAL1  |19                22|  P2.1     ----  green_led
+;                      VSS  |20                21|  P2.0     ----  red_led
+;                            --------------------
+;                                   W78E52B
+;*****************************************************************************/
+
+#ifndef _IO_H
+#define _IO_H
+
+#include "..\header\maindef.h"
+
+// rf bit define
+sbit RF_SCK = P1^2;
+sbit RF_MOSI = P1^3;
+sbit RF_SCS = P1^5;
+sbit RF_IRQ = P3^2;
+sbit RF_CE = P3^3;
+sbit RF_MISO = P3^5;
+
+
+// lED bit define
+sbit	GREEN_LED = P2^1;
+sbit	RED_LED = P2^0;
+
+// key bit define
+sbit     KEY1 = P2^4;       // mode key       
+sbit     KEY2 = P2^5;       // - key
+sbit     KEY3 = P2^6;       // + key
+sbit     KEY4 = P2^7;       // send key
+
+#endif
+
+   
+
+

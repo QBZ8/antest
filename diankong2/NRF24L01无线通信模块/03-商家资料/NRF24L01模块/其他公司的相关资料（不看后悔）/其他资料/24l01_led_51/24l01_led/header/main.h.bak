@@ -1,0 +1,57 @@
+/************************************************************************
+;copyright	:shenzhen coolwaveasia 
+;filename 	:main.h
+;startdate	:2008.7.24
+;enddate    :
+;writeby    :dengyihong
+;revision   :A  
+;***********************************************************************/
+
+#ifndef _MAIN_H
+#define	_MAIN_H
+
+#include "maindef.h"
+#include "io.h"
+
+extern bit Key_Msg;
+extern enum Key_Info Key_Value;
+
+
+
+void McuInitial(void);
+
+void ini_sys(void);
+void ini_int0(void);
+void ini_int1(void);
+void ini_uart(void);
+void ini_timer0(void);
+void ini_timer1(void);
+
+void int0_isr(void);
+void int1_isr(void);
+void timer1_isr(void);
+void timer2_isr(void);
+void uart_rx_isr(void);
+void dispose_key_info(void);
+void send_data_to_uart(void);
+void delay_2us(U16 delay_cnt);
+
+
+//外部函数声明 按键部分
+extern void key_scan(void);
+
+//LCD 部分
+extern void ini_lcd(void);
+extern void lcd_printf_char(U8 disp_char, U8 row_col);
+extern void lcd_printf_string(U8 *disp_str, U8 row_len_col);
+
+void LCD_Initial(void);
+void LCD_StrDisp(uchar *disp_str, uchar row_len_col);
+
+
+//RF 部分
+extern void ini_rf(void);
+extern void rec_rf_data(void);
+extern void send_data_by_RF(U8 send_byte_cnt);
+
+#endif

@@ -1,0 +1,185 @@
+C51 COMPILER V7.06   LCD                                                                   01/12/2009 15:01:41 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE LCD
+OBJECT MODULE PLACED IN lcd.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\lcd.c ROM(COMPACT) BROWSE DEBUG OBJECTEXTEND PRINT(.\lcd.lst) OBJECT
+                    -(lcd.obj)
+
+stmt level    source
+
+   1          /************************************************************************
+   2          ;copyright              :shenzhen coolwaveasia
+   3          ;filename               :lcd.c
+   4          ;lcd                    :TC802B-01
+   5          ;control mcu    :w78e52b
+   6          ;writeby                :dengyihong
+   7          ;describe               :LCD control
+   8          ;notice                 :
+   9          ;***********************************************************************/
+  10          
+  11          #include "..\header\lcd.h"
+  12          
+  13          /***********************************************************
+  14          name:           ini_lcd         
+  15          input:          none
+  16          output:         none
+  17          describe:       初始化LCD       
+  18          notice:
+  19          creat date: 2008-7-25
+  20          creator:        dengyihong
+  21          ************************************************************/
+  22          void ini_lcd(void)
+  23          {
+  24   1          lcd_write_reg(0x38);
+  25   1          lcd_write_reg(0x38);
+  26   1          lcd_write_reg(0x38);
+  27   1          lcd_write_reg(0x08);
+  28   1          lcd_wait();
+  29   1          lcd_write_reg(0x01);
+  30   1          lcd_wait();
+  31   1          delay_2us(50000);
+  32   1          
+  33   1          lcd_write_reg(0x14);
+  34   1          lcd_wait();
+  35   1          lcd_write_reg(0x06);
+  36   1          lcd_wait();
+  37   1          lcd_write_reg(0x80);
+  38   1          lcd_wait();
+  39   1          lcd_write_reg(0x0c);
+  40   1          lcd_wait(); 
+  41   1      }
+  42          
+  43          
+  44          /***********************************************************
+  45          name:           lcd_printf_string       
+  46          input:          *disp_str  ---  存放显示字符的头指针
+  47                                  row_len_col  ---  显示坐标参数及显示字符数
+  48                                  row_len_col:
+  49                                          bit[7:6]: 显示行坐标
+  50                                          bit[5:3]: 显示字符长度
+  51                                          bit[2:0]: 显示字符的起始列坐标
+  52          output:         none
+  53          describe:       在屏幕上显示多个字符            
+  54          notice:
+C51 COMPILER V7.06   LCD                                                                   01/12/2009 15:01:41 PAGE 2   
+
+  55          creat date: 2008-7-25
+  56          creator:        dengyihong
+  57          ************************************************************/
+  58          void lcd_printf_string(U8 *disp_str, U8 row_len_col)
+  59          {
+  60   1          U8 i = 0;
+  61   1          U8 len = 0;
+  62   1          
+  63   1          len = (row_len_col & LEN_MASK) >> 0x03;
+  64   1          
+  65   1          lcd_write_reg(row_len_col & ROW_COL);
+  66   1          lcd_wait();
+  67   1          
+  68   1          for(i=0; i<=len; i++)
+  69   1          {
+  70   2              lcd_write_data(*disp_str++);
+  71   2              lcd_wait();     
+  72   2          }
+  73   1      }
+  74          
+  75          
+  76          /***********************************************************
+  77          name:           lcd_printf_char         
+  78          input:          disp_char  ---  要显示的字符
+  79                                  row_col    ---  显示坐标
+  80          output:         none
+  81          describe:       在屏幕上显示一个字符            
+  82          notice:
+  83          creat date: 2008-7-25
+  84          creator:        dengyihong
+  85          ************************************************************/
+  86          /*
+  87          void lcd_printf_char(U8 disp_char, U8 row_col)
+  88          {
+  89              lcd_write_reg(row_col & ROW_COL);
+  90              lcd_wait();
+  91              lcd_write_data(disp_char);
+  92              lcd_wait(); 
+  93          }
+  94          */
+  95          
+  96          /***********************************************************
+  97          name:           lcd_write_reg           
+  98          input:          command  ---  要写入的命令
+  99          output:         none
+ 100          describe:       写控制命令到LCD 
+ 101          notice:
+ 102          creat date: 2008-7-25
+ 103          creator:        dengyihong
+ 104          ************************************************************/
+ 105          void lcd_write_reg(U8 command)
+ 106          {
+ 107   1          LCD_DATA = command;         // 写控制命令
+ 108   1          LCD_RS = 0;
+ 109   1          LCD_RW = 0;
+ 110   1          LCD_EN = 1;
+ 111   1          delay_2us(100);
+ 112   1          LCD_EN = 0;
+ 113   1      }
+ 114          
+ 115          
+ 116          /***********************************************************
+C51 COMPILER V7.06   LCD                                                                   01/12/2009 15:01:41 PAGE 3   
+
+ 117          name:           lcd_write_data          
+ 118          input:          value  ---  要写入的数据
+ 119          output:         none
+ 120          describe:       写数据到LCD     
+ 121          notice:
+ 122          creat date: 2008-7-25
+ 123          creator:        dengyihong
+ 124          ************************************************************/
+ 125          void lcd_write_data(U8 value)
+ 126          {
+ 127   1         LCD_DATA =  value;           //写数据
+ 128   1         LCD_RS = 1;
+ 129   1         LCD_RW = 0;
+ 130   1         LCD_EN = 1;
+ 131   1         delay_2us(100);
+ 132   1         LCD_EN = 0;  
+ 133   1      }
+ 134          
+ 135          /***********************************************************
+ 136          name:           lcd_wait        
+ 137          input:          none
+ 138          output:         none
+ 139          describe:       等待LCD内部操作完成     
+ 140          notice:
+ 141          creat date: 2008-7-25
+ 142          creator:        dengyihong
+ 143          ************************************************************/
+ 144          void lcd_wait(void)
+ 145          {
+ 146   1          U8 value = 0;
+ 147   1             
+ 148   1          do
+ 149   1          {
+ 150   2              LCD_RS = 0;
+ 151   2              LCD_RW = 1;
+ 152   2              LCD_EN = 1;
+ 153   2              value = LCD_DATA;       
+ 154   2              LCD_EN = 0;
+ 155   2          }while(value & 0x80);               // 等待内部操作完成     
+ 156   1      }
+ 157          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    191    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

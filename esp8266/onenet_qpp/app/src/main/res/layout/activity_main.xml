@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F2F7"
+    android:fillViewport="true"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="环境监测控制端" android:textColor="#000000" android:textSize="28sp" android:textStyle="bold" android:layout_marginTop="16dp" android:layout_marginBottom="16dp"/>
+
+        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardBackgroundColor="#FFFFFF" app:cardCornerRadius="12dp" app:cardElevation="2dp" android:layout_marginBottom="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="OneNET OpenAPI 配置" android:textColor="#007AFF" android:textStyle="bold" android:layout_marginBottom="12dp"/>
+
+                <EditText android:id="@+id/et_product_id" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="产品 ID (Product ID)" android:text="g3f7QpYaxS" android:background="#E9E9EB" android:padding="12dp" android:textSize="14sp" android:layout_marginBottom="10dp" android:textColor="#000000" android:textColorHint="#8E8E93" />
+                <EditText android:id="@+id/et_device_name" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="目标设备名 (如 produce1)" android:text="produce1" android:background="#E9E9EB" android:padding="12dp" android:textSize="14sp" android:layout_marginBottom="10dp" android:textColor="#000000" android:textColorHint="#8E8E93" />
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="API 鉴权 Token (注意：必须是用户级或产品级Token，不能是设备Token)" android:textColor="#FF3B30" android:textSize="10sp" android:layout_marginBottom="4dp"/>
+                <EditText android:id="@+id/et_auth_token" android:layout_width="match_parent" android:layout_height="wrap_content" android:hint="Authorization Token" android:background="#E9E9EB" android:padding="12dp" android:textSize="12sp" android:layout_marginBottom="8dp" android:textColor="#000000" android:textColorHint="#8E8E93" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardBackgroundColor="#FFFFFF" app:cardCornerRadius="12dp" app:cardElevation="2dp" android:layout_marginBottom="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="设备控制" android:textColor="#007AFF" android:textStyle="bold" android:layout_marginBottom="12dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <Button android:id="@+id/btn_light_on" android:layout_width="0dp" android:layout_weight="1" android:layout_height="60dp" android:text="💡 发送开灯指令" android:textSize="16sp" android:textColor="#FFFFFF" android:textStyle="bold" android:layout_marginEnd="8dp" app:backgroundTint="#34C759"/>
+                    <Button android:id="@+id/btn_light_off" android:layout_width="0dp" android:layout_weight="1" android:layout_height="60dp" android:text="🌑 发送关灯指令" android:textSize="16sp" android:textColor="#FFFFFF" android:textStyle="bold" app:backgroundTint="#FF3B30"/>
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="wrap_content" app:cardBackgroundColor="#FFFFFF" app:cardCornerRadius="12dp" app:cardElevation="2dp" android:layout_marginBottom="16dp">
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="16dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="实时数据查询" android:textColor="#007AFF" android:textStyle="bold" android:layout_marginBottom="12dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                    <EditText android:id="@+id/et_query_id" android:layout_width="0dp" android:layout_weight="1" android:layout_height="50dp" android:hint="标识符 (如 CO2Content)" android:text="CO2Content" android:background="#E9E9EB" android:padding="12dp" android:textSize="14sp" android:layout_marginEnd="8dp" android:textColor="#000000" android:textColorHint="#8E8E93" />
+                    <Button android:id="@+id/btn_query" android:layout_width="wrap_content" android:layout_height="50dp" android:text="查询" android:textColor="#FFFFFF" android:textStyle="bold" app:backgroundTint="#007AFF"/>
+                </LinearLayout>
+
+                <TextView android:id="@+id/tv_result" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="---" android:textColor="#FF9500" android:textSize="32sp" android:textStyle="bold" android:gravity="center" android:padding="16dp" android:background="#F2F2F7"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView android:layout_width="match_parent" android:layout_height="250dp" app:cardBackgroundColor="#FFFFFF" app:cardCornerRadius="12dp" app:cardElevation="2dp" android:layout_marginBottom="16dp">
+            <androidx.core.widget.NestedScrollView android:id="@+id/scroll_log" android:layout_width="match_parent" android:layout_height="match_parent" android:padding="12dp" android:background="#F8F8F8">
+                <TextView android:id="@+id/tv_log" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="HTTP 就绪...\n" android:textColor="#333333" android:textSize="11sp" android:fontFamily="monospace" />
+            </androidx.core.widget.NestedScrollView>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+</ScrollView>

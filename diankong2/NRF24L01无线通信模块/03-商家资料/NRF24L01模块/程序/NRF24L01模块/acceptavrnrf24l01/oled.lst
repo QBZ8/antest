@@ -1,0 +1,885 @@
+__start:
+__text_start:
+      3E EFCF      LDI	R28,0xFF
+      3F E0D2      LDI	R29,2
+      40 BFCD      OUT	0x3D,R28
+      41 BFDE      OUT	0x3E,R29
+      42 51C0      SUBI	R28,0x10
+      43 40D0      SBCI	R29,0
+      44 EA0A      LDI	R16,0xAA
+      45 8308      STD	Y+0,R16
+      46 2400      CLR	R0
+      47 E4E8      LDI	R30,0x48
+      48 E0F1      LDI	R31,1
+      49 E011      LDI	R17,1
+      4A 34E9      CPI	R30,0x49
+      4B 07F1      CPC	R31,R17
+      4C F011      BEQ	0x004F
+      4D 9201      ST	R0,Z+
+      4E CFFB      RJMP	0x004A
+      4F 8300      STD	Z+0,R16
+      50 E3E4      LDI	R30,0x34
+      51 E0F0      LDI	R31,0
+      52 E0A0      LDI	R26,0
+      53 E0B1      LDI	R27,1
+      54 E010      LDI	R17,0
+      55 37EC      CPI	R30,0x7C
+      56 07F1      CPC	R31,R17
+      57 F021      BEQ	0x005C
+      58 95C8      LPM
+      59 9631      ADIW	R30,1
+      5A 920D      ST	R0,X+
+      5B CFF9      RJMP	0x0055
+      5C D001      RCALL	_main
+_exit:
+      5D CFFF      RJMP	_exit
+_main:
+  Get_SO               --> R10
+      5E 9721      SBIW	R28,1
+FILE: E:\acceptavrnrf24l01\main.c
+(0001) //ICC-AVR application builder : 2006-02-12 14:00:00
+(0002) // Target : ATmega48
+(0003) // Crystal: 8.000Mhz
+(0004) // Author:  jackyan
+(0005) // Oled Type : white
+(0006) //#define fosc 8000000
+(0007) //#define baud 9600
+(0008) #include "iom48v.h"
+(0009) #include "macros.h"
+(0010) #include "defs.h"
+(0011) /*-----------------------------------------------------------------------------
+(0012)    Global Defines
+(0013) ------------------------------------------------------------------------------*/
+(0014) unsigned char   key_debug;
+(0015) unsigned char 	Buffer[]={
+(0016) 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+(0017) 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+(0018) 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+(0019) 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+(0020) };
+(0021) #define TX_ADR_WIDTH    5   // 5 bytes TX(RX) address width
+(0022) #define TX_PLOAD_WIDTH  20  // 16 bytes TX payload
+(0023) unsigned char TX_ADDRESS[TX_ADR_WIDTH]  = {0x34,0x43,0x10,0x10,0x01}; // Define a static TX address
+(0024) void init_CPU (void);
+(0025) void delayms(unsigned short	dly);//当dly=1时，延时的时间是1ms  4MHz晶震
+(0026) void INIT_io(void);
+(0027) void RX_Mode(void);
+(0028) void TX_Mode(void);
+(0029) void delay(void);
+(0030) unsigned char SPI_Write_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes);
+(0031) unsigned char SPI_Read_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes);
+(0032) unsigned char SPI_RW_Reg(unsigned char reg, unsigned char value);
+(0033) unsigned char SPI_Read(unsigned char reg);
+(0034) void clear_buf(unsigned char	*ptr,unsigned char number);
+(0035) unsigned char accept_flag=0;
+(0036) unsigned int accept_time=0;
+(0037) //****************************************************************//
+(0038) // SPI(nRF24L01) commands
+(0039) #define READ_REG        0x00  // Define read command to register
+(0040) #define WRITE_REG       0x20  // Define write command to register
+(0041) #define RD_RX_PLOAD     0x61  // Define RX payload register address
+(0042) #define WR_TX_PLOAD     0xA0  // Define TX payload register address
+(0043) #define FLUSH_TX        0xE1  // Define flush TX register command
+(0044) #define FLUSH_RX        0xE2  // Define flush RX register command
+(0045) #define REUSE_TX_PL     0xE3  // Define reuse TX payload register command
+(0046) //#define NOP             0xFF  // Define No Operation, might be used to read status register
+(0047) //***************************************************//
+(0048) // SPI(nRF24L01) registers(addresses)
+(0049) #define CONFIG          0x00  // 'Config' register address
+(0050) #define EN_AA           0x01  // 'Enable Auto Acknowledgment' register address
+(0051) #define EN_RXADDR       0x02  // 'Enabled RX addresses' register address
+(0052) #define SETUP_AW        0x03  // 'Setup address width' register address
+(0053) #define SETUP_RETR      0x04  // 'Setup Auto. Retrans' register address
+(0054) #define RF_CH           0x05  // 'RF channel' register address
+(0055) #define RF_SETUP        0x06  // 'RF setup' register address
+(0056) #define STATUS          0x07  // 'Status' register address
+(0057) #define OBSERVE_TX      0x08  // 'Observe TX' register address
+(0058) #define CD              0x09  // 'Carrier Detect' register address
+(0059) #define RX_ADDR_P0      0x0A  // 'RX address pipe0' register address
+(0060) #define RX_ADDR_P1      0x0B  // 'RX address pipe1' register address
+(0061) #define RX_ADDR_P2      0x0C  // 'RX address pipe2' register address
+(0062) #define RX_ADDR_P3      0x0D  // 'RX address pipe3' register address
+(0063) #define RX_ADDR_P4      0x0E  // 'RX address pipe4' register address
+(0064) #define RX_ADDR_P5      0x0F  // 'RX address pipe5' register address
+(0065) #define TX_ADDR         0x10  // 'TX address' register address
+(0066) #define RX_PW_P0        0x11  // 'RX payload width, pipe0' register address
+(0067) #define RX_PW_P1        0x12  // 'RX payload width, pipe1' register address
+(0068) #define RX_PW_P2        0x13  // 'RX payload width, pipe2' register address
+(0069) #define RX_PW_P3        0x14  // 'RX payload width, pipe3' register address
+(0070) #define RX_PW_P4        0x15  // 'RX payload width, pipe4' register address
+(0071) #define RX_PW_P5        0x16  // 'RX payload width, pipe5' register address
+(0072) #define FIFO_STATUS     0x17  // 'FIFO Status Register' register address
+(0073) #define MAX_RT  	0x10  // Max #of TX retrans interrupt
+(0074) #define TX_DS   	0x20  // TX data sent interrupt
+(0075) #define RX_DR   	0x40  // RX data received
+(0076) //-----------------------------------------------------------------------------
+(0077) //------------------------------------------------------
+(0078) #define BIT(x)	           (1 << (x))
+(0079) #define SETBIT(x, y)   	   (x |= y)
+(0080) #define CLEARBIT(x, y) 	   (x &= ~y)
+(0081) #define CHECKBIT(x, y) 	   (x & y)
+(0082) #define BIT7 0x80
+(0083) #define BIT6 0x40
+(0084) #define BIT5 0x20
+(0085) #define BIT4 0x10
+(0086) #define BIT3 0x08
+(0087) #define BIT2 0x04
+(0088) #define BIT1 0x02
+(0089) #define BIT0 0x01
+(0090) /*#define nRF24L01_CSN        BIT4
+(0091) #define nRF24L01_SCK        BIT5
+(0092) #define nRF24L01_MOSI       BIT6
+(0093) #define nRF24L01_CE         BIT3
+(0094) #define nRF24L01_MISO 	    BIT7
+(0095) #define nRF24L01_IRQ  	    BIT0
+(0096) #define nRF24L01_CSNH       SETBIT(PORTD, BIT4)     
+(0097) #define nRF24L01_CSNL       CLEARBIT(PORTD, BIT4)   
+(0098) 
+(0099) #define nRF24L01_SCKH       SETBIT(PORTD,BIT5)      
+(0100) #define nRF24L01_SCKL       CLEARBIT(PORTD,BIT5)    
+(0101) 
+(0102) #define nRF24L01_MOSIH      SETBIT(PORTD,BIT6)     
+(0103) #define nRF24L01_MOSIL	    CLEARBIT(PORTD,BIT6)   
+(0104) 
+(0105) #define nRF24L01_CEH        SETBIT(PORTD,BIT3)     
+(0106) #define nRF24L01_CEL        CLEARBIT(PORTD,BIT3) */ 
+(0107) //-----------------------------------------------------------------------------
+(0108) #define nRF24L01_CSN        BIT6
+(0109) #define nRF24L01_SCK        BIT1
+(0110) #define nRF24L01_MOSI       BIT0
+(0111) #define nRF24L01_CE         BIT7
+(0112) #define nRF24L01_MISO 	    BIT3
+(0113) #define nRF24L01_IRQ  	    BIT2
+(0114) #define nRF24L01_CSNH       SETBIT(PORTD, BIT6)     
+(0115) #define nRF24L01_CSNL       CLEARBIT(PORTD, BIT6)   
+(0116) 
+(0117) #define nRF24L01_SCKH       SETBIT(PORTB,BIT1)      
+(0118) #define nRF24L01_SCKL       CLEARBIT(PORTB,BIT1)    
+(0119) 
+(0120) #define nRF24L01_MOSIH      SETBIT(PORTB,BIT0)     
+(0121) #define nRF24L01_MOSIL	    CLEARBIT(PORTB,BIT0)   
+(0122) 
+(0123) #define nRF24L01_CEH        SETBIT(PORTD,BIT7)     
+(0124) #define nRF24L01_CEL        CLEARBIT(PORTD,BIT7) 
+(0125) //-----------------------------------------------------------------------------
+(0126) void main(void)
+(0127) {
+(0128)  	unsigned char Get_SO=0;
+      5F 24AA      CLR	R10
+(0129)     CLI();                   /* global interrupt disable */
+      60 94F8      BCLR	7
+(0130)     init_CPU ();
+      61 D0A8      RCALL	_init_CPU
+(0131)     delayms(100);	//延时10ms*10=100ms
+      62 E604      LDI	R16,0x64
+      63 E010      LDI	R17,0
+      64 D0CD      RCALL	_delayms
+(0132)     delayms(100);	//延时10ms*10=100ms
+      65 E604      LDI	R16,0x64
+      66 E010      LDI	R17,0
+      67 D0CA      RCALL	_delayms
+(0133) 	RX_Mode();
+      68 D13F      RCALL	_RX_Mode
+      69 C09D      RJMP	0x0107
+(0134) 	while(1)
+(0135) 	{		
+(0136) 	//	if(!(PINB& 0x01))
+(0137) 		if(!(PINB& 0x04))
+      6A 991A      SBIC	0x03,2
+      6B C029      RJMP	0x0095
+(0138) 		{//nRF24L01 接收数据 
+(0139) 			key_debug=SPI_Read(STATUS);			// read register STATUS's value
+      6C E007      LDI	R16,7
+      6D D0FA      RCALL	_SPI_Read
+      6E 9300 0148 STS	key_debug,R16
+(0140) 			if(key_debug&RX_DR)					// if renRF24L01_CEive data ready (RX_DR) interrupt
+      70 FF06      SBRS	R16,6
+      71 C006      RJMP	0x0078
+(0141) 				SPI_Read_Buf(RD_RX_PLOAD,Buffer,TX_PLOAD_WIDTH);// read renRF24L01_CEive payload from RX_FIFO buffer
+      72 E184      LDI	R24,0x14
+      73 8388      STD	Y+0,R24
+      74 E020      LDI	R18,0
+      75 E031      LDI	R19,1
+      76 E601      LDI	R16,0x61
+      77 D100      RCALL	_SPI_Read_Buf
+(0142) 			if(key_debug&MAX_RT) SPI_RW_Reg(FLUSH_TX,0);
+      78 9020 0148 LDS	R2,key_debug
+      7A FE24      SBRS	R2,4
+      7B C003      RJMP	0x007F
+      7C 2722      CLR	R18
+      7D EE01      LDI	R16,0xE1
+      7E D0DB      RCALL	_SPI_RW_Reg
+(0143) 			SPI_RW_Reg(WRITE_REG+STATUS,0xff);// clear RX_DR or TX_DS or MAX_RT interrupt flag
+      7F EF2F      LDI	R18,0xFF
+      80 E207      LDI	R16,0x27
+      81 D0D8      RCALL	_SPI_RW_Reg
+(0144) 			RX_Mode();
+      82 D125      RCALL	_RX_Mode
+(0145) 			if((Buffer[0]==80)&&(Buffer[1]==02))//data accept
+      83 9180 0100 LDS	R24,Buffer
+      85 3580      CPI	R24,0x50
+      86 F471      BNE	0x0095
+      87 9180 0101 LDS	R24,Buffer+1
+      89 3082      CPI	R24,2
+      8A F451      BNE	0x0095
+(0146) 			{
+(0147) 			 	accept_flag=1;
+      8B E081      LDI	R24,1
+      8C 9380 0145 STS	accept_flag,R24
+(0148) 			 	PORTC = 0x02;
+      8E E082      LDI	R24,2
+      8F B988      OUT	0x08,R24
+(0149) 				delayms(5000);	//延时10ms*10=100ms
+      90 E808      LDI	R16,0x88
+      91 E113      LDI	R17,0x13
+      92 D09F      RCALL	_delayms
+(0150) 				PORTC = 0x00;
+      93 2422      CLR	R2
+      94 B828      OUT	0x08,R2
+(0151) 			}
+(0152) 		}
+(0153) 		if(accept_flag==0)//data send
+      95 9020 0145 LDS	R2,accept_flag
+      97 2022      TST	R2
+      98 F501      BNE	0x00B9
+(0154) 		{
+(0155) 		 		accept_flag=1;
+      99 E081      LDI	R24,1
+      9A 9380 0145 STS	accept_flag,R24
+(0156) 				accept_time=0;
+      9C 2422      CLR	R2
+      9D 2433      CLR	R3
+      9E 9230 0147 STS	accept_time+1,R3
+      A0 9220 0146 STS	accept_time,R2
+(0157) 		 		Buffer[0]=80;
+      A2 E580      LDI	R24,0x50
+      A3 9380 0100 STS	Buffer,R24
+(0158) 				Buffer[1]=01;
+      A5 E081      LDI	R24,1
+      A6 9380 0101 STS	Buffer+1,R24
+(0159) 				TX_Mode();			// set TX Mode and transmitting
+      A8 D11E      RCALL	_TX_Mode
+(0160) 				Buffer[0]=80;
+      A9 E580      LDI	R24,0x50
+      AA 9380 0100 STS	Buffer,R24
+(0161) 				Buffer[1]=01;
+      AC E081      LDI	R24,1
+      AD 9380 0101 STS	Buffer+1,R24
+(0162) 				TX_Mode();			// set TX Mode and transmitting
+      AF D117      RCALL	_TX_Mode
+(0163) 				delayms(100);
+      B0 E604      LDI	R16,0x64
+      B1 E010      LDI	R17,0
+      B2 D07F      RCALL	_delayms
+(0164) 				RX_Mode();
+      B3 D0F4      RCALL	_RX_Mode
+(0165) 				Buffer[0]=00;
+      B4 2422      CLR	R2
+      B5 9220 0100 STS	Buffer,R2
+(0166) 				Buffer[1]=00;
+      B7 9220 0101 STS	Buffer+1,R2
+(0167) 		}
+(0168) 		if(accept_flag=1)
+      B9 E081      LDI	R24,1
+      BA 9380 0145 STS	accept_flag,R24
+      BC 2388      TST	R24
+      BD F409      BNE	0x00BF
+      BE C048      RJMP	0x0107
+(0169) 		{
+(0170) 		   accept_time++;
+      BF 9180 0146 LDS	R24,accept_time
+      C1 9190 0147 LDS	R25,accept_time+1
+      C3 9601      ADIW	R24,1
+      C4 9390 0147 STS	accept_time+1,R25
+      C6 9380 0146 STS	accept_time,R24
+(0171) 	//	   delayms(100);
+(0172) 		   if(accept_time>10000)
+      C8 E180      LDI	R24,0x10
+      C9 E297      LDI	R25,0x27
+      CA 9020 0146 LDS	R2,accept_time
+      CC 9030 0147 LDS	R3,accept_time+1
+      CE 1582      CP	R24,R2
+      CF 0593      CPC	R25,R3
+      D0 F440      BCC	0x00D9
+(0173) 		   {
+(0174) 		   	 accept_flag=0;
+      D1 2422      CLR	R2
+      D2 9220 0145 STS	accept_flag,R2
+(0175) 			 accept_time=0;
+      D4 2433      CLR	R3
+      D5 9230 0147 STS	accept_time+1,R3
+      D7 9220 0146 STS	accept_time,R2
+(0176) 		   }
+(0177) //-------------------------------------------
+(0178) 		//	if(!(PINB& 0x01))
+(0179) 		if(!(PINB& 0x04))
+      D9 991A      SBIC	0x03,2
+      DA C02C      RJMP	0x0107
+(0180) 		{//nRF24L01 接收数据 
+(0181) 			key_debug=SPI_Read(STATUS);			// read register STATUS's value
+      DB E007      LDI	R16,7
+      DC D08B      RCALL	_SPI_Read
+      DD 9300 0148 STS	key_debug,R16
+(0182) 			if(key_debug&RX_DR)					// if renRF24L01_CEive data ready (RX_DR) interrupt
+      DF FF06      SBRS	R16,6
+      E0 C006      RJMP	0x00E7
+(0183) 				SPI_Read_Buf(RD_RX_PLOAD,Buffer,TX_PLOAD_WIDTH);// read renRF24L01_CEive payload from RX_FIFO buffer
+      E1 E184      LDI	R24,0x14
+      E2 8388      STD	Y+0,R24
+      E3 E020      LDI	R18,0
+      E4 E031      LDI	R19,1
+      E5 E601      LDI	R16,0x61
+      E6 D091      RCALL	_SPI_Read_Buf
+(0184) 			if(key_debug&MAX_RT) SPI_RW_Reg(FLUSH_TX,0);
+      E7 9020 0148 LDS	R2,key_debug
+      E9 FE24      SBRS	R2,4
+      EA C003      RJMP	0x00EE
+      EB 2722      CLR	R18
+      EC EE01      LDI	R16,0xE1
+      ED D06C      RCALL	_SPI_RW_Reg
+(0185) 			SPI_RW_Reg(WRITE_REG+STATUS,0xff);// clear RX_DR or TX_DS or MAX_RT interrupt flag
+      EE EF2F      LDI	R18,0xFF
+      EF E207      LDI	R16,0x27
+      F0 D069      RCALL	_SPI_RW_Reg
+(0186) 			RX_Mode();
+      F1 D0B6      RCALL	_RX_Mode
+(0187) 			if((Buffer[0]==80)&&(Buffer[1]==02))//data accept
+      F2 9180 0100 LDS	R24,Buffer
+      F4 3580      CPI	R24,0x50
+      F5 F489      BNE	0x0107
+      F6 9180 0101 LDS	R24,Buffer+1
+      F8 3082      CPI	R24,2
+      F9 F469      BNE	0x0107
+(0188) 			{
+(0189) 			 	accept_flag=1;
+      FA E081      LDI	R24,1
+      FB 9380 0145 STS	accept_flag,R24
+(0190) 			 	PORTC = 0x02;
+      FD E082      LDI	R24,2
+      FE B988      OUT	0x08,R24
+(0191) 				delayms(5000);	//延时10ms*10=100ms
+      FF E808      LDI	R16,0x88
+     100 E113      LDI	R17,0x13
+     101 D030      RCALL	_delayms
+(0192) 				delayms(5000);	//延时10ms*10=100ms
+     102 E808      LDI	R16,0x88
+     103 E113      LDI	R17,0x13
+     104 D02D      RCALL	_delayms
+(0193) 				PORTC = 0x00;
+     105 2422      CLR	R2
+     106 B828      OUT	0x08,R2
+     107 CF62      RJMP	0x006A
+     108 9621      ADIW	R28,1
+     109 9508      RET
+(0194) 			}
+(0195) 		}
+(0196) //-------------------------------------------
+(0197) 		}	
+(0198) 	}
+(0199) 
+(0200) 
+(0201) }
+(0202) /*-----------------------------------------------------------------------------
+(0203)    Module:   init_CPU
+(0204)    Function: Initialization of CPU
+(0205) ------------------------------------------------------------------------------*/
+(0206) void init_CPU (void)
+(0207) {
+(0208)  	MCUCR = 0x00;	// 
+_init_CPU:
+     10A 2422      CLR	R2
+     10B BE25      OUT	0x35,R2
+(0209) 	EICRA = 0x00; //extended ext ints
+     10C 9220 0069 STS	0x0069,R2
+(0210)     EIMSK = 0x00;
+     10E BA2D      OUT	0x1D,R2
+(0211) 	 
+(0212) 	TIMSK0 = 0x01; //timer 0 interrupt sources
+     10F E081      LDI	R24,1
+     110 9380 006E STS	0x006E,R24
+(0213) 	TIMSK1 = 0x00; //timer 1 interrupt sources
+     112 9220 006F STS	0x006F,R2
+(0214) 	TIMSK2 = 0x00; //timer 2 interrupt sources
+     114 9220 0070 STS	0x0070,R2
+(0215) 	 CLI(); //disable all interrupts
+     116 94F8      BCLR	7
+(0216) 	 NOP();
+     117 0000      NOP
+(0217) 	PORTB = 0x81;
+     118 E881      LDI	R24,0x81
+     119 B985      OUT	0x05,R24
+(0218)  	DDRB  = 0xf3;
+     11A EF83      LDI	R24,0xF3
+     11B B984      OUT	0x04,R24
+(0219) 	PORTD = 0x80;
+     11C E880      LDI	R24,0x80
+     11D B98B      OUT	0x0B,R24
+(0220) 	DDRD  = 0xff;
+     11E EF8F      LDI	R24,0xFF
+     11F B98A      OUT	0x0A,R24
+(0221) 	PORTC = 0x80;
+     120 E880      LDI	R24,0x80
+     121 B988      OUT	0x08,R24
+(0222) 	DDRC  = 0x78;
+     122 E788      LDI	R24,0x78
+     123 B987      OUT	0x07,R24
+(0223)     nRF24L01_CEL;
+     124 985F      CBI	0x0B,7
+(0224) 	delay();
+     125 D005      RCALL	_delay
+(0225) 	nRF24L01_CSNH;			// Spi disable
+     126 9A5E      SBI	0x0B,6
+(0226) 	delay();
+     127 D003      RCALL	_delay
+(0227) 	nRF24L01_SCKL;	
+     128 9829      CBI	0x05,1
+(0228) 	delay();
+     129 D001      RCALL	_delay
+     12A 9508      RET
+(0229) }
+(0230) void delay(void)//
+(0231) {
+(0232) 	NOP();
+_delay:
+     12B 0000      NOP
+(0233) 	NOP();
+     12C 0000      NOP
+(0234) 	NOP();
+     12D 0000      NOP
+(0235) 	NOP();
+     12E 0000      NOP
+(0236) 	NOP();
+     12F 0000      NOP
+(0237) 	NOP();
+     130 0000      NOP
+     131 9508      RET
+(0238) }
+(0239) void delayms(unsigned short	dly)//
+(0240) {
+(0241) 	for(;dly>0;dly--) ;
+_delayms:
+  dly                  --> R16
+     132 C002      RJMP	0x0135
+     133 5001      SUBI	R16,1
+     134 4010      SBCI	R17,0
+     135 3000      CPI	R16,0
+     136 0701      CPC	R16,R17
+     137 F7D9      BNE	0x0133
+     138 9508      RET
+(0242) }
+(0243) 
+(0244) void clear_buf(unsigned char	*ptr,unsigned char number)//清零buffer,指定字节个数
+(0245) {
+(0246) 	for (;number>0;number--) *ptr++=0;
+_clear_buf:
+  number               --> R18
+  ptr                  --> R16
+     139 C005      RJMP	0x013F
+     13A 2422      CLR	R2
+     13B 01F8      MOVW	R30,R16
+     13C 9221      ST	R2,Z+
+     13D 018F      MOVW	R16,R30
+     13E 952A      DEC	R18
+     13F E080      LDI	R24,0
+     140 1782      CP	R24,R18
+     141 F3C0      BCS	0x013A
+     142 9508      RET
+_SPI_RW:
+  bit_ctr              --> R22
+  byte                 --> R20
+     143 D0C5      RCALL	push_xgsetF000
+     144 2F40      MOV	R20,R16
+(0247) }
+(0248) //------------------------------------------------------
+(0249) /**************************************************
+(0250) Function: SPI_RW();
+(0251) 
+(0252) Description:
+(0253)   Writes one byte to nRF24L01, and return the byte read
+(0254)   from nRF24L01 during write, according to SPI protocol  */
+(0255) /**************************************************/
+(0256) unsigned char SPI_RW(unsigned char byte)
+(0257) {
+(0258) 	unsigned char  bit_ctr;	
+(0259)    	for(bit_ctr=0;bit_ctr<8;bit_ctr++)   	// output 8-bit
+     145 2766      CLR	R22
+     146 C00F      RJMP	0x0156
+(0260)    	{
+(0261)    		if(byte & 0x80) 
+     147 FF47      SBRS	R20,7
+     148 C002      RJMP	0x014B
+(0262)    			nRF24L01_MOSIH;
+     149 9A28      SBI	0x05,0
+     14A C001      RJMP	0x014C
+(0263)    		else 
+(0264)    			nRF24L01_MOSIL;
+     14B 9828      CBI	0x05,0
+(0265) 		delay();
+     14C DFDE      RCALL	_delay
+(0266)    		byte = (byte << 1);           		// shift next bit into MSB..
+     14D 0F44      LSL	R20
+(0267)    		nRF24L01_SCKH;
+     14E 9A29      SBI	0x05,1
+(0268) 		delay();
+     14F DFDB      RCALL	_delay
+(0269)  		if(PINB&0x08) byte |= 1;
+     150 9B1B      SBIS	0x03,3
+     151 C001      RJMP	0x0153
+     152 6041      ORI	R20,1
+(0270)    		nRF24L01_SCKL;
+     153 9829      CBI	0x05,1
+(0271) 		delay();
+     154 DFD6      RCALL	_delay
+     155 9563      INC	R22
+     156 3068      CPI	R22,0x8
+     157 F378      BCS	0x0147
+(0272)    	}
+(0273)     return(byte);           		  		// return read byte
+     158 2F04      MOV	R16,R20
+     159 C0B4      RJMP	pop_xgsetF000
+_SPI_RW_Reg:
+  status               --> R10
+  value                --> R12
+  reg                  --> R10
+     15A D0A9      RCALL	push_xgset003C
+     15B 2EC2      MOV	R12,R18
+     15C 2EA0      MOV	R10,R16
+(0274) }
+(0275) /**************************************************
+(0276) Function: SPI_RW_Reg();
+(0277) 
+(0278) Description:
+(0279)   Writes value 'value' to register 'reg' */
+(0280) /**************************************************/
+(0281) unsigned char SPI_RW_Reg(unsigned char reg, unsigned char value)
+(0282) {
+(0283) 	unsigned char status;
+(0284) 	nRF24L01_CSNL;
+     15D 985E      CBI	0x0B,6
+(0285) 	delay();
+     15E DFCC      RCALL	_delay
+(0286) 	status = SPI_RW(reg);      // select register
+     15F 2D0A      MOV	R16,R10
+     160 DFE2      RCALL	_SPI_RW
+     161 2EA0      MOV	R10,R16
+(0287)   	SPI_RW(value);             // ..and write value to it..
+     162 2D0C      MOV	R16,R12
+     163 DFDF      RCALL	_SPI_RW
+(0288) 	nRF24L01_CSNH;
+     164 9A5E      SBI	0x0B,6
+(0289) 	delay();
+     165 DFC5      RCALL	_delay
+(0290)   	return(status);            // return nRF24L01 status byte
+     166 2D0A      MOV	R16,R10
+     167 C08A      RJMP	pop_xgset003C
+_SPI_Read:
+  reg_val              --> R10
+  reg                  --> R10
+     168 92AA      ST	R10,-Y
+     169 92BA      ST	R11,-Y
+     16A 2EA0      MOV	R10,R16
+(0291) }
+(0292) /**************************************************
+(0293) Function: SPI_Read();
+(0294) 
+(0295) Description:
+(0296)   Read one byte from nRF24L01 register, 'reg'  */
+(0297) /**************************************************/
+(0298) unsigned char SPI_Read(unsigned char reg)
+(0299) {
+(0300) 	unsigned char reg_val;
+(0301) 	nRF24L01_CSNL;
+     16B 985E      CBI	0x0B,6
+(0302) 	delay();
+     16C DFBE      RCALL	_delay
+(0303)   	SPI_RW(reg);            // Select register to read from..
+     16D 2D0A      MOV	R16,R10
+     16E DFD4      RCALL	_SPI_RW
+(0304)   	reg_val = SPI_RW(0);    // ..then read registervalue
+     16F 2700      CLR	R16
+     170 DFD2      RCALL	_SPI_RW
+     171 2EA0      MOV	R10,R16
+(0305) 	nRF24L01_CSNH;
+     172 9A5E      SBI	0x0B,6
+(0306) 	delay();
+     173 DFB7      RCALL	_delay
+(0307)   	return(reg_val);        // return register value
+     174 2D0A      MOV	R16,R10
+     175 90B9      LD	R11,Y+
+     176 90A9      LD	R10,Y+
+     177 9508      RET
+_SPI_Read_Buf:
+  status               --> R10
+  byte_ctr             --> R12
+  bytes                --> Y,+6
+  pBuf                 --> R14
+  reg                  --> R10
+     178 D089      RCALL	push_xgset00FC
+     179 0179      MOVW	R14,R18
+     17A 2EA0      MOV	R10,R16
+(0308) }
+(0309) /**************************************************
+(0310) Function: SPI_Read_Buf();
+(0311) 
+(0312) Description:
+(0313)   Reads 'bytes' #of bytes from register 'reg'
+(0314)   Typically used to read RX payload, Rx/Tx address */
+(0315) /**************************************************/
+(0316) unsigned char SPI_Read_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes)
+(0317) {
+(0318) 	unsigned char status,byte_ctr;
+(0319) 	nRF24L01_CSNL;
+     17B 985E      CBI	0x0B,6
+(0320) 	delay();
+     17C DFAE      RCALL	_delay
+(0321)   	status = SPI_RW(reg);       		// Select register to write to and read status byte
+     17D 2D0A      MOV	R16,R10
+     17E DFC4      RCALL	_SPI_RW
+     17F 2EA0      MOV	R10,R16
+(0322) 	for(byte_ctr=0;byte_ctr<bytes;byte_ctr++)
+     180 24CC      CLR	R12
+     181 C008      RJMP	0x018A
+(0323)     	pBuf[byte_ctr] = SPI_RW(0);    // Perform SPI_RW to read byte from nRF24L01
+     182 2700      CLR	R16
+     183 DFBF      RCALL	_SPI_RW
+     184 2DEC      MOV	R30,R12
+     185 27FF      CLR	R31
+     186 0DEE      ADD	R30,R14
+     187 1DFF      ADC	R31,R15
+     188 8300      STD	Z+0,R16
+     189 94C3      INC	R12
+     18A 800E      LDD	R0,Y+6
+     18B 14C0      CP	R12,R0
+     18C F3A8      BCS	0x0182
+(0324) 	nRF24L01_CSNH;
+     18D 9A5E      SBI	0x0B,6
+(0325) 	delay();
+     18E DF9C      RCALL	_delay
+(0326)   	return(status);                    // return nRF24L01 status byte
+     18F 2D0A      MOV	R16,R10
+     190 C066      RJMP	pop_xgset00FC
+_SPI_Write_Buf:
+  status               --> R10
+  byte_ctr             --> R12
+  bytes                --> Y,+6
+  pBuf                 --> R14
+  reg                  --> R10
+     191 D070      RCALL	push_xgset00FC
+     192 0179      MOVW	R14,R18
+     193 2EA0      MOV	R10,R16
+(0327) }
+(0328) /**************************************************
+(0329) Function: SPI_Write_Buf();
+(0330) 
+(0331) Description:
+(0332)   Writes contents of buffer '*pBuf' to nRF24L01
+(0333)   Typically used to write TX payload, Rx/Tx address */
+(0334) /**************************************************/
+(0335) unsigned char SPI_Write_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes)
+(0336) {
+(0337) 	unsigned char status,byte_ctr;
+(0338) 	nRF24L01_CSNL;                   		// Set nRF24L01_CSN low, init SPI tranaction
+     194 985E      CBI	0x0B,6
+(0339)   	delay();
+     195 DF95      RCALL	_delay
+(0340) 	status = SPI_RW(reg);    					// Select register to write to and read status byte
+     196 2D0A      MOV	R16,R10
+     197 DFAB      RCALL	_SPI_RW
+     198 2EA0      MOV	R10,R16
+(0341)   	for(byte_ctr=0; byte_ctr<bytes; byte_ctr++) // then write all byte in buffer(*pBuf)
+     199 24CC      CLR	R12
+     19A C006      RJMP	0x01A1
+(0342)     	status = SPI_RW(*pBuf++);            
+     19B 01F7      MOVW	R30,R14
+     19C 9101      LD	R16,Z+
+     19D 017F      MOVW	R14,R30
+     19E DFA4      RCALL	_SPI_RW
+     19F 2EA0      MOV	R10,R16
+     1A0 94C3      INC	R12
+     1A1 800E      LDD	R0,Y+6
+     1A2 14C0      CP	R12,R0
+     1A3 F3B8      BCS	0x019B
+(0343) 	nRF24L01_CSNH; 								// Set nRF24L01_CSN high again
+     1A4 9A5E      SBI	0x0B,6
+(0344) 	delay();
+     1A5 DF85      RCALL	_delay
+(0345)   	return(status);          					// return nRF24L01 status byte
+     1A6 2D0A      MOV	R16,R10
+     1A7 C04F      RJMP	pop_xgset00FC
+_RX_Mode:
+     1A8 9721      SBIW	R28,1
+(0346) }
+(0347) /**************************************************
+(0348) Function: RX_Mode();
+(0349) 
+(0350) Description:
+(0351)   This function initializes one nRF24L01 device to
+(0352)   RX Mode, set RX address, writes RX payload width,
+(0353)   select RF channel, datarate & LNA HCURR.
+(0354)   After init, CE is toggled high, which means that
+(0355)   this device is now ready to receive a datapacket. */
+(0356) /**************************************************/
+(0357) void RX_Mode(void)
+(0358) {
+(0359) 	nRF24L01_CEL;
+     1A9 985F      CBI	0x0B,7
+(0360) 	delay();
+     1AA DF80      RCALL	_delay
+(0361)   	SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, TX_ADDRESS, TX_ADR_WIDTH); // Use the same address on the RX device as the TX device
+     1AB E085      LDI	R24,5
+     1AC 8388      STD	Y+0,R24
+     1AD E420      LDI	R18,0x40
+     1AE E031      LDI	R19,1
+     1AF E20A      LDI	R16,0x2A
+     1B0 DFE0      RCALL	_SPI_Write_Buf
+(0362) 
+(0363)   	SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      // Enable Auto.Ack:Pipe0
+     1B1 E021      LDI	R18,1
+     1B2 E201      LDI	R16,0x21
+     1B3 DFA6      RCALL	_SPI_RW_Reg
+(0364)   	SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  // Enable Pipe0
+     1B4 E021      LDI	R18,1
+     1B5 E202      LDI	R16,0x22
+     1B6 DFA3      RCALL	_SPI_RW_Reg
+(0365)   	SPI_RW_Reg(WRITE_REG + RF_CH, 40);        // Select RF channel 40
+     1B7 E228      LDI	R18,0x28
+     1B8 E205      LDI	R16,0x25
+     1B9 DFA0      RCALL	_SPI_RW_Reg
+(0366)   	SPI_RW_Reg(WRITE_REG + RX_PW_P0, TX_PLOAD_WIDTH); // Select same RX payload width as TX Payload width
+     1BA E124      LDI	R18,0x14
+     1BB E301      LDI	R16,0x31
+     1BC DF9D      RCALL	_SPI_RW_Reg
+(0367)   	SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   // TX_PWR:0dBm, Datarate:2Mbps, LNA:HCURR
+     1BD E027      LDI	R18,7
+     1BE E206      LDI	R16,0x26
+     1BF DF9A      RCALL	_SPI_RW_Reg
+(0368)   	SPI_RW_Reg(WRITE_REG + CONFIG, 0x0f);     // Set PWR_UP bit, enable CRC(2 bytes) & Prim:RX. RX_DR enabled..
+     1C0 E02F      LDI	R18,0xF
+     1C1 E200      LDI	R16,0x20
+     1C2 DF97      RCALL	_SPI_RW_Reg
+(0369)   	nRF24L01_CEH;
+     1C3 9A5F      SBI	0x0B,7
+(0370) 	delay();
+     1C4 DF66      RCALL	_delay
+     1C5 9621      ADIW	R28,1
+     1C6 9508      RET
+_TX_Mode:
+     1C7 9721      SBIW	R28,1
+(0371) 	//  This device is now ready to receive one packet of 16 bytes payload from a TX device sending to address
+(0372)   //  '3443101001', with auto acknowledgment, retransmit count of 10, RF channel 40 and datarate = 2Mbps.
+(0373) 
+(0374) }
+(0375) /**************************************************/
+(0376) 
+(0377) /**************************************************
+(0378) Function: TX_Mode();
+(0379) 
+(0380) Description:
+(0381)   This function initializes one nRF24L01 device to
+(0382)   TX mode, set TX address, set RX address for auto.ack,
+(0383)   fill TX payload, select RF channel, datarate & TX pwr.
+(0384)   PWR_UP is set, CRC(2 bytes) is enabled, & PRIM:TX.
+(0385) 
+(0386)   ToDo: One high pulse(>10us) on CE will now send this
+(0387)   packet and expext an acknowledgment from the RX device. */
+(0388) /**************************************************/
+(0389) void TX_Mode(void)
+(0390) {
+(0391) 	nRF24L01_CEL;
+     1C8 985F      CBI	0x0B,7
+(0392) 	delay();
+     1C9 DF61      RCALL	_delay
+(0393)   	SPI_Write_Buf(WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH);    // Writes TX_Address to nRF24L01
+     1CA E085      LDI	R24,5
+     1CB 8388      STD	Y+0,R24
+     1CC E420      LDI	R18,0x40
+     1CD E031      LDI	R19,1
+     1CE E300      LDI	R16,0x30
+     1CF DFC1      RCALL	_SPI_Write_Buf
+(0394)   	SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, TX_ADDRESS, TX_ADR_WIDTH); // RX_Addr0 same as TX_Adr for Auto.Ack
+     1D0 E085      LDI	R24,5
+     1D1 8388      STD	Y+0,R24
+     1D2 E420      LDI	R18,0x40
+     1D3 E031      LDI	R19,1
+     1D4 E20A      LDI	R16,0x2A
+     1D5 DFBB      RCALL	_SPI_Write_Buf
+(0395)   	SPI_Write_Buf(WR_TX_PLOAD, Buffer, TX_PLOAD_WIDTH); // Writes data to TX payload
+     1D6 E184      LDI	R24,0x14
+     1D7 8388      STD	Y+0,R24
+     1D8 E020      LDI	R18,0
+     1D9 E031      LDI	R19,1
+     1DA EA00      LDI	R16,0xA0
+     1DB DFB5      RCALL	_SPI_Write_Buf
+(0396) 
+(0397)   	SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      // Enable Auto.Ack:Pipe0
+     1DC E021      LDI	R18,1
+     1DD E201      LDI	R16,0x21
+     1DE DF7B      RCALL	_SPI_RW_Reg
+(0398)   	SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  // Enable Pipe0
+     1DF E021      LDI	R18,1
+     1E0 E202      LDI	R16,0x22
+     1E1 DF78      RCALL	_SPI_RW_Reg
+(0399)   	SPI_RW_Reg(WRITE_REG + SETUP_RETR, 0x1a); // 500us + 86us, 10 retrans...
+     1E2 E12A      LDI	R18,0x1A
+     1E3 E204      LDI	R16,0x24
+     1E4 DF75      RCALL	_SPI_RW_Reg
+(0400)   	SPI_RW_Reg(WRITE_REG + RF_CH, 40);        // Select RF channel 40
+     1E5 E228      LDI	R18,0x28
+     1E6 E205      LDI	R16,0x25
+     1E7 DF72      RCALL	_SPI_RW_Reg
+(0401)   	SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   // TX_PWR:0dBm, Datarate:2Mbps, LNA:HCURR
+     1E8 E027      LDI	R18,7
+     1E9 E206      LDI	R16,0x26
+     1EA DF6F      RCALL	_SPI_RW_Reg
+(0402)   	SPI_RW_Reg(WRITE_REG + CONFIG, 0x0e);     // Set PWR_UP bit, enable CRC(2 bytes) & Prim:TX. MAX_RT & TX_DS enabled..
+     1EB E02E      LDI	R18,0xE
+     1EC E200      LDI	R16,0x20
+     1ED DF6C      RCALL	_SPI_RW_Reg
+(0403) 	nRF24L01_CEH;
+     1EE 9A5F      SBI	0x0B,7
+(0404) 	delay();
+FILE: <library>
+     1EF DF3B      RCALL	_delay
+     1F0 9621      ADIW	R28,1
+     1F1 9508      RET
+pop_xgset003C:
+     1F2 90A9      LD	R10,Y+
+     1F3 90B9      LD	R11,Y+
+     1F4 90C9      LD	R12,Y+
+     1F5 90D9      LD	R13,Y+
+     1F6 9508      RET
+pop_xgset00FC:
+     1F7 90A9      LD	R10,Y+
+     1F8 90B9      LD	R11,Y+
+     1F9 90C9      LD	R12,Y+
+     1FA 90D9      LD	R13,Y+
+     1FB 90E9      LD	R14,Y+
+     1FC 90F9      LD	R15,Y+
+     1FD 9508      RET
+push_xgsetF0FC:
+     1FE 937A      ST	R23,-Y
+     1FF 936A      ST	R22,-Y
+push_xgset30FC:
+     200 935A      ST	R21,-Y
+     201 934A      ST	R20,-Y
+push_xgset00FC:
+     202 92FA      ST	R15,-Y
+     203 92EA      ST	R14,-Y
+push_xgset003C:
+     204 92DA      ST	R13,-Y
+     205 92CA      ST	R12,-Y
+     206 92BA      ST	R11,-Y
+     207 92AA      ST	R10,-Y
+     208 9508      RET
+push_xgsetF000:
+     209 937A      ST	R23,-Y
+     20A 936A      ST	R22,-Y
+     20B 935A      ST	R21,-Y
+     20C 934A      ST	R20,-Y
+     20D 9508      RET
+pop_xgsetF000:
+     20E 9149      LD	R20,Y+
+     20F 9159      LD	R21,Y+
+     210 9169      LD	R22,Y+
+     211 9179      LD	R23,Y+
+     212 9508      RET

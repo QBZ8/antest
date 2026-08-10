@@ -1,0 +1,259 @@
+/************************************************************************
+;copyright    :shenzhen coolwaveasia
+;filename     :main.c
+;mcu          :w78e52b
+;crystal      :33.177MHZ
+;cycle        :0.36us
+;RF           :NRF24L01
+;rf crystal   :16MHZ
+;RF rate      :1M
+;startdate    :2008.10.7
+;enddate      :
+;writeby      :dengyihong
+;revision     :B
+;describe     :NRF24L01  LED测试
+;notice       :
+;complier     :Keil C
+;***********************************************************************
+;                            --------------------
+;                     P1.0  |1                 40|  VCC                  
+;                     P1.1  |2                 39|  P0.0    
+; RF_SCK  ----        P1.2  |3                 38|  P0.1   
+; RF_MOSI ----        P1.3  |4                 37|  P0.2       
+;                     P1.4  |5                 36|  P0.3    
+; RF_CSN  ----        P1.5  |6                 35|  P0.4     
+;                     P1.6  |7                 34|  P0.5     
+;                     P1.7  |8                 33|  P0.6      
+;                  RST/Vpd  |9                 32|  P0.7     
+;                 RXD/P3.0  |10                31|  /EA/Vpp
+;                 TXD/P3.1  |11                30|  ALE/PROG
+; RF_IRQ  ----  /INT0/P3.2  |12                29|  /PSEN
+; RF_MISO ----  /INT1/P3.3  |13                28|  P2.7     ----  KEY4 (send)
+;                  T0/P3.4  |14                27|  P2.6     ----  KEY3 (+)
+; RF_CE   ----     T1/P3.5  |15                26|  P2.5     ----  KEY2 (-)
+;                 /WR/P3.6  |16                25|  P2.4     ----  KEY1 (mode)
+;                 /RD/P3.7  |17                24|  P2.3
+;                    XTAL2  |18                23|  P2.2     
+;                    XTAL1  |19                22|  P2.1     ----  green_led
+;                      VSS  |20                21|  P2.0     ----  red_led
+;                            --------------------
+;                                   W78E52B
+;***********************************************************************/
+
+#include "..\header\main.h"
+#include "..\header\maindef.h"
+
+
+bit Rf_Rec_Data = 0;	// rf 接收到数据标志位
+
+
+U8 Rf_Rec_Buf[TX_PLOAD_WIDTH] = {0};
+U8 Rf_Send_Buf[TX_PLOAD_WIDTH] = {RF_DOWN_CMD,0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88,0x99,
+									0xaa,0xbb,0xcc,0xdd,0xee,0xff,0xa5,0xa5,0x5a};
+
+// 主程序入口
+void main(void)
+{
+	EA = 0;
+	delay_2us(5000);
+	ini_mcu();
+	GREEN_LED = 0;
+	RED_LED = 0;
+	delay_2us(50000);
+
+	//ini_rf();
+	nRF24L01ioConfig();
+	RX_Mode();
+	delay_2us(5000);
+	GREEN_LED = 1;
+	RED_LED = 1;
+
+	while(1)
+	{
+		
+		key_scan();
+		dispose_key_info();
+		if(IE0)					// 是否接收到RF数据(查询方式接收)
+		{
+			IE0 = 0;
+			rec_rf_data();			
+			dispose_rf_data();	// 处理接收到的RF数据
+		}       
+	}
+}
+
+/***********************************************************
+name:		ini_mcu
+input:		none
+output:		none
+describe:	初始化MCU
+notice:
+creat date: 2008-7-24
+creator:	dengyihong
+************************************************************/
+void ini_mcu(void)
+{
+    PSW = 0x00;
+ 	PCON = 0x00;
+ 	IP = 0x00;             // 设置中断优先级
+	IE = 0x00;             //  EA   -    ET2  ES   ET1  EX1  ET0  EX0 , disable all interrupt
+
+    //ini_int1();
+	ini_int0();
+}
+
+/**********************************************************
+name:		ini_int0
+input:		none
+output:		none
+describe:	设置 int0中断方式
+notice:
+creat date:	2008-7-24
+creator:	dengyihong
+**********************************************************/
+void ini_int0(void)
+{
+    IT0 = 1;				// 下降沿中断
+    IE0 = 0;
+	EX0 = 0;				//disable int1 中断
+}
+
+/**********************************************************
+name:		ini_int1
+input:		none
+output:		none
+describe:	设置 int1中断方式
+notice:
+creat date:	2008-7-24
+creator:	dengyihong
+**********************************************************/
+void ini_int1(void)
+{
+    IT1 = 1;				// 下降沿中断
+    IE1 = 0;
+	EX1 = 0;				//disable int1 中断
+}
+
+
+/**********************************************************
+name:		dispose_key_info
+input:		none
+output:		none
+describe:	处理按键信息
+notice:
+creat date:	2008-7-24
+creator:	dengyihong
+**********************************************************/
+void dispose_key_info(void)
+{
+    U8 i = 0;
+
+    if(Key_Msg)				// 是否有按键消息
+    {
+        Key_Msg = 0;
+        switch(Key_Value)
+        {
+            case MODE_KEY:
+				RED_LED = 0;
+				GREEN_LED = 0;
+				while(1)
+				{
+					TX_Mode();
+					key_scan();
+					delay_2us(2000);
+					if(Key_Msg)
+					{
+						Key_Msg = 0;
+						//delay_2us(5000);
+						RX_Mode();
+						break;
+					}				
+				}
+				RED_LED = 1;
+				GREEN_LED = 1;
+			break;
+
+			case ADD_KEY:
+			case DEC_KEY:
+            case SEND_KEY:		// 处理发送按键
+				RED_LED = 0;
+				TX_Mode();
+				// 发送测试数据
+				 delay_2us(5000);
+				 RED_LED = 1;
+				 RX_Mode();
+            break;
+
+            default:
+            break;
+        }
+    }
+}
+
+
+/**********************************************************
+name:		dispose_rf_data
+input:		none
+output:		none
+describe:	处理接收到的RF数据
+notice:
+creat date:	2008-7-24
+creator:	dengyihong
+**********************************************************/
+void dispose_rf_data(void)
+{
+    U8 i = 0;
+	U8 rf_data_err = 1; 
+
+	for(i=0; i<TX_PLOAD_WIDTH; i++)
+	{
+		if(Rf_Rec_Buf[i] != Rf_Send_Buf[i])			// 是否为主机发送的数据
+		{
+			rf_data_err = 0;
+			break;	
+		}
+	}
+
+	if(rf_data_err)
+	{
+		GREEN_LED = 0;
+	}
+	else
+	{
+		RED_LED = 0;
+	}
+	//RX_Mode();
+	delay_2us(5000);
+	GREEN_LED = 1;
+	RED_LED = 1;
+}
+
+
+/**********************************************************
+name:		dispose_timer0
+input:		none
+output:		none
+describe:	处理定时器0
+notice:	
+creat date:	2008-7-24
+creator:	dengyihong
+**********************************************************/
+void dispose_timer0(void)
+{
+    
+}
+
+
+/**********************************************************
+name:		delay_2us
+input:		delay_cnt
+output:		none
+describe:	delay x*2us
+notice:
+creat date:	2008-7-24
+creator:	dengyihong
+**********************************************************/
+void delay_2us(U16 delay_cnt)
+{
+    while(delay_cnt--);
+}

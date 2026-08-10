@@ -1,0 +1,1401 @@
+                        .module main.c
+                        .area data(ram, con, rel)
+ 0000           _Buffer::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0002                   .blkb 2
+                        .area idata
+ 0002 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0004                   .blkb 2
+                        .area idata
+ 0004 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0006                   .blkb 2
+                        .area idata
+ 0006 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0008                   .blkb 2
+                        .area idata
+ 0008 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 000A                   .blkb 2
+                        .area idata
+ 000A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 000C                   .blkb 2
+                        .area idata
+ 000C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 000E                   .blkb 2
+                        .area idata
+ 000E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0010                   .blkb 2
+                        .area idata
+ 0010 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0012                   .blkb 2
+                        .area idata
+ 0012 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0014                   .blkb 2
+                        .area idata
+ 0014 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0016                   .blkb 2
+                        .area idata
+ 0016 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0018                   .blkb 2
+                        .area idata
+ 0018 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 001A                   .blkb 2
+                        .area idata
+ 001A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 001C                   .blkb 2
+                        .area idata
+ 001C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 001E                   .blkb 2
+                        .area idata
+ 001E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0020                   .blkb 2
+                        .area idata
+ 0020 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0022                   .blkb 2
+                        .area idata
+ 0022 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0024                   .blkb 2
+                        .area idata
+ 0024 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0026                   .blkb 2
+                        .area idata
+ 0026 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0028                   .blkb 2
+                        .area idata
+ 0028 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 002A                   .blkb 2
+                        .area idata
+ 002A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 002C                   .blkb 2
+                        .area idata
+ 002C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 002E                   .blkb 2
+                        .area idata
+ 002E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0030                   .blkb 2
+                        .area idata
+ 0030 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0032                   .blkb 2
+                        .area idata
+ 0032 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0034                   .blkb 2
+                        .area idata
+ 0034 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0036                   .blkb 2
+                        .area idata
+ 0036 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0038                   .blkb 2
+                        .area idata
+ 0038 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 003A                   .blkb 2
+                        .area idata
+ 003A 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 003C                   .blkb 2
+                        .area idata
+ 003C 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 003E                   .blkb 2
+                        .area idata
+ 003E 0000              .byte 0,0
+                        .area data(ram, con, rel)
+ 0040                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 0040                   .dbsym e Buffer _Buffer A[64:64]c
+ 0040           _TX_ADDRESS::
+ 0040                   .blkb 2
+                        .area idata
+ 0040 3443              .byte 52,'C
+                        .area data(ram, con, rel)
+ 0042                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 0042                   .blkb 2
+                        .area idata
+ 0042 1010              .byte 16,16
+                        .area data(ram, con, rel)
+ 0044                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 0044                   .blkb 1
+                        .area idata
+ 0044 01                .byte 1
+                        .area data(ram, con, rel)
+ 0045                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 0045                   .dbsym e TX_ADDRESS _TX_ADDRESS A[5:5]c
+ 0045           _accept_flag::
+ 0045                   .blkb 1
+                        .area idata
+ 0045 00                .byte 0
+                        .area data(ram, con, rel)
+ 0046                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 0046                   .dbsym e accept_flag _accept_flag c
+ 0046           _send_flag::
+ 0046                   .blkb 1
+                        .area idata
+ 0046 00                .byte 0
+                        .area data(ram, con, rel)
+ 0047                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 0047                   .dbsym e send_flag _send_flag c
+ 0047           _accept_time::
+ 0047                   .blkb 2
+                        .area idata
+ 0047 0000              .word 0
+                        .area data(ram, con, rel)
+ 0049                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 0049                   .dbsym e accept_time _accept_time i
+                        .area text(rom, con, rel)
+ 0000                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 0000                   .dbfunc e main _main fV
+ 0000           ;         Get_SO -> R20
+                        .even
+ 0000           _main::
+ 0000 2197              sbiw R28,1
+ 0002                   .dbline -1
+ 0002                   .dbline 149
+ 0002           ; //ICC-AVR application builder : 2006-02-12 14:00:00
+ 0002           ; // Target : ATmega48
+ 0002           ; // Crystal: 8.000Mhz
+ 0002           ; // Author:  jackyan
+ 0002           ; // Oled Type : white
+ 0002           ; //#define fosc 8000000
+ 0002           ; //#define baud 9600
+ 0002           ; #include "iom48v.h"
+ 0002           ; #include "macros.h"
+ 0002           ; #include "defs.h"
+ 0002           ; /*-----------------------------------------------------------------------------
+ 0002           ;    Global Defines
+ 0002           ; ------------------------------------------------------------------------------*/
+ 0002           ; unsigned char   key_debug;
+ 0002           ; unsigned char         Buffer[]={
+ 0002           ; 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+ 0002           ; 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+ 0002           ; 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+ 0002           ; 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+ 0002           ; };
+ 0002           ; #define TX_ADR_WIDTH    5   // 5 bytes TX(RX) address width
+ 0002           ; #define TX_PLOAD_WIDTH  20  // 16 bytes TX payload
+ 0002           ; unsigned char TX_ADDRESS[TX_ADR_WIDTH]  = {0x34,0x43,0x10,0x10,0x01}; // Define a static TX address
+ 0002           ; void init_CPU (void);
+ 0002           ; void delayms(unsigned short   dly);//当dly=1时，延时的时间是1ms  4MHz晶震
+ 0002           ; void INIT_io(void);
+ 0002           ; void RX_Mode(void);
+ 0002           ; void TX_Mode(void);
+ 0002           ; void delay(void);
+ 0002           ; unsigned char SPI_Write_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes);
+ 0002           ; unsigned char SPI_Read_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes);
+ 0002           ; unsigned char SPI_RW_Reg(unsigned char reg, unsigned char value);
+ 0002           ; unsigned char SPI_Read(unsigned char reg);
+ 0002           ; void clear_buf(unsigned char  *ptr,unsigned char number);
+ 0002           ; unsigned char accept_flag=0;
+ 0002           ; unsigned char send_flag=0;
+ 0002           ; unsigned int accept_time=0;
+ 0002           ; void nrf24l01init(void);
+ 0002           ; //****************************************************************//
+ 0002           ; // SPI(nRF24L01) commands
+ 0002           ; #define READ_REG        0x00  // Define read command to register
+ 0002           ; #define WRITE_REG       0x20  // Define write command to register
+ 0002           ; #define RD_RX_PLOAD     0x61  // Define RX payload register address
+ 0002           ; #define WR_TX_PLOAD     0xA0  // Define TX payload register address
+ 0002           ; #define FLUSH_TX        0xE1  // Define flush TX register command
+ 0002           ; #define FLUSH_RX        0xE2  // Define flush RX register command
+ 0002           ; #define REUSE_TX_PL     0xE3  // Define reuse TX payload register command
+ 0002           ; //#define NOP             0xFF  // Define No Operation, might be used to read status register
+ 0002           ; //***************************************************//
+ 0002           ; // SPI(nRF24L01) registers(addresses)
+ 0002           ; #define CONFIG          0x00  // 'Config' register address
+ 0002           ; #define EN_AA           0x01  // 'Enable Auto Acknowledgment' register address
+ 0002           ; #define EN_RXADDR       0x02  // 'Enabled RX addresses' register address
+ 0002           ; #define SETUP_AW        0x03  // 'Setup address width' register address
+ 0002           ; #define SETUP_RETR      0x04  // 'Setup Auto. Retrans' register address
+ 0002           ; #define RF_CH           0x05  // 'RF channel' register address
+ 0002           ; #define RF_SETUP        0x06  // 'RF setup' register address
+ 0002           ; #define STATUS          0x07  // 'Status' register address
+ 0002           ; #define OBSERVE_TX      0x08  // 'Observe TX' register address
+ 0002           ; #define CD              0x09  // 'Carrier Detect' register address
+ 0002           ; #define RX_ADDR_P0      0x0A  // 'RX address pipe0' register address
+ 0002           ; #define RX_ADDR_P1      0x0B  // 'RX address pipe1' register address
+ 0002           ; #define RX_ADDR_P2      0x0C  // 'RX address pipe2' register address
+ 0002           ; #define RX_ADDR_P3      0x0D  // 'RX address pipe3' register address
+ 0002           ; #define RX_ADDR_P4      0x0E  // 'RX address pipe4' register address
+ 0002           ; #define RX_ADDR_P5      0x0F  // 'RX address pipe5' register address
+ 0002           ; #define TX_ADDR         0x10  // 'TX address' register address
+ 0002           ; #define RX_PW_P0        0x11  // 'RX payload width, pipe0' register address
+ 0002           ; #define RX_PW_P1        0x12  // 'RX payload width, pipe1' register address
+ 0002           ; #define RX_PW_P2        0x13  // 'RX payload width, pipe2' register address
+ 0002           ; #define RX_PW_P3        0x14  // 'RX payload width, pipe3' register address
+ 0002           ; #define RX_PW_P4        0x15  // 'RX payload width, pipe4' register address
+ 0002           ; #define RX_PW_P5        0x16  // 'RX payload width, pipe5' register address
+ 0002           ; #define FIFO_STATUS     0x17  // 'FIFO Status Register' register address
+ 0002           ; #define MAX_RT        0x10  // Max #of TX retrans interrupt
+ 0002           ; #define TX_DS         0x20  // TX data sent interrupt
+ 0002           ; #define RX_DR         0x40  // RX data received
+ 0002           ; //-----------------------------------------------------------------------------
+ 0002           ; //------------------------------------------------------
+ 0002           ; unsigned char t20ms;
+ 0002           ; #define BIT(x)                   (1 << (x))
+ 0002           ; #define SETBIT(x, y)             (x |= y)
+ 0002           ; #define CLEARBIT(x, y)           (x &= ~y)
+ 0002           ; #define CHECKBIT(x, y)           (x & y)
+ 0002           ; #define BIT7 0x80
+ 0002           ; #define BIT6 0x40
+ 0002           ; #define BIT5 0x20
+ 0002           ; #define BIT4 0x10
+ 0002           ; #define BIT3 0x08
+ 0002           ; #define BIT2 0x04
+ 0002           ; #define BIT1 0x02
+ 0002           ; #define BIT0 0x01
+ 0002           ; #define nRF24L01_CSN        BIT6
+ 0002           ; #define nRF24L01_SCK        BIT7
+ 0002           ; #define nRF24L01_MOSI       BIT0
+ 0002           ; #define nRF24L01_CE         BIT5   
+ 0002           ; #define nRF24L01_MISO             BIT1
+ 0002           ; #define nRF24L01_IRQ              BIT2
+ 0002           ; #define nRF24L01_CSNH       SETBIT(PORTD, nRF24L01_CSN)     
+ 0002           ; #define nRF24L01_CSNL       CLEARBIT(PORTD, nRF24L01_CSN)   
+ 0002           ; 
+ 0002           ; #define nRF24L01_CSN_DIR    SETBIT(DDRD, nRF24L01_CSN)  //OUTPUT
+ 0002           ; 
+ 0002           ; #define nRF24L01_SCKH       SETBIT(PORTD,nRF24L01_SCK)      
+ 0002           ; #define nRF24L01_SCKL       CLEARBIT(PORTD,nRF24L01_SCK)    
+ 0002           ; #define nRF24L01_SCK_DIR   SETBIT(DDRD,nRF24L01_SCK)  //OUTPUT
+ 0002           ;  
+ 0002           ; #define nRF24L01_MOSIH      SETBIT(PORTB,nRF24L01_MOSI)     
+ 0002           ; #define nRF24L01_MOSIL            CLEARBIT(PORTB,nRF24L01_MOSI)   
+ 0002           ; #define nRF24L01_MOSI_DIR   SETBIT(DDRB,nRF24L01_MOSI)
+ 0002           ; 
+ 0002           ; #define nRF24L01_CEH        SETBIT(PORTD,nRF24L01_CE)  //OUTPUT   
+ 0002           ; #define nRF24L01_CEL        CLEARBIT(PORTD,nRF24L01_CE)
+ 0002           ; #define nRF24L01_CE_DIR     SETBIT(DDRD,nRF24L01_CE)
+ 0002           ; 
+ 0002           ; #define nRF24L01_IRQ_DIR     CLEARBIT(DDRB,nRF24L01_IRQ) //INPUT
+ 0002           ; 
+ 0002           ; #define nRF24L01_MISO_DIR    CLEARBIT(DDRB,nRF24L01_MISO) //INPUT
+ 0002           ; #define key1  BIT5
+ 0002           ; #define key2  BIT6
+ 0002           ; #define key3  BIT7
+ 0002           ; #define key4  BIT0
+ 0002           ; #define key5  BIT1
+ 0002           ; #define key6  BIT2
+ 0002           ; #define       bit20ms                                         BIT0
+ 0002           ; unsigned char flag;
+ 0002           ; unsigned char key1_pulse;
+ 0002           ; unsigned char key2_pulse;
+ 0002           ; unsigned char key3_pulse;
+ 0002           ; unsigned char key4_pulse;
+ 0002           ; unsigned char key5_pulse;
+ 0002           ; unsigned char key6_pulse;
+ 0002           ; unsigned char key1_flag;
+ 0002           ; unsigned char key2_flag;
+ 0002           ; unsigned char key3_flag;
+ 0002           ; unsigned char key4_flag;
+ 0002           ; unsigned char key5_flag;
+ 0002           ; unsigned char key6_flag;
+ 0002           ; unsigned char send_flag;
+ 0002           ; unsigned char key1_time;
+ 0002           ; unsigned char key2_time;
+ 0002           ; unsigned char key3_time;
+ 0002           ; unsigned char key4_time;
+ 0002           ; unsigned char key5_time;
+ 0002           ; unsigned char key6_time;
+ 0002           ; 
+ 0002           ; //-----------------------------------------------------------------------------
+ 0002           ; void main(void)
+ 0002           ; {
+ 0002                   .dbline 150
+ 0002           ;       unsigned char Get_SO=0;
+ 0002 4427              clr R20
+ 0004                   .dbline 151
+ 0004           ;     CLI();                   /* global interrupt disable */
+ 0004 F894              cli
+ 0006                   .dbline 152
+ 0006           ;     init_CPU ();
+ 0006 67D0              rcall _init_CPU
+ 0008                   .dbline 153
+ 0008           ;     delayms(100);     //延时10ms*10=100ms
+ 0008 04E6              ldi R16,100
+ 000A 10E0              ldi R17,0
+ 000C 8CD0              rcall _delayms
+ 000E                   .dbline 154
+ 000E           ;     delayms(100);     //延时10ms*10=100ms
+ 000E 04E6              ldi R16,100
+ 0010 10E0              ldi R17,0
+ 0012 89D0              rcall _delayms
+ 0014                   .dbline 155
+ 0014           ;       RX_Mode();
+ 0014 00D1              rcall _RX_Mode
+ 0016                   .dbline 156
+ 0016           ;       send_flag=0;
+ 0016 2224              clr R2
+ 0018 20924600          sts _send_flag,R2
+ 001C 52C0              rjmp L3
+ 001E           L2:
+ 001E                   .dbline 158
+ 001E           ;       while(1)
+ 001E           ;       {               
+ 001E                   .dbline 160
+ 001E           ;               //      if(!(PINB& 0x01))
+ 001E           ;               WDR();
+ 001E A895              wdr
+ 0020                   .dbline 161
+ 0020           ;               if(!(PINB& nRF24L01_IRQ))
+ 0020 1A99              sbic 0x3,2
+ 0022 22C0              rjmp L5
+ 0024                   .dbline 162
+ 0024           ;               {//nRF24L01 接收数据
+ 0024                   .dbline 163
+ 0024           ;                       key_debug=SPI_Read(STATUS);                     // read register STATUS's value
+ 0024 07E0              ldi R16,7
+ 0026 B7D0              rcall _SPI_Read
+ 0028 00931400          sts _key_debug,R16
+ 002C                   .dbline 164
+ 002C           ;                       if(key_debug&RX_DR)                                     // if renRF24L01_CEive data ready (RX_DR) interrupt
+ 002C 06FF              sbrs R16,6
+ 002E 06C0              rjmp L7
+ 0030                   .dbline 165
+ 0030           ;                               SPI_Read_Buf(RD_RX_PLOAD,Buffer,TX_PLOAD_WIDTH);// read renRF24L01_CEive payload from RX_FIFO buffer
+ 0030 84E1              ldi R24,20
+ 0032 8883              std y+0,R24
+ 0034 20E0              ldi R18,<_Buffer
+ 0036 30E0              ldi R19,>_Buffer
+ 0038 01E6              ldi R16,97
+ 003A BBD0              rcall _SPI_Read_Buf
+ 003C           L7:
+ 003C                   .dbline 166
+ 003C           ;                       if(key_debug&MAX_RT) SPI_RW_Reg(FLUSH_TX,0);
+ 003C 20901400          lds R2,_key_debug
+ 0040 24FE              sbrs R2,4
+ 0042 03C0              rjmp L9
+ 0044                   .dbline 166
+ 0044 2227              clr R18
+ 0046 01EE              ldi R16,225
+ 0048 97D0              rcall _SPI_RW_Reg
+ 004A           L9:
+ 004A                   .dbline 167
+ 004A           ;                       SPI_RW_Reg(WRITE_REG+STATUS,0xff);// clear RX_DR or TX_DS or MAX_RT interrupt flag
+ 004A 2FEF              ldi R18,255
+ 004C 07E2              ldi R16,39
+ 004E 94D0              rcall _SPI_RW_Reg
+ 0050                   .dbline 168
+ 0050           ;                       RX_Mode();
+ 0050 E2D0              rcall _RX_Mode
+ 0052                   .dbline 169
+ 0052           ;                       if((Buffer[0]==80)&&(Buffer[1]==02))//data accept
+ 0052 80910000          lds R24,_Buffer
+ 0056 8035              cpi R24,80
+ 0058 39F4              brne L11
+ 005A 80910100          lds R24,_Buffer+1
+ 005E 8230              cpi R24,2
+ 0060 19F4              brne L11
+ 0062                   .dbline 170
+ 0062           ;                       {
+ 0062                   .dbline 171
+ 0062           ;                               accept_flag=1;
+ 0062 81E0              ldi R24,1
+ 0064 80934500          sts _accept_flag,R24
+ 0068                   .dbline 175
+ 0068           ;               //              PORTB = 0x80;
+ 0068           ;               //              delayms(5000);  //延时10ms*10=100ms
+ 0068           ;               //              PORTB = 0x00;
+ 0068           ;                       }
+ 0068           L11:
+ 0068                   .dbline 176
+ 0068           ;               }
+ 0068           L5:
+ 0068                   .dbline 177
+ 0068           ;               if(send_flag==1)
+ 0068 80914600          lds R24,_send_flag
+ 006C 8130              cpi R24,1
+ 006E D1F4              brne L14
+ 0070                   .dbline 178
+ 0070           ;               {
+ 0070                   .dbline 179
+ 0070           ;                  accept_time++;
+ 0070 80914700          lds R24,_accept_time
+ 0074 90914800          lds R25,_accept_time+1
+ 0078 0196              adiw R24,1
+ 007A 90934800          sts _accept_time+1,R25
+ 007E 80934700          sts _accept_time,R24
+ 0082                   .dbline 181
+ 0082           ;       //         PORTB = 0x00;
+ 0082           ;                  if(accept_time>1000)
+ 0082 88EE              ldi R24,1000
+ 0084 93E0              ldi R25,3
+ 0086 20904700          lds R2,_accept_time
+ 008A 30904800          lds R3,_accept_time+1
+ 008E 8215              cp R24,R2
+ 0090 9305              cpc R25,R3
+ 0092 40F4              brsh L16
+ 0094                   .dbline 182
+ 0094           ;                  {
+ 0094                   .dbline 183
+ 0094           ;                        send_flag=0;
+ 0094 2224              clr R2
+ 0096 20924600          sts _send_flag,R2
+ 009A                   .dbline 184
+ 009A           ;                        accept_time=0;
+ 009A 3324              clr R3
+ 009C 30924800          sts _accept_time+1,R3
+ 00A0 20924700          sts _accept_time,R2
+ 00A4                   .dbline 185
+ 00A4           ;                  }
+ 00A4           L16:
+ 00A4                   .dbline 186
+ 00A4           ;               }
+ 00A4           L14:
+ 00A4                   .dbline 187
+ 00A4           ;               if(accept_flag==1)
+ 00A4 80914500          lds R24,_accept_flag
+ 00A8 8130              cpi R24,1
+ 00AA 59F4              brne L18
+ 00AC                   .dbline 188
+ 00AC           ;               {
+ 00AC                   .dbline 189
+ 00AC           ;                   accept_flag=0;
+ 00AC 2224              clr R2
+ 00AE 20924500          sts _accept_flag,R2
+ 00B2                   .dbline 190
+ 00B2           ;               PORTB = 0x80;
+ 00B2 80E8              ldi R24,128
+ 00B4 85B9              out 0x5,R24
+ 00B6                   .dbline 191
+ 00B6           ;                   delayms(1000);      //延时10ms*10=100ms
+ 00B6 08EE              ldi R16,1000
+ 00B8 13E0              ldi R17,3
+ 00BA 35D0              rcall _delayms
+ 00BC                   .dbline 192
+ 00BC           ;                   PORTB = 0x00;
+ 00BC 2224              clr R2
+ 00BE 25B8              out 0x5,R2
+ 00C0                   .dbline 201
+ 00C0           ; //                    nrf24l01init();
+ 00C0           ; //                    nRF24L01_CEL;
+ 00C0           ; //                    delay();
+ 00C0           ; //                    nRF24L01_CSNH;                  // Spi disable
+ 00C0           ; //                    delay();
+ 00C0           ; //                    nRF24L01_SCKL;  
+ 00C0           ; //                    delay();
+ 00C0           ; //                    Buffer[1]=0;
+ 00C0           ;                       RX_Mode();
+ 00C0 AAD0              rcall _RX_Mode
+ 00C2                   .dbline 203
+ 00C2           ;       //              delayms(1000);  //延时10ms*10=100ms
+ 00C2           ;               }
+ 00C2           L18:
+ 00C2                   .dbline 204
+ 00C2           L3:
+ 00C2                   .dbline 157
+ 00C2 ADCF              rjmp L2
+ 00C4           X0:
+ 00C4                   .dbline -2
+ 00C4           L1:
+ 00C4 2196              adiw R28,1
+ 00C6                   .dbline 0 ; func end
+ 00C6 0895              ret
+ 00C8                   .dbsym r Get_SO 20 c
+ 00C8                   .dbend
+ 00C8                   .dbfunc e nrf24l01init _nrf24l01init fV
+                        .even
+ 00C8           _nrf24l01init::
+ 00C8                   .dbline -1
+ 00C8                   .dbline 209
+ 00C8           ;       }
+ 00C8           ; 
+ 00C8           ; 
+ 00C8           ; }
+ 00C8           ; void nrf24l01init(void)
+ 00C8           ; {
+ 00C8                   .dbline 210
+ 00C8           ;        nRF24L01_IRQ_DIR;
+ 00C8 2298              cbi 0x4,2
+ 00CA                   .dbline 211
+ 00CA           ;        nRF24L01_MISO_DIR;
+ 00CA 2198              cbi 0x4,1
+ 00CC                   .dbline 212
+ 00CC           ;        nRF24L01_CE_DIR;
+ 00CC 559A              sbi 0xa,5
+ 00CE                   .dbline 213
+ 00CE           ;        nRF24L01_SCK_DIR;
+ 00CE 579A              sbi 0xa,7
+ 00D0                   .dbline 214
+ 00D0           ;        nRF24L01_CSN_DIR;
+ 00D0 569A              sbi 0xa,6
+ 00D2                   .dbline 215
+ 00D2           ;        nRF24L01_MOSI_DIR;
+ 00D2 209A              sbi 0x4,0
+ 00D4                   .dbline -2
+ 00D4           L20:
+ 00D4                   .dbline 0 ; func end
+ 00D4 0895              ret
+ 00D6                   .dbend
+ 00D6                   .dbfunc e init_CPU _init_CPU fV
+                        .even
+ 00D6           _init_CPU::
+ 00D6                   .dbline -1
+ 00D6                   .dbline 222
+ 00D6           ; }
+ 00D6           ; /*-----------------------------------------------------------------------------
+ 00D6           ;    Module:   init_CPU
+ 00D6           ;    Function: Initialization of CPU
+ 00D6           ; ------------------------------------------------------------------------------*/
+ 00D6           ; void init_CPU (void)
+ 00D6           ; {
+ 00D6                   .dbline 223
+ 00D6           ;       MCUCR = 0x00;   // 
+ 00D6 2224              clr R2
+ 00D8 25BE              out 0x35,R2
+ 00DA                   .dbline 224
+ 00DA           ;       EICRA = 0x00; //extended ext ints
+ 00DA 20926900          sts 105,R2
+ 00DE                   .dbline 225
+ 00DE           ;     EIMSK = 0x00;
+ 00DE 2DBA              out 0x1d,R2
+ 00E0                   .dbline 227
+ 00E0           ;        
+ 00E0           ;       TIMSK0 = 0x01; //timer 0 interrupt sources
+ 00E0 81E0              ldi R24,1
+ 00E2 80936E00          sts 110,R24
+ 00E6                   .dbline 228
+ 00E6           ;       TIMSK1 = 0x00; //timer 1 interrupt sources
+ 00E6 20926F00          sts 111,R2
+ 00EA                   .dbline 229
+ 00EA           ;       TIMSK2 = 0x00; //timer 2 interrupt sources
+ 00EA 20927000          sts 112,R2
+ 00EE                   .dbline 230
+ 00EE           ;        CLI(); //disable all interrupts
+ 00EE F894              cli
+ 00F0                   .dbline 231
+ 00F0           ;        NOP();
+ 00F0 0000              nop
+ 00F2                   .dbline 232
+ 00F2           ;       PORTB = 0x01;
+ 00F2 85B9              out 0x5,R24
+ 00F4                   .dbline 233
+ 00F4           ;       DDRB  = 0xf3;
+ 00F4 83EF              ldi R24,243
+ 00F6 84B9              out 0x4,R24
+ 00F8                   .dbline 234
+ 00F8           ;       PORTD = 0x80;
+ 00F8 80E8              ldi R24,128
+ 00FA 8BB9              out 0xb,R24
+ 00FC                   .dbline 235
+ 00FC           ;       DDRD  = 0xff;
+ 00FC 8FEF              ldi R24,255
+ 00FE 8AB9              out 0xa,R24
+ 0100                   .dbline 236
+ 0100           ;       PORTC = 0x80;
+ 0100 80E8              ldi R24,128
+ 0102 88B9              out 0x8,R24
+ 0104                   .dbline 237
+ 0104           ;       DDRC  = 0x78;
+ 0104 88E7              ldi R24,120
+ 0106 87B9              out 0x7,R24
+ 0108                   .dbline 238
+ 0108           ;       nrf24l01init();
+ 0108 DFDF              rcall _nrf24l01init
+ 010A                   .dbline 239
+ 010A           ;     nRF24L01_CEL;
+ 010A 5D98              cbi 0xb,5
+ 010C                   .dbline 240
+ 010C           ;       delay();
+ 010C 05D0              rcall _delay
+ 010E                   .dbline 241
+ 010E           ;       nRF24L01_CSNH;                  // Spi disable
+ 010E 5E9A              sbi 0xb,6
+ 0110                   .dbline 242
+ 0110           ;       delay();
+ 0110 03D0              rcall _delay
+ 0112                   .dbline 243
+ 0112           ;       nRF24L01_SCKL;  
+ 0112 5F98              cbi 0xb,7
+ 0114                   .dbline 244
+ 0114           ;       delay();
+ 0114 01D0              rcall _delay
+ 0116                   .dbline -2
+ 0116           L21:
+ 0116                   .dbline 0 ; func end
+ 0116 0895              ret
+ 0118                   .dbend
+ 0118                   .dbfunc e delay _delay fV
+                        .even
+ 0118           _delay::
+ 0118                   .dbline -1
+ 0118                   .dbline 247
+ 0118           ; }
+ 0118           ; void delay(void)//
+ 0118           ; {
+ 0118                   .dbline 248
+ 0118           ;       NOP();
+ 0118 0000              nop
+ 011A                   .dbline 249
+ 011A           ;       NOP();
+ 011A 0000              nop
+ 011C                   .dbline 250
+ 011C           ;       NOP();
+ 011C 0000              nop
+ 011E                   .dbline 251
+ 011E           ;       NOP();
+ 011E 0000              nop
+ 0120                   .dbline 252
+ 0120           ;       NOP();
+ 0120 0000              nop
+ 0122                   .dbline 253
+ 0122           ;       NOP();
+ 0122 0000              nop
+ 0124                   .dbline -2
+ 0124           L22:
+ 0124                   .dbline 0 ; func end
+ 0124 0895              ret
+ 0126                   .dbend
+ 0126                   .dbfunc e delayms _delayms fV
+ 0126           ;            dly -> R16,R17
+                        .even
+ 0126           _delayms::
+ 0126                   .dbline -1
+ 0126                   .dbline 256
+ 0126           ; }
+ 0126           ; void delayms(unsigned short   dly)//
+ 0126           ; {
+ 0126                   .dbline 257
+ 0126 02C0              rjmp L27
+ 0128           L24:
+ 0128                   .dbline 257
+ 0128           L25:
+ 0128                   .dbline 257
+ 0128 0150              subi R16,1
+ 012A 1040              sbci R17,0
+ 012C           L27:
+ 012C                   .dbline 257
+ 012C           ;       for(;dly>0;dly--) ;
+ 012C 0030              cpi R16,0
+ 012E 0107              cpc R16,R17
+ 0130 D9F7              brne L24
+ 0132           X1:
+ 0132                   .dbline -2
+ 0132           L23:
+ 0132                   .dbline 0 ; func end
+ 0132 0895              ret
+ 0134                   .dbsym r dly 16 s
+ 0134                   .dbend
+ 0134                   .dbfunc e clear_buf _clear_buf fV
+ 0134           ;         number -> R18
+ 0134           ;            ptr -> R16,R17
+                        .even
+ 0134           _clear_buf::
+ 0134                   .dbline -1
+ 0134                   .dbline 261
+ 0134           ; }
+ 0134           ; 
+ 0134           ; void clear_buf(unsigned char  *ptr,unsigned char number)//清零buffer,指定字节个数
+ 0134           ; {
+ 0134                   .dbline 262
+ 0134 05C0              rjmp L32
+ 0136           L29:
+ 0136                   .dbline 262
+ 0136 2224              clr R2
+ 0138 F801              movw R30,R16
+ 013A 2192              st Z+,R2
+ 013C 8F01              movw R16,R30
+ 013E           L30:
+ 013E                   .dbline 262
+ 013E 2A95              dec R18
+ 0140           L32:
+ 0140                   .dbline 262
+ 0140           ;       for (;number>0;number--) *ptr++=0;
+ 0140 2224              clr R2
+ 0142 2216              cp R2,R18
+ 0144 C0F3              brlo L29
+ 0146                   .dbline -2
+ 0146           L28:
+ 0146                   .dbline 0 ; func end
+ 0146 0895              ret
+ 0148                   .dbsym r number 18 c
+ 0148                   .dbsym r ptr 16 pc
+ 0148                   .dbend
+ 0148                   .dbfunc e SPI_RW _SPI_RW fc
+ 0148           ;        bit_ctr -> R20
+ 0148           ;           byte -> R22
+                        .even
+ 0148           _SPI_RW::
+ 0148 00D0              rcall push_gset2
+ 014A 602F              mov R22,R16
+ 014C                   .dbline -1
+ 014C                   .dbline 273
+ 014C           ; }
+ 014C           ; //------------------------------------------------------
+ 014C           ; /**************************************************
+ 014C           ; Function: SPI_RW();
+ 014C           ; 
+ 014C           ; Description:
+ 014C           ;   Writes one byte to nRF24L01, and return the byte read
+ 014C           ;   from nRF24L01 during write, according to SPI protocol  */
+ 014C           ; /**************************************************/
+ 014C           ; unsigned char SPI_RW(unsigned char byte)
+ 014C           ; {
+ 014C                   .dbline 275
+ 014C           ;       unsigned char  bit_ctr; 
+ 014C           ;       for(bit_ctr=0;bit_ctr<8;bit_ctr++)      // output 8-bit
+ 014C 4427              clr R20
+ 014E 0FC0              rjmp L37
+ 0150           L34:
+ 0150                   .dbline 276
+ 0150           ;       {
+ 0150                   .dbline 277
+ 0150           ;               if(byte & 0x80) 
+ 0150 67FF              sbrs R22,7
+ 0152 02C0              rjmp L38
+ 0154                   .dbline 278
+ 0154           ;                       nRF24L01_MOSIH;
+ 0154 289A              sbi 0x5,0
+ 0156 01C0              rjmp L39
+ 0158           L38:
+ 0158                   .dbline 280
+ 0158           ;               else 
+ 0158           ;                       nRF24L01_MOSIL;
+ 0158 2898              cbi 0x5,0
+ 015A           L39:
+ 015A                   .dbline 281
+ 015A           ;               delay();
+ 015A DEDF              rcall _delay
+ 015C                   .dbline 282
+ 015C           ;               byte = (byte << 1);                     // shift next bit into MSB..
+ 015C 660F              lsl R22
+ 015E                   .dbline 283
+ 015E           ;               nRF24L01_SCKH;
+ 015E 5F9A              sbi 0xb,7
+ 0160                   .dbline 284
+ 0160           ;               delay();
+ 0160 DBDF              rcall _delay
+ 0162                   .dbline 285
+ 0162           ;               if(PINB&nRF24L01_MISO) byte |= 1;
+ 0162 199B              sbis 0x3,1
+ 0164 01C0              rjmp L40
+ 0166                   .dbline 285
+ 0166 6160              ori R22,1
+ 0168           L40:
+ 0168                   .dbline 286
+ 0168 5F98              cbi 0xb,7
+ 016A                   .dbline 287
+ 016A D6DF              rcall _delay
+ 016C                   .dbline 288
+ 016C           L35:
+ 016C                   .dbline 275
+ 016C 4395              inc R20
+ 016E           L37:
+ 016E                   .dbline 275
+ 016E 4830              cpi R20,8
+ 0170 78F3              brlo L34
+ 0172                   .dbline 289
+ 0172           ;               nRF24L01_SCKL;
+ 0172           ;               delay();
+ 0172           ;       }
+ 0172           ;     return(byte);                                     // return read byte
+ 0172 062F              mov R16,R22
+ 0174                   .dbline -2
+ 0174           L33:
+ 0174 00D0              rcall pop_gset2
+ 0176                   .dbline 0 ; func end
+ 0176 0895              ret
+ 0178                   .dbsym r bit_ctr 20 c
+ 0178                   .dbsym r byte 22 c
+ 0178                   .dbend
+ 0178                   .dbfunc e SPI_RW_Reg _SPI_RW_Reg fc
+ 0178           ;         status -> R20
+ 0178           ;          value -> R22
+ 0178           ;            reg -> R20
+                        .even
+ 0178           _SPI_RW_Reg::
+ 0178 00D0              rcall push_gset2
+ 017A 622F              mov R22,R18
+ 017C 402F              mov R20,R16
+ 017E                   .dbline -1
+ 017E                   .dbline 298
+ 017E           ; }
+ 017E           ; /**************************************************
+ 017E           ; Function: SPI_RW_Reg();
+ 017E           ; 
+ 017E           ; Description:
+ 017E           ;   Writes value 'value' to register 'reg' */
+ 017E           ; /**************************************************/
+ 017E           ; unsigned char SPI_RW_Reg(unsigned char reg, unsigned char value)
+ 017E           ; {
+ 017E                   .dbline 300
+ 017E           ;       unsigned char status;
+ 017E           ;       nRF24L01_CSNL;
+ 017E 5E98              cbi 0xb,6
+ 0180                   .dbline 301
+ 0180           ;       delay();
+ 0180 CBDF              rcall _delay
+ 0182                   .dbline 302
+ 0182           ;       status = SPI_RW(reg);      // select register
+ 0182 042F              mov R16,R20
+ 0184 E1DF              rcall _SPI_RW
+ 0186 402F              mov R20,R16
+ 0188                   .dbline 303
+ 0188           ;       SPI_RW(value);             // ..and write value to it..
+ 0188 062F              mov R16,R22
+ 018A DEDF              rcall _SPI_RW
+ 018C                   .dbline 304
+ 018C           ;       nRF24L01_CSNH;
+ 018C 5E9A              sbi 0xb,6
+ 018E                   .dbline 305
+ 018E           ;       delay();
+ 018E C4DF              rcall _delay
+ 0190                   .dbline 306
+ 0190           ;       return(status);            // return nRF24L01 status byte
+ 0190 042F              mov R16,R20
+ 0192                   .dbline -2
+ 0192           L42:
+ 0192 00D0              rcall pop_gset2
+ 0194                   .dbline 0 ; func end
+ 0194 0895              ret
+ 0196                   .dbsym r status 20 c
+ 0196                   .dbsym r value 22 c
+ 0196                   .dbsym r reg 20 c
+ 0196                   .dbend
+ 0196                   .dbfunc e SPI_Read _SPI_Read fc
+ 0196           ;        reg_val -> R20
+ 0196           ;            reg -> R20
+                        .even
+ 0196           _SPI_Read::
+ 0196 00D0              rcall push_gset1
+ 0198 402F              mov R20,R16
+ 019A                   .dbline -1
+ 019A                   .dbline 315
+ 019A           ; }
+ 019A           ; /**************************************************
+ 019A           ; Function: SPI_Read();
+ 019A           ; 
+ 019A           ; Description:
+ 019A           ;   Read one byte from nRF24L01 register, 'reg'  */
+ 019A           ; /**************************************************/
+ 019A           ; unsigned char SPI_Read(unsigned char reg)
+ 019A           ; {
+ 019A                   .dbline 317
+ 019A           ;       unsigned char reg_val;
+ 019A           ;       nRF24L01_CSNL;
+ 019A 5E98              cbi 0xb,6
+ 019C                   .dbline 318
+ 019C           ;       delay();
+ 019C BDDF              rcall _delay
+ 019E                   .dbline 319
+ 019E           ;       SPI_RW(reg);            // Select register to read from..
+ 019E 042F              mov R16,R20
+ 01A0 D3DF              rcall _SPI_RW
+ 01A2                   .dbline 320
+ 01A2           ;       reg_val = SPI_RW(0);    // ..then read registervalue
+ 01A2 0027              clr R16
+ 01A4 D1DF              rcall _SPI_RW
+ 01A6 402F              mov R20,R16
+ 01A8                   .dbline 321
+ 01A8           ;       nRF24L01_CSNH;
+ 01A8 5E9A              sbi 0xb,6
+ 01AA                   .dbline 322
+ 01AA           ;       delay();
+ 01AA B6DF              rcall _delay
+ 01AC                   .dbline 323
+ 01AC           ;       return(reg_val);        // return register value
+ 01AC 042F              mov R16,R20
+ 01AE                   .dbline -2
+ 01AE           L43:
+ 01AE 00D0              rcall pop_gset1
+ 01B0                   .dbline 0 ; func end
+ 01B0 0895              ret
+ 01B2                   .dbsym r reg_val 20 c
+ 01B2                   .dbsym r reg 20 c
+ 01B2                   .dbend
+ 01B2                   .dbfunc e SPI_Read_Buf _SPI_Read_Buf fc
+ 01B2           ;         status -> R20
+ 01B2           ;       byte_ctr -> R22
+ 01B2           ;          bytes -> R10
+ 01B2           ;           pBuf -> R12,R13
+ 01B2           ;            reg -> R20
+                        .even
+ 01B2           _SPI_Read_Buf::
+ 01B2 00D0              rcall push_gset4
+ 01B4 6901              movw R12,R18
+ 01B6 402F              mov R20,R16
+ 01B8 A884              ldd R10,y+8
+ 01BA                   .dbline -1
+ 01BA                   .dbline 333
+ 01BA           ; }
+ 01BA           ; /**************************************************
+ 01BA           ; Function: SPI_Read_Buf();
+ 01BA           ; 
+ 01BA           ; Description:
+ 01BA           ;   Reads 'bytes' #of bytes from register 'reg'
+ 01BA           ;   Typically used to read RX payload, Rx/Tx address */
+ 01BA           ; /**************************************************/
+ 01BA           ; unsigned char SPI_Read_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes)
+ 01BA           ; {
+ 01BA                   .dbline 335
+ 01BA           ;       unsigned char status,byte_ctr;
+ 01BA           ;       nRF24L01_CSNL;
+ 01BA 5E98              cbi 0xb,6
+ 01BC                   .dbline 336
+ 01BC           ;       delay();
+ 01BC ADDF              rcall _delay
+ 01BE                   .dbline 337
+ 01BE           ;       status = SPI_RW(reg);                   // Select register to write to and read status byte
+ 01BE 042F              mov R16,R20
+ 01C0 C3DF              rcall _SPI_RW
+ 01C2 402F              mov R20,R16
+ 01C4                   .dbline 338
+ 01C4           ;       for(byte_ctr=0;byte_ctr<bytes;byte_ctr++)
+ 01C4 6627              clr R22
+ 01C6 08C0              rjmp L48
+ 01C8           L45:
+ 01C8                   .dbline 339
+ 01C8 0027              clr R16
+ 01CA BEDF              rcall _SPI_RW
+ 01CC E62F              mov R30,R22
+ 01CE FF27              clr R31
+ 01D0 EC0D              add R30,R12
+ 01D2 FD1D              adc R31,R13
+ 01D4 0083              std z+0,R16
+ 01D6           L46:
+ 01D6                   .dbline 338
+ 01D6 6395              inc R22
+ 01D8           L48:
+ 01D8                   .dbline 338
+ 01D8 6A15              cp R22,R10
+ 01DA B0F3              brlo L45
+ 01DC                   .dbline 340
+ 01DC           ;       pBuf[byte_ctr] = SPI_RW(0);    // Perform SPI_RW to read byte from nRF24L01
+ 01DC           ;       nRF24L01_CSNH;
+ 01DC 5E9A              sbi 0xb,6
+ 01DE                   .dbline 341
+ 01DE           ;       delay();
+ 01DE 9CDF              rcall _delay
+ 01E0                   .dbline 342
+ 01E0           ;       return(status);                    // return nRF24L01 status byte
+ 01E0 042F              mov R16,R20
+ 01E2                   .dbline -2
+ 01E2           L44:
+ 01E2 00D0              rcall pop_gset4
+ 01E4                   .dbline 0 ; func end
+ 01E4 0895              ret
+ 01E6                   .dbsym r status 20 c
+ 01E6                   .dbsym r byte_ctr 22 c
+ 01E6                   .dbsym r bytes 10 c
+ 01E6                   .dbsym r pBuf 12 pc
+ 01E6                   .dbsym r reg 20 c
+ 01E6                   .dbend
+ 01E6                   .dbfunc e SPI_Write_Buf _SPI_Write_Buf fc
+ 01E6           ;         status -> R20
+ 01E6           ;       byte_ctr -> R22
+ 01E6           ;          bytes -> R10
+ 01E6           ;           pBuf -> R12,R13
+ 01E6           ;            reg -> R20
+                        .even
+ 01E6           _SPI_Write_Buf::
+ 01E6 00D0              rcall push_gset4
+ 01E8 6901              movw R12,R18
+ 01EA 402F              mov R20,R16
+ 01EC A884              ldd R10,y+8
+ 01EE                   .dbline -1
+ 01EE                   .dbline 352
+ 01EE           ; }
+ 01EE           ; /**************************************************
+ 01EE           ; Function: SPI_Write_Buf();
+ 01EE           ; 
+ 01EE           ; Description:
+ 01EE           ;   Writes contents of buffer '*pBuf' to nRF24L01
+ 01EE           ;   Typically used to write TX payload, Rx/Tx address */
+ 01EE           ; /**************************************************/
+ 01EE           ; unsigned char SPI_Write_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes)
+ 01EE           ; {
+ 01EE                   .dbline 354
+ 01EE           ;       unsigned char status,byte_ctr;
+ 01EE           ;       nRF24L01_CSNL;                                  // Set nRF24L01_CSN low, init SPI tranaction
+ 01EE 5E98              cbi 0xb,6
+ 01F0                   .dbline 355
+ 01F0           ;       delay();
+ 01F0 93DF              rcall _delay
+ 01F2                   .dbline 356
+ 01F2           ;       status = SPI_RW(reg);                                           // Select register to write to and read status byte
+ 01F2 042F              mov R16,R20
+ 01F4 A9DF              rcall _SPI_RW
+ 01F6 402F              mov R20,R16
+ 01F8                   .dbline 357
+ 01F8           ;       for(byte_ctr=0; byte_ctr<bytes; byte_ctr++) // then write all byte in buffer(*pBuf)
+ 01F8 6627              clr R22
+ 01FA 06C0              rjmp L53
+ 01FC           L50:
+ 01FC                   .dbline 358
+ 01FC F601              movw R30,R12
+ 01FE 0191              ld R16,Z+
+ 0200 6F01              movw R12,R30
+ 0202 A2DF              rcall _SPI_RW
+ 0204 402F              mov R20,R16
+ 0206           L51:
+ 0206                   .dbline 357
+ 0206 6395              inc R22
+ 0208           L53:
+ 0208                   .dbline 357
+ 0208 6A15              cp R22,R10
+ 020A C0F3              brlo L50
+ 020C                   .dbline 359
+ 020C           ;       status = SPI_RW(*pBuf++);            
+ 020C           ;       nRF24L01_CSNH;                                                          // Set nRF24L01_CSN high again
+ 020C 5E9A              sbi 0xb,6
+ 020E                   .dbline 360
+ 020E           ;       delay();
+ 020E 84DF              rcall _delay
+ 0210                   .dbline 361
+ 0210           ;       return(status);                                                 // return nRF24L01 status byte
+ 0210 042F              mov R16,R20
+ 0212                   .dbline -2
+ 0212           L49:
+ 0212 00D0              rcall pop_gset4
+ 0214                   .dbline 0 ; func end
+ 0214 0895              ret
+ 0216                   .dbsym r status 20 c
+ 0216                   .dbsym r byte_ctr 22 c
+ 0216                   .dbsym r bytes 10 c
+ 0216                   .dbsym r pBuf 12 pc
+ 0216                   .dbsym r reg 20 c
+ 0216                   .dbend
+ 0216                   .dbfunc e RX_Mode _RX_Mode fV
+                        .even
+ 0216           _RX_Mode::
+ 0216 2197              sbiw R28,1
+ 0218                   .dbline -1
+ 0218                   .dbline 374
+ 0218           ; }
+ 0218           ; /**************************************************
+ 0218           ; Function: RX_Mode();
+ 0218           ; 
+ 0218           ; Description:
+ 0218           ;   This function initializes one nRF24L01 device to
+ 0218           ;   RX Mode, set RX address, writes RX payload width,
+ 0218           ;   select RF channel, datarate & LNA HCURR.
+ 0218           ;   After init, CE is toggled high, which means that
+ 0218           ;   this device is now ready to receive a datapacket. */
+ 0218           ; /**************************************************/
+ 0218           ; void RX_Mode(void)
+ 0218           ; {
+ 0218                   .dbline 375
+ 0218           ;       nRF24L01_CEL;
+ 0218 5D98              cbi 0xb,5
+ 021A                   .dbline 376
+ 021A           ;       delay();
+ 021A 7EDF              rcall _delay
+ 021C                   .dbline 377
+ 021C           ;       SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, TX_ADDRESS, TX_ADR_WIDTH); // Use the same address on the RX device as the TX device
+ 021C 85E0              ldi R24,5
+ 021E 8883              std y+0,R24
+ 0220 20E0              ldi R18,<_TX_ADDRESS
+ 0222 30E0              ldi R19,>_TX_ADDRESS
+ 0224 0AE2              ldi R16,42
+ 0226 DFDF              rcall _SPI_Write_Buf
+ 0228                   .dbline 379
+ 0228           ; 
+ 0228           ;       SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      // Enable Auto.Ack:Pipe0
+ 0228 21E0              ldi R18,1
+ 022A 01E2              ldi R16,33
+ 022C A5DF              rcall _SPI_RW_Reg
+ 022E                   .dbline 380
+ 022E           ;       SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  // Enable Pipe0
+ 022E 21E0              ldi R18,1
+ 0230 02E2              ldi R16,34
+ 0232 A2DF              rcall _SPI_RW_Reg
+ 0234                   .dbline 381
+ 0234           ;       SPI_RW_Reg(WRITE_REG + RF_CH, 40);        // Select RF channel 40
+ 0234 28E2              ldi R18,40
+ 0236 05E2              ldi R16,37
+ 0238 9FDF              rcall _SPI_RW_Reg
+ 023A                   .dbline 382
+ 023A           ;       SPI_RW_Reg(WRITE_REG + RX_PW_P0, TX_PLOAD_WIDTH); // Select same RX payload width as TX Payload width
+ 023A 24E1              ldi R18,20
+ 023C 01E3              ldi R16,49
+ 023E 9CDF              rcall _SPI_RW_Reg
+ 0240                   .dbline 383
+ 0240           ;       SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   // TX_PWR:0dBm, Datarate:2Mbps, LNA:HCURR
+ 0240 27E0              ldi R18,7
+ 0242 06E2              ldi R16,38
+ 0244 99DF              rcall _SPI_RW_Reg
+ 0246                   .dbline 384
+ 0246           ;       SPI_RW_Reg(WRITE_REG + CONFIG, 0x0f);     // Set PWR_UP bit, enable CRC(2 bytes) & Prim:RX. RX_DR enabled..
+ 0246 2FE0              ldi R18,15
+ 0248 00E2              ldi R16,32
+ 024A 96DF              rcall _SPI_RW_Reg
+ 024C                   .dbline 385
+ 024C           ;       nRF24L01_CEH;
+ 024C 5D9A              sbi 0xb,5
+ 024E                   .dbline 386
+ 024E           ;       delay();
+ 024E 64DF              rcall _delay
+ 0250                   .dbline -2
+ 0250           L54:
+ 0250 2196              adiw R28,1
+ 0252                   .dbline 0 ; func end
+ 0252 0895              ret
+ 0254                   .dbend
+ 0254                   .dbfunc e TX_Mode _TX_Mode fV
+                        .even
+ 0254           _TX_Mode::
+ 0254 2197              sbiw R28,1
+ 0256                   .dbline -1
+ 0256                   .dbline 406
+ 0256           ;       //  This device is now ready to receive one packet of 16 bytes payload from a TX device sending to address
+ 0256           ;   //  '3443101001', with auto acknowledgment, retransmit count of 10, RF channel 40 and datarate = 2Mbps.
+ 0256           ; 
+ 0256           ; }
+ 0256           ; /**************************************************/
+ 0256           ; 
+ 0256           ; /**************************************************
+ 0256           ; Function: TX_Mode();
+ 0256           ; 
+ 0256           ; Description:
+ 0256           ;   This function initializes one nRF24L01 device to
+ 0256           ;   TX mode, set TX address, set RX address for auto.ack,
+ 0256           ;   fill TX payload, select RF channel, datarate & TX pwr.
+ 0256           ;   PWR_UP is set, CRC(2 bytes) is enabled, & PRIM:TX.
+ 0256           ; 
+ 0256           ;   ToDo: One high pulse(>10us) on CE will now send this
+ 0256           ;   packet and expext an acknowledgment from the RX device. */
+ 0256           ; /**************************************************/
+ 0256           ; void TX_Mode(void)
+ 0256           ; {
+ 0256                   .dbline 407
+ 0256           ;       nRF24L01_CEL;
+ 0256 5D98              cbi 0xb,5
+ 0258                   .dbline 408
+ 0258           ;       delay();
+ 0258 5FDF              rcall _delay
+ 025A                   .dbline 409
+ 025A           ;       SPI_Write_Buf(WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH);    // Writes TX_Address to nRF24L01
+ 025A 85E0              ldi R24,5
+ 025C 8883              std y+0,R24
+ 025E 20E0              ldi R18,<_TX_ADDRESS
+ 0260 30E0              ldi R19,>_TX_ADDRESS
+ 0262 00E3              ldi R16,48
+ 0264 C0DF              rcall _SPI_Write_Buf
+ 0266                   .dbline 410
+ 0266           ;       SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, TX_ADDRESS, TX_ADR_WIDTH); // RX_Addr0 same as TX_Adr for Auto.Ack
+ 0266 85E0              ldi R24,5
+ 0268 8883              std y+0,R24
+ 026A 20E0              ldi R18,<_TX_ADDRESS
+ 026C 30E0              ldi R19,>_TX_ADDRESS
+ 026E 0AE2              ldi R16,42
+ 0270 BADF              rcall _SPI_Write_Buf
+ 0272                   .dbline 411
+ 0272           ;       SPI_Write_Buf(WR_TX_PLOAD, Buffer, TX_PLOAD_WIDTH); // Writes data to TX payload
+ 0272 84E1              ldi R24,20
+ 0274 8883              std y+0,R24
+ 0276 20E0              ldi R18,<_Buffer
+ 0278 30E0              ldi R19,>_Buffer
+ 027A 00EA              ldi R16,160
+ 027C B4DF              rcall _SPI_Write_Buf
+ 027E                   .dbline 413
+ 027E           ; 
+ 027E           ;       SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      // Enable Auto.Ack:Pipe0
+ 027E 21E0              ldi R18,1
+ 0280 01E2              ldi R16,33
+ 0282 7ADF              rcall _SPI_RW_Reg
+ 0284                   .dbline 414
+ 0284           ;       SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  // Enable Pipe0
+ 0284 21E0              ldi R18,1
+ 0286 02E2              ldi R16,34
+ 0288 77DF              rcall _SPI_RW_Reg
+ 028A                   .dbline 415
+ 028A           ;       SPI_RW_Reg(WRITE_REG + SETUP_RETR, 0x1a); // 500us + 86us, 10 retrans...
+ 028A 2AE1              ldi R18,26
+ 028C 04E2              ldi R16,36
+ 028E 74DF              rcall _SPI_RW_Reg
+ 0290                   .dbline 416
+ 0290           ;       SPI_RW_Reg(WRITE_REG + RF_CH, 40);        // Select RF channel 40
+ 0290 28E2              ldi R18,40
+ 0292 05E2              ldi R16,37
+ 0294 71DF              rcall _SPI_RW_Reg
+ 0296                   .dbline 417
+ 0296           ;       SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   // TX_PWR:0dBm, Datarate:2Mbps, LNA:HCURR
+ 0296 27E0              ldi R18,7
+ 0298 06E2              ldi R16,38
+ 029A 6EDF              rcall _SPI_RW_Reg
+ 029C                   .dbline 418
+ 029C           ;       SPI_RW_Reg(WRITE_REG + CONFIG, 0x0e);     // Set PWR_UP bit, enable CRC(2 bytes) & Prim:TX. MAX_RT & TX_DS enabled..
+ 029C 2EE0              ldi R18,14
+ 029E 00E2              ldi R16,32
+ 02A0 6BDF              rcall _SPI_RW_Reg
+ 02A2                   .dbline 419
+ 02A2           ;       nRF24L01_CEH;
+ 02A2 5D9A              sbi 0xb,5
+ 02A4                   .dbline 420
+ 02A4           ;       delay();
+ 02A4 39DF              rcall _delay
+ 02A6                   .dbline -2
+ 02A6           L55:
+ 02A6 2196              adiw R28,1
+ 02A8                   .dbline 0 ; func end
+ 02A8 0895              ret
+ 02AA                   .dbend
+ 02AA                   .dbfunc e timer0_init _timer0_init fV
+                        .even
+ 02AA           _timer0_init::
+ 02AA                   .dbline -1
+ 02AA                   .dbline 425
+ 02AA           ;       
+ 02AA           ; }
+ 02AA           ; //------------------------------------------------------
+ 02AA           ; void timer0_init(void)
+ 02AA           ; {
+ 02AA                   .dbline 426
+ 02AA           ;  TCCR0B = 0x00; //stop
+ 02AA 2224              clr R2
+ 02AC 25BC              out 0x25,R2
+ 02AE                   .dbline 427
+ 02AE           ;  TCNT0 = 0x06; //set count
+ 02AE 86E0              ldi R24,6
+ 02B0 86BD              out 0x26,R24
+ 02B2                   .dbline 428
+ 02B2           ;  TCCR0A = 0x00; 
+ 02B2 24BC              out 0x24,R2
+ 02B4                   .dbline 429
+ 02B4           ;  TCCR0B = 0x02; //start timer
+ 02B4 82E0              ldi R24,2
+ 02B6 85BD              out 0x25,R24
+ 02B8                   .dbline -2
+ 02B8           L56:
+ 02B8                   .dbline 0 ; func end
+ 02B8 0895              ret
+ 02BA                   .dbend
+                        .area vector(rom, abs)
+                        .org 32
+ 0020 5DC1              rjmp _timer0_ovf_isr
+                        .area text(rom, con, rel)
+ 02BA                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 02BA                   .dbfunc e timer0_ovf_isr _timer0_ovf_isr fV
+                        .even
+ 02BA           _timer0_ovf_isr::
+ 02BA 2A92              st -y,R2
+ 02BC 8A93              st -y,R24
+ 02BE 2FB6              in R2,0x3f
+ 02C0 2A92              st -y,R2
+ 02C2                   .dbline -1
+ 02C2                   .dbline 433
+ 02C2                   .dbline 435
+ 02C2 86E0              ldi R24,6
+ 02C4 86BD              out 0x26,R24
+ 02C6                   .dbline 437
+ 02C6 80911300          lds R24,_t20ms
+ 02CA 8150              subi R24,1
+ 02CC 282E              mov R2,R24
+ 02CE 20921300          sts _t20ms,R2
+ 02D2 8823              tst R24
+ 02D4 49F4              brne L58
+ 02D6                   .dbline 438
+ 02D6                   .dbline 439
+ 02D6                   .dbline 439
+ 02D6 80911200          lds R24,_flag
+ 02DA 8160              ori R24,1
+ 02DC 80931200          sts _flag,R24
+ 02E0                   .dbline 439
+ 02E0                   .dbline 439
+ 02E0                   .dbline 440
+ 02E0 80E5              ldi R24,80
+ 02E2 80931300          sts _t20ms,R24
+ 02E6                   .dbline 442
+ 02E6 0000              nop
+ 02E8                   .dbline 449
+ 02E8           L58:
+ 02E8                   .dbline -2
+ 02E8           L57:
+ 02E8 2990              ld R2,y+
+ 02EA 2FBE              out 0x3f,R2
+ 02EC 8991              ld R24,y+
+ 02EE 2990              ld R2,y+
+ 02F0                   .dbline 0 ; func end
+ 02F0 1895              reti
+ 02F2                   .dbend
+                        .area bss(ram, con, rel)
+ 0000                   .dbfile E:\项目\PS2无~1\progamme\acceptavrnrf24l01\acceptavrnrf24l01\main.c
+ 0000           _key6_time::
+ 0000                   .blkb 1
+ 0001                   .dbsym e key6_time _key6_time c
+ 0001           _key5_time::
+ 0001                   .blkb 1
+ 0002                   .dbsym e key5_time _key5_time c
+ 0002           _key4_time::
+ 0002                   .blkb 1
+ 0003                   .dbsym e key4_time _key4_time c
+ 0003           _key3_time::
+ 0003                   .blkb 1
+ 0004                   .dbsym e key3_time _key3_time c
+ 0004           _key2_time::
+ 0004                   .blkb 1
+ 0005                   .dbsym e key2_time _key2_time c
+ 0005           _key1_time::
+ 0005                   .blkb 1
+ 0006                   .dbsym e key1_time _key1_time c
+ 0006           _key6_flag::
+ 0006                   .blkb 1
+ 0007                   .dbsym e key6_flag _key6_flag c
+ 0007           _key5_flag::
+ 0007                   .blkb 1
+ 0008                   .dbsym e key5_flag _key5_flag c
+ 0008           _key4_flag::
+ 0008                   .blkb 1
+ 0009                   .dbsym e key4_flag _key4_flag c
+ 0009           _key3_flag::
+ 0009                   .blkb 1
+ 000A                   .dbsym e key3_flag _key3_flag c
+ 000A           _key2_flag::
+ 000A                   .blkb 1
+ 000B                   .dbsym e key2_flag _key2_flag c
+ 000B           _key1_flag::
+ 000B                   .blkb 1
+ 000C                   .dbsym e key1_flag _key1_flag c
+ 000C           _key6_pulse::
+ 000C                   .blkb 1
+ 000D                   .dbsym e key6_pulse _key6_pulse c
+ 000D           _key5_pulse::
+ 000D                   .blkb 1
+ 000E                   .dbsym e key5_pulse _key5_pulse c
+ 000E           _key4_pulse::
+ 000E                   .blkb 1
+ 000F                   .dbsym e key4_pulse _key4_pulse c
+ 000F           _key3_pulse::
+ 000F                   .blkb 1
+ 0010                   .dbsym e key3_pulse _key3_pulse c
+ 0010           _key2_pulse::
+ 0010                   .blkb 1
+ 0011                   .dbsym e key2_pulse _key2_pulse c
+ 0011           _key1_pulse::
+ 0011                   .blkb 1
+ 0012                   .dbsym e key1_pulse _key1_pulse c
+ 0012           _flag::
+ 0012                   .blkb 1
+ 0013                   .dbsym e flag _flag c
+ 0013           _t20ms::
+ 0013                   .blkb 1
+ 0014                   .dbsym e t20ms _t20ms c
+ 0014           _key_debug::
+ 0014                   .blkb 1
+ 0015                   .dbsym e key_debug _key_debug c

@@ -1,0 +1,21 @@
+--cpu Cortex-M3
+"kong\startup_stm32f103xb.o"
+"kong\main.o"
+"kong\stm32f1xx_it.o"
+"kong\stm32f1xx_hal_msp.o"
+"kong\stm32f1xx_hal_gpio_ex.o"
+"kong\stm32f1xx_hal.o"
+"kong\stm32f1xx_hal_rcc.o"
+"kong\stm32f1xx_hal_rcc_ex.o"
+"kong\stm32f1xx_hal_gpio.o"
+"kong\stm32f1xx_hal_dma.o"
+"kong\stm32f1xx_hal_cortex.o"
+"kong\stm32f1xx_hal_pwr.o"
+"kong\stm32f1xx_hal_flash.o"
+"kong\stm32f1xx_hal_flash_ex.o"
+"kong\stm32f1xx_hal_exti.o"
+"kong\system_stm32f1xx.o"
+--strict --scatter "KONG\KONG.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "KONG.map" -o KONG\KONG.axf

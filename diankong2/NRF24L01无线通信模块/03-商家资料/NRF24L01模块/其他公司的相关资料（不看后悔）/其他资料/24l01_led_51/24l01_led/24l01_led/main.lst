@@ -1,0 +1,291 @@
+C51 COMPILER V7.06   MAIN                                                                  03/17/2009 16:24:23 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN main.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\main.c ROM(COMPACT) BROWSE DEBUG OBJECTEXTEND PRINT(.\main.lst) OBJE
+                    -CT(main.obj)
+
+stmt level    source
+
+   1          /************************************************************************
+   2          ;copyright    :shenzhen coolwaveasia
+   3          ;filename     :main.c
+   4          ;mcu          :w78e52b
+   5          ;crystal      :33.177MHZ
+   6          ;cycle        :0.36us
+   7          ;RF           :7105
+   8          ;rf crystal   :16MHZ
+   9          ;RF rate      :250K(默认，可以通过按键修改)
+  10          ;startdate    :2008.10.7
+  11          ;enddate      :
+  12          ;writeby      :dengyihong
+  13          ;revision     :B
+  14          ;describe     :7105 参数测试(可以测试通信)
+  15          ;notice       :
+  16          ;complier     :Keil C
+  17          ;***********************************************************************
+  18          ;                            --------------------
+  19          ;                     P1.0  |1                 40|  VCC                  
+  20          ;                     P1.1  |2                 39|  P0.0    
+  21          ; RF_SCK  ----        P1.2  |3                 38|  P0.1   
+  22          ; RF_MOSI ----        P1.3  |4                 37|  P0.2       
+  23          ;                     P1.4  |5                 36|  P0.3    
+  24          ; RF_CSN  ----        P1.5  |6                 35|  P0.4     
+  25          ;                     P1.6  |7                 34|  P0.5     
+  26          ;                     P1.7  |8                 33|  P0.6      
+  27          ;                  RST/Vpd  |9                 32|  P0.7     
+  28          ;                 RXD/P3.0  |10                31|  /EA/Vpp
+  29          ;                 TXD/P3.1  |11                30|  ALE/PROG
+  30          ; RF_IRQ  ----  /INT0/P3.2  |12                29|  /PSEN
+  31          ; RF_MISO ----  /INT1/P3.3  |13                28|  P2.7     ----  KEY4 (send)
+  32          ;                  T0/P3.4  |14                27|  P2.6     ----  KEY3 (+)
+  33          ; RF_CE   ----     T1/P3.5  |15                26|  P2.5     ----  KEY2 (-)
+  34          ;                 /WR/P3.6  |16                25|  P2.4     ----  KEY1 (mode)
+  35          ;                 /RD/P3.7  |17                24|  P2.3
+  36          ;                    XTAL2  |18                23|  P2.2     
+  37          ;                    XTAL1  |19                22|  P2.1     ----  green_led
+  38          ;                      VSS  |20                21|  P2.0     ----  red_led
+  39          ;                            --------------------
+  40          ;                                   W78E52B
+  41          ;***********************************************************************/
+  42          
+  43          #include "..\header\main.h"
+  44          #include "..\header\maindef.h"
+  45          
+  46          
+  47          bit Rf_Rec_Data = 0;    // rf 接收到数据标志位
+  48          
+  49          
+  50          U8 Rf_Rec_Buf[TX_PLOAD_WIDTH] = {0};
+  51          U8 Rf_Send_Buf[TX_PLOAD_WIDTH] = {RF_DOWN_CMD,0x00,0x11,0x22,0x33,0x44,0x55,0x66,0x77,0x88,0x99,
+  52                                                                                  0xaa,0xbb,0xcc,0xdd,0xee,0xff,0xa5,0xa5,0x5a};
+  53          
+  54          // 主程序入口
+C51 COMPILER V7.06   MAIN                                                                  03/17/2009 16:24:23 PAGE 2   
+
+  55          void main(void)
+  56          {
+  57   1              EA = 0;
+  58   1              delay_2us(5000);
+  59   1              ini_mcu();
+  60   1              GREEN_LED = 0;
+  61   1              RED_LED = 0;
+  62   1              delay_2us(50000);
+  63   1      
+  64   1              //ini_rf();
+  65   1              nRF24L01ioConfig();
+  66   1              RX_Mode();
+  67   1              delay_2us(5000);
+  68   1              GREEN_LED = 1;
+  69   1              RED_LED = 1;
+  70   1      
+  71   1              while(1)
+  72   1              {
+  73   2                      
+  74   2                      key_scan();
+  75   2                      dispose_key_info();
+  76   2                      if(IE0)                                 // 是否接收到RF数据(查询方式接收)
+  77   2                      {
+  78   3                              IE0 = 0;
+  79   3                              rec_rf_data();                  
+  80   3                              dispose_rf_data();      // 处理接收到的RF数据
+  81   3                      }       
+  82   2              }
+  83   1      }
+  84          
+  85          /***********************************************************
+  86          name:           ini_mcu
+  87          input:          none
+  88          output:         none
+  89          describe:       初始化MCU
+  90          notice:
+  91          creat date: 2008-7-24
+  92          creator:        dengyihong
+  93          ************************************************************/
+  94          void ini_mcu(void)
+  95          {
+  96   1          PSW = 0x00;
+  97   1              PCON = 0x00;
+  98   1              IP = 0x00;             // 设置中断优先级
+  99   1              IE = 0x00;             //  EA   -    ET2  ES   ET1  EX1  ET0  EX0 , disable all interrupt
+ 100   1      
+ 101   1          //ini_int1();
+ 102   1              ini_int0();
+ 103   1      }
+ 104          
+ 105          /**********************************************************
+ 106          name:           ini_int0
+ 107          input:          none
+ 108          output:         none
+ 109          describe:       设置 int0中断方式
+ 110          notice:
+ 111          creat date:     2008-7-24
+ 112          creator:        dengyihong
+ 113          **********************************************************/
+ 114          void ini_int0(void)
+ 115          {
+ 116   1          IT0 = 1;                            // 下降沿中断
+C51 COMPILER V7.06   MAIN                                                                  03/17/2009 16:24:23 PAGE 3   
+
+ 117   1          IE0 = 0;
+ 118   1              EX0 = 0;                                //disable int1 中断
+ 119   1      }
+ 120          
+ 121          /**********************************************************
+ 122          name:           ini_int1
+ 123          input:          none
+ 124          output:         none
+ 125          describe:       设置 int1中断方式
+ 126          notice:
+ 127          creat date:     2008-7-24
+ 128          creator:        dengyihong
+ 129          **********************************************************/
+ 130          void ini_int1(void)
+ 131          {
+ 132   1          IT1 = 1;                            // 下降沿中断
+ 133   1          IE1 = 0;
+ 134   1              EX1 = 0;                                //disable int1 中断
+ 135   1      }
+ 136          
+ 137          
+ 138          /**********************************************************
+ 139          name:           dispose_key_info
+ 140          input:          none
+ 141          output:         none
+ 142          describe:       处理按键信息
+ 143          notice:
+ 144          creat date:     2008-7-24
+ 145          creator:        dengyihong
+ 146          **********************************************************/
+ 147          void dispose_key_info(void)
+ 148          {
+ 149   1          U8 i = 0;
+ 150   1      
+ 151   1          if(Key_Msg)                         // 是否有按键消息
+ 152   1          {
+ 153   2              Key_Msg = 0;
+ 154   2              switch(Key_Value)
+ 155   2              {
+ 156   3                  case MODE_KEY:
+ 157   3                                      RED_LED = 0;
+ 158   3                                      GREEN_LED = 0;
+ 159   3                                      while(1)
+ 160   3                                      {
+ 161   4                                              TX_Mode();
+ 162   4                                              key_scan();
+ 163   4                                              delay_2us(2000);
+ 164   4                                              if(Key_Msg)
+ 165   4                                              {
+ 166   5                                                      Key_Msg = 0;
+ 167   5                                                      //delay_2us(5000);
+ 168   5                                                      RX_Mode();
+ 169   5                                                      break;
+ 170   5                                              }                               
+ 171   4                                      }
+ 172   3                                      RED_LED = 1;
+ 173   3                                      GREEN_LED = 1;
+ 174   3                              break;
+ 175   3      
+ 176   3                              case ADD_KEY:
+ 177   3                              case DEC_KEY:
+ 178   3                  case SEND_KEY:              // 处理发送按键
+C51 COMPILER V7.06   MAIN                                                                  03/17/2009 16:24:23 PAGE 4   
+
+ 179   3                                      RED_LED = 0;
+ 180   3                                      TX_Mode();
+ 181   3                                      // 发送测试数据
+ 182   3                                       delay_2us(5000);
+ 183   3                                       RED_LED = 1;
+ 184   3                                       RX_Mode();
+ 185   3                  break;
+ 186   3      
+ 187   3                  default:
+ 188   3                  break;
+ 189   3              }
+ 190   2          }
+ 191   1      }
+ 192          
+ 193          
+ 194          /**********************************************************
+ 195          name:           dispose_rf_data
+ 196          input:          none
+ 197          output:         none
+ 198          describe:       处理接收到的RF数据
+ 199          notice:
+ 200          creat date:     2008-7-24
+ 201          creator:        dengyihong
+ 202          **********************************************************/
+ 203          void dispose_rf_data(void)
+ 204          {
+ 205   1          U8 i = 0;
+ 206   1              U8 rf_data_err = 1; 
+ 207   1      
+ 208   1              for(i=0; i<TX_PLOAD_WIDTH; i++)
+ 209   1              {
+ 210   2                      if(Rf_Rec_Buf[i] != Rf_Send_Buf[i])                     // 是否为主机发送的数据
+ 211   2                      {
+ 212   3                              rf_data_err = 0;
+ 213   3                              break;  
+ 214   3                      }
+ 215   2              }
+ 216   1      
+ 217   1              if(rf_data_err)
+ 218   1              {
+ 219   2                      GREEN_LED = 0;
+ 220   2              }
+ 221   1              else
+ 222   1              {
+ 223   2                      RED_LED = 0;
+ 224   2              }
+ 225   1              //RX_Mode();
+ 226   1              delay_2us(5000);
+ 227   1              GREEN_LED = 1;
+ 228   1              RED_LED = 1;
+ 229   1      }
+ 230          
+ 231          
+ 232          /**********************************************************
+ 233          name:           dispose_timer0
+ 234          input:          none
+ 235          output:         none
+ 236          describe:       处理定时器0
+ 237          notice: 
+ 238          creat date:     2008-7-24
+ 239          creator:        dengyihong
+ 240          **********************************************************/
+C51 COMPILER V7.06   MAIN                                                                  03/17/2009 16:24:23 PAGE 5   
+
+ 241          void dispose_timer0(void)
+ 242          {
+ 243   1          
+ 244   1      }
+ 245          
+ 246          
+ 247          /**********************************************************
+ 248          name:           delay_2us
+ 249          input:          delay_cnt
+ 250          output:         none
+ 251          describe:       delay x*2us
+ 252          notice:
+ 253          creat date:     2008-7-24
+ 254          creator:        dengyihong
+ 255          **********************************************************/
+ 256          void delay_2us(U16 delay_cnt)
+ 257          {
+ 258   1          while(delay_cnt--);
+ 259   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    200    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     40       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      1    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,30 @@
+/************************************************************************************
+;copyrightn   :shenzhen coolwaveasia 
+;filename     :key.h
+;start date   :2008.7.24
+;end date     :
+;writeby      :dengyihong
+;revision     :A
+;*************************************************************************************/
+#ifndef _KEY_H
+#define	_KEY_H
+
+#include "maindef.h"
+#include "io.h"
+
+#define  NONE_KEY     0x00
+#define  MODE_KEY     0x01
+#define  DEC_KEY      0x02
+#define  ADD_KEY      0x03
+#define  SEND_KEY     0x04
+
+#define  MASK_KEY     0xf0
+
+#define  KEY_PIN_INPUT()  P2 |= MASK_KEY  
+#define  GET_KEY_VALUE()  (P2 & MASK_KEY)
+
+void key_scan(void);
+
+extern void delay_2us(U16 delay_cnt);
+
+#endif

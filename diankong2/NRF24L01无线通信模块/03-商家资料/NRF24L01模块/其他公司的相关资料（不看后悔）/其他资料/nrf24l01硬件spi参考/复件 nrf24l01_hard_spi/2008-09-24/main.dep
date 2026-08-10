@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<project>
+  <fileVersion>2</fileVersion>
+  <fileChecksum>1525346926</fileChecksum>
+  <configuration>
+    <name>Debug</name>
+    <outputs>
+      <file>$PROJ_DIR$\source\main.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\crc16.pbi</file>
+      <file>$PROJ_DIR$\header\user\init.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\init.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
+      <file>$PROJ_DIR$\source\phy-A7105.c</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\phy-A7105.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\phy-A7105.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbd</file>
+      <file>$PROJ_DIR$\header\user\Nrf24l01.h</file>
+      <file>$PROJ_DIR$\header\sys\iom48.h</file>
+      <file>$PROJ_DIR$\Debug\Exe\main.d90</file>
+      <file>$PROJ_DIR$\Debug\Obj\phy-A7125.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\crc16.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\source\phy-A7125.c</file>
+      <file>$PROJ_DIR$\header\user\crc16.h</file>
+      <file>$PROJ_DIR$\header\user\main.h</file>
+      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\phy-A7125.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\phy-Nrf24l01.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\init.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\phy-Nrf24l01.pbi</file>
+      <file>$PROJ_DIR$\header\sys\sbit.h</file>
+      <file>$PROJ_DIR$\header\user\global.h</file>
+      <file>$PROJ_DIR$\source\phy-Nrf24l01.c</file>
+      <file>$PROJ_DIR$\source\crc16.c</file>
+      <file>$PROJ_DIR$\source\init.c</file>
+      <file>$PROJ_DIR$\header\user\phy-Nrf24l01.h</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\source\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 4</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 15</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18 25 6 11 19 24 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\phy-A7105.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 7</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 8</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\main.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 1 3 15 23</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 12</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\phy-A7125.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 20</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\phy-Nrf24l01.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 21</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 23</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29 25 6 11 19 24 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\crc16.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 14</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 1</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 17 25 6 11 19 24 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\init.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 22</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>BICOMP</name>
+          <file> 2 25 6 11 19 24 10</file>
+        </tool>
+      </inputs>
+    </file>
+    <forcedrebuild>
+      <name>[MULTI_TOOL]</name>
+      <tool>XLINK</tool>
+    </forcedrebuild>
+  </configuration>
+  <configuration>
+    <name>Release</name>
+    <outputs>
+      <file>$PROJ_DIR$\source\main.c</file>
+      <file>$PROJ_DIR$\header\user\A7105.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\crc16.pbi</file>
+      <file>$PROJ_DIR$\header\user\init.h</file>
+      <file>$PROJ_DIR$\Debug\Obj\init.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.r90</file>
+      <file>$PROJ_DIR$\source\phy-A7105.c</file>
+      <file>$TOOLKIT_DIR$\inc\intrinsics.h</file>
+      <file>$PROJ_DIR$\Release\Obj\init.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\crc16.r90</file>
+      <file>$PROJ_DIR$\Release\Obj\phy-A7105.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbd</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbd</file>
+      <file>$PROJ_DIR$\header\user\Nrf24l01.h</file>
+      <file>$PROJ_DIR$\header\sys\iom48.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\..\..\nrf24l01_hard_spi\2008-09-24\source\phy-Nrf24l01.c</file>
+      <file>$PROJ_DIR$\Debug\Obj\crc16.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\main.pbi</file>
+      <file>$PROJ_DIR$\..\..\nrf24l01_hard_spi\2008-09-24\header\user\phy-Nrf24l01.h</file>
+      <file>$PROJ_DIR$\Release\Obj\init.r90</file>
+      <file>$PROJ_DIR$\Release\Obj\phy-A7105.pbi</file>
+      <file>$TOOLKIT_DIR$\src\template\cfg1soim.xcl</file>
+      <file>$PROJ_DIR$\Debug\Exe\main.a90</file>
+      <file>$PROJ_DIR$\header\user\phy-A7105.h</file>
+      <file>$PROJ_DIR$\source\phy-A7125.c</file>
+      <file>$PROJ_DIR$\..\..\nrf24l01_hard_spi\2008-09-24\source\init.c</file>
+      <file>$TOOLKIT_DIR$\lib\clib\cl1s-ec_mul.r90</file>
+      <file>$PROJ_DIR$\header\user\crc16.h</file>
+      <file>$PROJ_DIR$\header\user\main.h</file>
+      <file>$TOOLKIT_DIR$\inc\iomacro.h</file>
+      <file>$PROJ_DIR$\Release\Obj\crc16.pbi</file>
+      <file>$PROJ_DIR$\Release\Obj\phy-A7125.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\phy-Nrf24l01.r90</file>
+      <file>$PROJ_DIR$\Release\Exe\main.a90</file>
+      <file>$PROJ_DIR$\Release\Obj\phy-Nrf24l01.pbi</file>
+      <file>$PROJ_DIR$\Debug\Obj\init.r90</file>
+      <file>$PROJ_DIR$\Debug\Obj\phy-Nrf24l01.pbi</file>
+      <file>$PROJ_DIR$\Debug\Exe\main.hex</file>
+      <file>$PROJ_DIR$\Release\Obj\phy-A7125.pbi</file>
+      <file>$TOOLKIT_DIR$\src\template\cfgm48.xcl</file>
+      <file>$PROJ_DIR$\Release\Obj\phy-Nrf24l01.r90</file>
+      <file>$PROJ_DIR$\header\sys\sbit.h</file>
+      <file>$PROJ_DIR$\header\user\global.h</file>
+      <file>$PROJ_DIR$\source\phy-Nrf24l01.c</file>
+      <file>$PROJ_DIR$\source\crc16.c</file>
+      <file>$PROJ_DIR$\source\init.c</file>
+      <file>$PROJ_DIR$\header\user\phy-Nrf24l01.h</file>
+      <file>$PROJ_DIR$\Release\Obj\main.r90</file>
+      <file>$PROJ_DIR$\..\..\nrf24l01_hard_spi\2008-09-24\source\main.c</file>
+    </outputs>
+    <file>
+      <name>$PROJ_DIR$\source\main.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 5</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 18</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 29 43 7 14 30 42 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 29 43 7 14 30 42 13</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\phy-A7105.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 10</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 21</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 24 43 7 14 30 42 1</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Obj\main.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 2 4 18 37</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Obj\main.pbd</name>
+      <inputs>
+        <tool>
+          <name>BILINK</name>
+          <file> 31 8 15 35</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>[ROOT_NODE]</name>
+      <outputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 38</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\main.a90</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 40 22 17 36 5 33 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\phy-A7125.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 32</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 39</file>
+        </tool>
+      </outputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Release\Exe\main.a90</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 40 22 9 20 48 41 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\Debug\Exe\main.hex</name>
+      <inputs>
+        <tool>
+          <name>XLINK</name>
+          <file> 40 22 17 36 5 33 27</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\phy-Nrf24l01.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 33</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 37</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 47 43 7 14 30 42 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 47 43 7 14 30 42 13</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\crc16.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 17</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 2</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 28 43 7 14 30 42 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 28 43 7 14 30 42 13</file>
+        </tool>
+      </inputs>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\source\init.c</name>
+      <outputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 36</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 4</file>
+        </tool>
+      </outputs>
+      <inputs>
+        <tool>
+          <name>ICCAVR</name>
+          <file> 3 43 7 14 30 42 13</file>
+        </tool>
+        <tool>
+          <name>BICOMP</name>
+          <file> 3 43 7 14 30 42 13</file>
+        </tool>
+      </inputs>
+    </file>
+  </configuration>
+</project>
+
+

@@ -1,0 +1,218 @@
+/***********************************************************
+**  文件名：    lcd.c                                     **
+***********************************************************/
+
+#include "..\header\lcd.h"
+
+/**********************************************************
+**  函数：    LCD_Initial()
+**  参数：    无
+**  返回值：  无
+**  功能：    Lcd初始化
+**********************************************************/
+/*
+void LCD_Initial(void)
+{
+    LCD_RegWrite(0x38);
+    LCD_RegWrite(0x38);
+    LCD_RegWrite(0x38);
+    LCD_RegWrite(0x08);
+    LCD_Wait();
+    LCD_RegWrite(0x01);
+    LCD_Wait();
+    DelayXms(10);
+
+    LCD_RegWrite(0x14);
+    LCD_Wait();
+    LCD_RegWrite(0x06);
+    LCD_Wait();
+    LCD_RegWrite(0x80);
+    LCD_Wait();
+    LCD_RegWrite(0x0C);
+    LCD_Wait();
+}
+*/
+
+void lcd_ini(void)
+{
+    lcd_write_reg(0x38);
+    lcd_write_reg(0x38);
+    lcd_write_reg(0x38);
+    lcd_write_reg(0x08);
+    lcd_wait();
+    lcd_write_reg(0x01);
+    lcd_wait();
+    delay_2us(5000);
+    
+    lcd_write_reg(0x14);
+    lcd_wait();
+    lcd_write_reg(0x06);
+    lcd_wait();
+    lcd_write_reg(0x80);
+    lcd_wait();
+    lcd_write_reg(0x0c);
+    lcd_wait();	
+}
+
+
+/**********************************************************
+**  函数：    LCD_StrDisp()
+**  参数：    *disp_str, row_len_col
+**  返回值：  －
+**  功能：    最多可以显示8个字符
+**********************************************************/
+/*
+void LCD_StrDisp(uchar *disp_str, uchar row_len_col)
+{
+    uchar i, len;
+    EA = 0;
+    len = (row_len_col & LEN_MASK)>>0x03;
+
+    LCD_RegWrite(row_len_col & ROW_COL);
+    LCD_Wait();
+
+    for(i=0; i<=len; i++)
+    {
+        LCD_DataWrite(*disp_str++);
+        LCD_Wait();
+    }
+    EA = 1;
+}
+*/
+
+void lcd_printf_string(U8 *disp_str, U8 row_len_col)
+{
+    U8 i = 0;
+    U8 len = 0;
+    
+    len = (row_len_col & LEN_MASK) >> 0x03;
+    
+    lcd_write_reg(row_len_col & ROW_COL);
+    lcd_wait();
+    
+    for(i=0; i<=len; i++)
+    {
+        lcd_write_data(*disp_str++);
+        lcd_wait();	
+    }
+}
+
+/**********************************************************
+**  函数：    LCD_CharDisp()
+**  参数：    disp_char, row_col
+**  返回值：  无
+**  功能：    显示1个字符
+**********************************************************/
+/*
+void LCD_CharDisp(uchar disp_char, uchar row_col)
+{
+    EA = 0;
+    LCD_RegWrite(row_col & ROW_COL);
+    LCD_Wait();
+    LCD_DataWrite(disp_char);
+    LCD_Wait();
+    EA = 1;
+}
+*/
+void lcd_printf_char(U8 disp_char, U8 row_col)
+{
+    lcd_write_reg(row_col & ROW_COL);
+    lcd_wait();
+    lcd_write_data(disp_char);
+    lcd_wait();	
+}
+
+
+/**********************************************************
+**  函数：    LCD_RegWrite()
+**  参数：    cmd
+**  返回值：    无
+**  功能：    写lcd寄存器
+**********************************************************/
+/*
+void LCD_RegWrite(uchar cmd)
+{
+    LCD_DATA = cmd;
+    LCD_RS = 0;
+    LCD_RW = 0;
+    LCD_EN = 1;
+    DelayNop(10);
+    LCD_EN = 0;
+}
+*/
+
+void lcd_write_reg(U8 command)
+{
+    LCD_DATA = command;
+    LCD_RS = 0;
+    LCD_RW = 0;
+    LCD_EN = 1;
+    delay_2us(10);
+    LCD_EN = 0;
+}
+
+
+/**********************************************************
+**  函数：    LCD_DataWrite()
+**  参数：    value
+**  返回值：  无
+**  功能：    写数据到lcd数据口
+**********************************************************/
+/*
+void LCD_DataWrite(uchar value)
+{
+    LCD_DATA = value;
+    LCD_RS = 1;
+    LCD_RW = 0;
+    LCD_EN = 1;
+    DelayNop(10);
+    LCD_EN = 0;
+}
+*/
+void lcd_write_data(U8 value)
+{
+   LCD_DATA =  value;
+   LCD_RS = 1;
+   LCD_RW = 0;
+   LCD_EN = 1;
+   delay_2us(10);
+   LCD_EN = 0; 	
+}
+
+
+/**********************************************************
+**  函数：    LCD_Wait()
+**  参数：    无
+**  返回值：  无
+**  功能：    
+**********************************************************/
+/*
+void LCD_Wait(void)
+{
+    uchar value;
+    do
+    {
+        LCD_RS = 0;
+        LCD_RW = 1;
+        LCD_EN = 1;
+        value = LCD_DATA;
+        LCD_EN = 0;
+    } while (value & 0x80);
+}
+*/
+void lcd_wait(void)
+{
+    U8 value = 0;
+    
+    LCD_DATA = 0xff;             //input
+    
+    do
+    {
+        LCD_RS = 0;
+        LCD_RW = 1;
+        LCD_EN = 1;
+        value = LCD_DATA;	
+        LCD_EN = 0;
+    }while(value & 0x80);	
+}
+

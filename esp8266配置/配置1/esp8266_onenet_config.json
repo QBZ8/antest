@@ -1,0 +1,27 @@
+{
+  "ssid": "moshaoyu",
+  "pwd": "QBZ2670380792",
+  "baudRate": "115200",
+  "productId": "c72VG1b5n6",
+  "deviceName": "stm32",
+  "deviceKey": "T1lpSXp6U1dzSjBrcjNZZ3c5Y1RmVXpmeUY2Qk5TNUw=",
+  "tokenDate": "2027-04-01T16:10",
+  "msgId": "123",
+  "params": [
+    {
+      "key": "IsBusy",
+      "val": "true",
+      "type": "bool"
+    },
+    {
+      "key": "Time",
+      "val": "123456",
+      "type": "int"
+    },
+    {
+      "key": "Money",
+      "val": "12.256",
+      "type": "float"
+    }
+  ]
+}

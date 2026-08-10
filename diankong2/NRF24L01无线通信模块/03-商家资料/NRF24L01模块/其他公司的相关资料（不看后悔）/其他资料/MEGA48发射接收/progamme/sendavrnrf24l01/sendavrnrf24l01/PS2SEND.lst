@@ -1,0 +1,1525 @@
+__start:
+__text_start:
+    003F EFCF      LDI	R28,0xFF
+    0040 E0D2      LDI	R29,2
+    0041 BFCD      OUT	0x3D,R28
+    0042 BFDE      OUT	0x3E,R29
+    0043 51C0      SUBI	R28,0x10
+    0044 40D0      SBCI	R29,0
+    0045 EA0A      LDI	R16,0xAA
+    0046 8308      STD	Y+0,R16
+    0047 2400      CLR	R0
+    0048 E4E9      LDI	R30,0x49
+    0049 E0F1      LDI	R31,1
+    004A E011      LDI	R17,1
+    004B 36E5      CPI	R30,0x65
+    004C 07F1      CPC	R31,R17
+    004D F011      BEQ	0x0050
+    004E 9201      ST	R0,Z+
+    004F CFFB      RJMP	0x004B
+    0050 8300      STD	Z+0,R16
+    0051 E3E4      LDI	R30,0x34
+    0052 E0F0      LDI	R31,0
+    0053 E0A0      LDI	R26,0
+    0054 E0B1      LDI	R27,1
+    0055 E010      LDI	R17,0
+    0056 37ED      CPI	R30,0x7D
+    0057 07F1      CPC	R31,R17
+    0058 F021      BEQ	0x005D
+    0059 95C8      LPM
+    005A 9631      ADIW	R30,1
+    005B 920D      ST	R0,X+
+    005C CFF9      RJMP	0x0056
+    005D D001      RCALL	_main
+_exit:
+    005E CFFF      RJMP	_exit
+_main:
+  Get_SO               --> R20
+    005F 9721      SBIW	R28,1
+FILE: E:\项目\PS2无~1\progamme\sendavrnrf24l01\sendavrnrf24l01\main.c
+(0001) //ICC-AVR application builder : 2006-02-12 14:00:00
+(0002) // Target : ATmega48
+(0003) // Crystal: 8.000Mhz
+(0004) // Author:  jackyan
+(0005) // Oled Type : white
+(0006) //#define fosc 8000000
+(0007) //#define baud 9600
+(0008) #include "iom48v.h"
+(0009) #include "macros.h"
+(0010) #include "defs.h"
+(0011) /*-----------------------------------------------------------------------------
+(0012)    Global Defines
+(0013) ------------------------------------------------------------------------------*/
+(0014) unsigned char   key_debug;
+(0015) unsigned char 	Buffer[]={
+(0016) 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+(0017) 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+(0018) 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+(0019) 0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,0X00,
+(0020) };
+(0021) #define TX_ADR_WIDTH    5   // 5 bytes TX(RX) address width
+(0022) #define TX_PLOAD_WIDTH  20  // 16 bytes TX payload
+(0023) unsigned char TX_ADDRESS[TX_ADR_WIDTH]  = {0x34,0x43,0x10,0x10,0x01}; // Define a static TX address
+(0024) void init_CPU (void);
+(0025) void delayms(unsigned short	dly);//当dly=1时，延时的时间是1ms  4MHz晶震
+(0026) void INIT_io(void);
+(0027) void RX_Mode(void);
+(0028) void TX_Mode(void);
+(0029) void delay(void);
+(0030) unsigned char SPI_Write_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes);
+(0031) unsigned char SPI_Read_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes);
+(0032) unsigned char SPI_RW_Reg(unsigned char reg, unsigned char value);
+(0033) unsigned char SPI_Read(unsigned char reg);
+(0034) void clear_buf(unsigned char	*ptr,unsigned char number);
+(0035) unsigned char accept_flag=0;
+(0036) unsigned char send_flag=0;
+(0037) unsigned int accept_time=0;
+(0038) void nrf24l01init(void);
+(0039) void timer0_init(void);
+(0040) //****************************************************************//
+(0041) // SPI(nRF24L01) commands
+(0042) #define READ_REG        0x00  // Define read command to register
+(0043) #define WRITE_REG       0x20  // Define write command to register
+(0044) #define RD_RX_PLOAD     0x61  // Define RX payload register address
+(0045) #define WR_TX_PLOAD     0xA0  // Define TX payload register address
+(0046) #define FLUSH_TX        0xE1  // Define flush TX register command
+(0047) #define FLUSH_RX        0xE2  // Define flush RX register command
+(0048) #define REUSE_TX_PL     0xE3  // Define reuse TX payload register command
+(0049) //#define NOP             0xFF  // Define No Operation, might be used to read status register
+(0050) //***************************************************//
+(0051) // SPI(nRF24L01) registers(addresses)
+(0052) #define CONFIG          0x00  // 'Config' register address
+(0053) #define EN_AA           0x01  // 'Enable Auto Acknowledgment' register address
+(0054) #define EN_RXADDR       0x02  // 'Enabled RX addresses' register address
+(0055) #define SETUP_AW        0x03  // 'Setup address width' register address
+(0056) #define SETUP_RETR      0x04  // 'Setup Auto. Retrans' register address
+(0057) #define RF_CH           0x05  // 'RF channel' register address
+(0058) #define RF_SETUP        0x06  // 'RF setup' register address
+(0059) #define STATUS          0x07  // 'Status' register address
+(0060) #define OBSERVE_TX      0x08  // 'Observe TX' register address
+(0061) #define CD              0x09  // 'Carrier Detect' register address
+(0062) #define RX_ADDR_P0      0x0A  // 'RX address pipe0' register address
+(0063) #define RX_ADDR_P1      0x0B  // 'RX address pipe1' register address
+(0064) #define RX_ADDR_P2      0x0C  // 'RX address pipe2' register address
+(0065) #define RX_ADDR_P3      0x0D  // 'RX address pipe3' register address
+(0066) #define RX_ADDR_P4      0x0E  // 'RX address pipe4' register address
+(0067) #define RX_ADDR_P5      0x0F  // 'RX address pipe5' register address
+(0068) #define TX_ADDR         0x10  // 'TX address' register address
+(0069) #define RX_PW_P0        0x11  // 'RX payload width, pipe0' register address
+(0070) #define RX_PW_P1        0x12  // 'RX payload width, pipe1' register address
+(0071) #define RX_PW_P2        0x13  // 'RX payload width, pipe2' register address
+(0072) #define RX_PW_P3        0x14  // 'RX payload width, pipe3' register address
+(0073) #define RX_PW_P4        0x15  // 'RX payload width, pipe4' register address
+(0074) #define RX_PW_P5        0x16  // 'RX payload width, pipe5' register address
+(0075) #define FIFO_STATUS     0x17  // 'FIFO Status Register' register address
+(0076) #define MAX_RT  	0x10  // Max #of TX retrans interrupt
+(0077) #define TX_DS   	0x20  // TX data sent interrupt
+(0078) #define RX_DR   	0x40  // RX data received
+(0079) //-----------------------------------------------------------------------------
+(0080) //------------------------------------------------------
+(0081) unsigned char t20ms;
+(0082) #define BIT(x)	           (1 << (x))
+(0083) #define SETBIT(x, y)   	   (x |= y)
+(0084) #define CLEARBIT(x, y) 	   (x &= ~y)
+(0085) #define CHECKBIT(x, y) 	   (x & y)
+(0086) #define BIT7 0x80
+(0087) #define BIT6 0x40
+(0088) #define BIT5 0x20
+(0089) #define BIT4 0x10
+(0090) #define BIT3 0x08
+(0091) #define BIT2 0x04
+(0092) #define BIT1 0x02
+(0093) #define BIT0 0x01
+(0094) #define nRF24L01_CSN        BIT6
+(0095) #define nRF24L01_SCK        BIT7
+(0096) #define nRF24L01_MOSI       BIT0
+(0097) #define nRF24L01_CE         BIT5   
+(0098) #define nRF24L01_MISO 	    BIT1
+(0099) #define nRF24L01_IRQ  	    BIT2
+(0100) #define nRF24L01_CSNH       SETBIT(PORTD, nRF24L01_CSN)     
+(0101) #define nRF24L01_CSNL       CLEARBIT(PORTD, nRF24L01_CSN)   
+(0102) 
+(0103) #define nRF24L01_CSN_DIR    SETBIT(DDRD, nRF24L01_CSN)  //OUTPUT
+(0104) 
+(0105) #define nRF24L01_SCKH       SETBIT(PORTD,nRF24L01_SCK)      
+(0106) #define nRF24L01_SCKL       CLEARBIT(PORTD,nRF24L01_SCK)    
+(0107) #define nRF24L01_SCK_DIR   SETBIT(DDRD,nRF24L01_SCK)  //OUTPUT
+(0108)  
+(0109) #define nRF24L01_MOSIH      SETBIT(PORTB,nRF24L01_MOSI)     
+(0110) #define nRF24L01_MOSIL	    CLEARBIT(PORTB,nRF24L01_MOSI)   
+(0111) #define nRF24L01_MOSI_DIR   SETBIT(DDRB,nRF24L01_MOSI)
+(0112) 
+(0113) #define nRF24L01_CEH        SETBIT(PORTD,nRF24L01_CE)  //OUTPUT   
+(0114) #define nRF24L01_CEL        CLEARBIT(PORTD,nRF24L01_CE)
+(0115) #define nRF24L01_CE_DIR     SETBIT(DDRD,nRF24L01_CE)
+(0116) 
+(0117) #define nRF24L01_IRQ_DIR     CLEARBIT(DDRB,nRF24L01_IRQ) //INPUT
+(0118) 
+(0119) #define nRF24L01_MISO_DIR    CLEARBIT(DDRB,nRF24L01_MISO) //INPUT
+(0120) #define key1 	BIT4
+(0121) #define key2 	BIT3
+(0122) #define key3 	BIT2
+(0123) #define key4 	BIT5
+(0124) #define key5 	BIT4
+(0125) #define key6 	BIT3
+(0126) #define key7 	BIT2
+(0127) #define key8 	BIT1
+(0128) #define 	bit20ms 					BIT0
+(0129) unsigned char flag;
+(0130) unsigned char key1_pulse;
+(0131) unsigned char key2_pulse;
+(0132) unsigned char key3_pulse;
+(0133) unsigned char key4_pulse;
+(0134) unsigned char key5_pulse;
+(0135) unsigned char key6_pulse;
+(0136) unsigned char key7_pulse;
+(0137) unsigned char key8_pulse;
+(0138) unsigned char key1_flag;
+(0139) unsigned char key2_flag;
+(0140) unsigned char key3_flag;
+(0141) unsigned char key4_flag;
+(0142) unsigned char key5_flag;
+(0143) unsigned char key6_flag;
+(0144) unsigned char key7_flag;
+(0145) unsigned char key8_flag;
+(0146) unsigned char key8_long_flag;
+(0147) unsigned char send_flag;
+(0148) unsigned char key1_time;
+(0149) unsigned char key2_time;
+(0150) unsigned char key3_time;
+(0151) unsigned char key4_time;
+(0152) unsigned char key5_time;
+(0153) unsigned char key6_time;
+(0154) unsigned char key7_time;
+(0155) unsigned char key8_time;
+(0156) //-----------------------------------------------------------------------------
+(0157) void main(void)
+(0158) {
+(0159)  	unsigned char Get_SO=0;
+    0060 2744      CLR	R20
+(0160)     CLI();                   /* global interrupt disable */
+    0061 94F8      BCLR	7
+(0161)     init_CPU ();
+    0062 D08D      RCALL	_init_CPU
+(0162)     delayms(100);	//延时10ms*10=100ms
+    0063 E604      LDI	R16,0x64
+    0064 E010      LDI	R17,0
+    0065 D0B2      RCALL	_delayms
+(0163)     delayms(100);	//延时10ms*10=100ms
+    0066 E604      LDI	R16,0x64
+    0067 E010      LDI	R17,0
+    0068 D0AF      RCALL	_delayms
+(0164) 	timer0_init();
+    0069 D170      RCALL	_timer0_init
+(0165) 	RX_Mode();
+    006A D125      RCALL	_RX_Mode
+(0166) 	SEI();
+    006B 9478      BSET	7
+    006C C079      RJMP	0x00E6
+(0167) 	while(1)
+(0168) 	{		
+(0169) 		//	if(!(PINB& 0x01))
+(0170) 		WDR();
+    006D 95A8      WDR
+(0171) 		if(!(PINB& nRF24L01_IRQ))
+    006E 991A      SBIC	0x03,2
+    006F C022      RJMP	0x0092
+(0172) 		{//nRF24L01 接收数据
+(0173) 			key_debug=SPI_Read(STATUS);			// read register STATUS's value
+    0070 E007      LDI	R16,7
+    0071 D0DE      RCALL	_SPI_Read
+    0072 93000164  STS	key_debug,R16
+(0174) 			if(key_debug&RX_DR)					// if renRF24L01_CEive data ready (RX_DR) interrupt
+    0074 FF06      SBRS	R16,6
+    0075 C006      RJMP	0x007C
+(0175) 				SPI_Read_Buf(RD_RX_PLOAD,Buffer,TX_PLOAD_WIDTH);// read renRF24L01_CEive payload from RX_FIFO buffer
+    0076 E184      LDI	R24,0x14
+    0077 8388      STD	Y+0,R24
+    0078 E020      LDI	R18,0
+    0079 E031      LDI	R19,1
+    007A E601      LDI	R16,0x61
+    007B D0E2      RCALL	_SPI_Read_Buf
+(0176) 			if(key_debug&MAX_RT) SPI_RW_Reg(FLUSH_TX,0);
+    007C 90200164  LDS	R2,key_debug
+    007E FE24      SBRS	R2,4
+    007F C003      RJMP	0x0083
+    0080 2722      CLR	R18
+    0081 EE01      LDI	R16,0xE1
+    0082 D0BE      RCALL	_SPI_RW_Reg
+(0177) 			SPI_RW_Reg(WRITE_REG+STATUS,0xff);// clear RX_DR or TX_DS or MAX_RT interrupt flag
+    0083 EF2F      LDI	R18,0xFF
+    0084 E207      LDI	R16,0x27
+    0085 D0BB      RCALL	_SPI_RW_Reg
+(0178) 			RX_Mode();
+    0086 D109      RCALL	_RX_Mode
+(0179) 			if((Buffer[0]==80)&&(Buffer[1]==01))//data accept
+    0087 91800100  LDS	R24,Buffer
+    0089 3580      CPI	R24,0x50
+    008A F439      BNE	0x0092
+    008B 91800101  LDS	R24,Buffer+1
+    008D 3081      CPI	R24,1
+    008E F419      BNE	0x0092
+(0180) 			{
+(0181) 			 	accept_flag=1;
+    008F E081      LDI	R24,1
+    0090 93800145  STS	accept_flag,R24
+(0182) 			}
+(0183) 		}
+(0184) 		if(send_flag==1)//data send
+    0092 91800146  LDS	R24,send_flag
+    0094 3081      CPI	R24,1
+    0095 F481      BNE	0x00A6
+(0185) 		{
+(0186) 		 		Buffer[0]=80;
+    0096 E580      LDI	R24,0x50
+    0097 93800100  STS	Buffer,R24
+(0187) 				Buffer[1]=02;
+    0099 E082      LDI	R24,2
+    009A 93800101  STS	Buffer+1,R24
+(0188) 				TX_Mode();			// set TX Mode and transmitting
+    009C D112      RCALL	_TX_Mode
+(0189) 				delayms(100);
+    009D E604      LDI	R16,0x64
+    009E E010      LDI	R17,0
+    009F D078      RCALL	_delayms
+(0190) 				RX_Mode();
+    00A0 D0EF      RCALL	_RX_Mode
+(0191) 				Buffer[0]=00;
+    00A1 2422      CLR	R2
+    00A2 92200100  STS	Buffer,R2
+(0192) 				Buffer[1]=00;
+    00A4 92200101  STS	Buffer+1,R2
+(0193) 		}
+(0194) //========================================数据一直发送
+(0195) 		if(key8_long_flag==1)//data send
+    00A6 91800151  LDS	R24,key8_long_flag
+    00A8 3081      CPI	R24,1
+    00A9 F481      BNE	0x00BA
+(0196) 		{
+(0197) 		 		Buffer[0]=80;
+    00AA E580      LDI	R24,0x50
+    00AB 93800100  STS	Buffer,R24
+(0198) 				Buffer[1]=02;
+    00AD E082      LDI	R24,2
+    00AE 93800101  STS	Buffer+1,R24
+(0199) 				TX_Mode();			// set TX Mode and transmitting
+    00B0 D0FE      RCALL	_TX_Mode
+(0200) 				delayms(100);
+    00B1 E604      LDI	R16,0x64
+    00B2 E010      LDI	R17,0
+    00B3 D064      RCALL	_delayms
+(0201) 				RX_Mode();
+    00B4 D0DB      RCALL	_RX_Mode
+(0202) 				Buffer[0]=00;
+    00B5 2422      CLR	R2
+    00B6 92200100  STS	Buffer,R2
+(0203) 				Buffer[1]=00;
+    00B8 92200101  STS	Buffer+1,R2
+(0204) 		}
+(0205) //========================================数据一直发送
+(0206) 		if(send_flag==1)
+    00BA 91800146  LDS	R24,send_flag
+    00BC 3081      CPI	R24,1
+    00BD F4D1      BNE	0x00D8
+(0207) 		{
+(0208) 		   accept_time++;
+    00BE 91800147  LDS	R24,accept_time
+    00C0 91900148  LDS	R25,accept_time+1
+    00C2 9601      ADIW	R24,1
+    00C3 93900148  STS	accept_time+1,R25
+    00C5 93800147  STS	accept_time,R24
+(0209) 		   if(accept_time>30)
+    00C7 E18E      LDI	R24,0x1E
+    00C8 E090      LDI	R25,0
+    00C9 90200147  LDS	R2,accept_time
+    00CB 90300148  LDS	R3,accept_time+1
+    00CD 1582      CP	R24,R2
+    00CE 0593      CPC	R25,R3
+    00CF F440      BCC	0x00D8
+(0210) 		   {
+(0211) 		   	 send_flag=0;
+    00D0 2422      CLR	R2
+    00D1 92200146  STS	send_flag,R2
+(0212) 			 accept_time=0;
+    00D3 2433      CLR	R3
+    00D4 92300148  STS	accept_time+1,R3
+    00D6 92200147  STS	accept_time,R2
+(0213) 		   }
+(0214) 		}
+(0215) 		if(accept_flag==1)
+    00D8 91800145  LDS	R24,accept_flag
+    00DA 3081      CPI	R24,1
+    00DB F451      BNE	0x00E6
+(0216) 		{
+(0217) 		    accept_flag=0;
+    00DC 2422      CLR	R2
+    00DD 92200145  STS	accept_flag,R2
+(0218)     	 	PORTB = 0x80;
+    00DF E880      LDI	R24,0x80
+    00E0 B985      OUT	0x05,R24
+(0219) 		    delayms(5000);	//延时10ms*10=100ms
+    00E1 E808      LDI	R16,0x88
+    00E2 E113      LDI	R17,0x13
+    00E3 D034      RCALL	_delayms
+(0220) 		    PORTB = 0x00;
+    00E4 2422      CLR	R2
+    00E5 B825      OUT	0x05,R2
+    00E6 CF86      RJMP	0x006D
+    00E7 9621      ADIW	R28,1
+    00E8 9508      RET
+(0221) 		}
+(0222) 	}
+(0223) 
+(0224) 
+(0225) }
+(0226) void nrf24l01init(void)
+(0227) {
+(0228)  	 nRF24L01_IRQ_DIR;
+_nrf24l01init:
+    00E9 9822      CBI	0x04,2
+(0229) 	 nRF24L01_MISO_DIR;
+    00EA 9821      CBI	0x04,1
+(0230) 	 nRF24L01_CE_DIR;
+    00EB 9A55      SBI	0x0A,5
+(0231) 	 nRF24L01_SCK_DIR;
+    00EC 9A57      SBI	0x0A,7
+(0232) 	 nRF24L01_CSN_DIR;
+    00ED 9A56      SBI	0x0A,6
+(0233) 	 nRF24L01_MOSI_DIR;
+    00EE 9A20      SBI	0x04,0
+    00EF 9508      RET
+(0234) }
+(0235) /*-----------------------------------------------------------------------------
+(0236)    Module:   init_CPU
+(0237)    Function: Initialization of CPU
+(0238) ------------------------------------------------------------------------------*/
+(0239) void init_CPU (void)
+(0240) {
+(0241)  	MCUCR = 0x00;	// 
+_init_CPU:
+    00F0 2422      CLR	R2
+    00F1 BE25      OUT	0x35,R2
+(0242) 	EICRA = 0x00; //extended ext ints
+    00F2 92200069  STS	0x69,R2
+(0243)     EIMSK = 0x00;
+    00F4 BA2D      OUT	0x1D,R2
+(0244) 	 
+(0245) 	TIMSK0 = 0x01; //timer 0 interrupt sources
+    00F5 E081      LDI	R24,1
+    00F6 9380006E  STS	0x6E,R24
+(0246) 	TIMSK1 = 0x00; //timer 1 interrupt sources
+    00F8 9220006F  STS	0x6F,R2
+(0247) 	TIMSK2 = 0x00; //timer 2 interrupt sources
+    00FA 92200070  STS	0x70,R2
+(0248) 	 CLI(); //disable all interrupts
+    00FC 94F8      BCLR	7
+(0249) 	 NOP();
+    00FD 0000      NOP
+(0250) 	PORTB = 0x01;
+    00FE B985      OUT	0x05,R24
+(0251)  	DDRB  = 0xf3;
+    00FF EF83      LDI	R24,0xF3
+    0100 B984      OUT	0x04,R24
+(0252) 	PORTD = 0x80;
+    0101 E880      LDI	R24,0x80
+    0102 B98B      OUT	0x0B,R24
+(0253) 	DDRD  = 0xE3;
+    0103 EE83      LDI	R24,0xE3
+    0104 B98A      OUT	0x0A,R24
+(0254) 	PORTC = 0x80;
+    0105 E880      LDI	R24,0x80
+    0106 B988      OUT	0x08,R24
+(0255) 	DDRC  = 0x40;
+    0107 E480      LDI	R24,0x40
+    0108 B987      OUT	0x07,R24
+(0256) 	nrf24l01init();
+    0109 DFDF      RCALL	_nrf24l01init
+(0257)     nRF24L01_CEL;
+    010A 985D      CBI	0x0B,5
+(0258) 	delay();
+    010B D005      RCALL	_delay
+(0259) 	nRF24L01_CSNH;			// Spi disable
+    010C 9A5E      SBI	0x0B,6
+(0260) 	delay();
+    010D D003      RCALL	_delay
+(0261) 	nRF24L01_SCKL;	
+    010E 985F      CBI	0x0B,7
+(0262) 	delay();
+    010F D001      RCALL	_delay
+    0110 9508      RET
+(0263) }
+(0264) void delay(void)//
+(0265) {
+(0266) 	NOP();
+_delay:
+    0111 0000      NOP
+(0267) 	NOP();
+    0112 0000      NOP
+(0268) 	NOP();
+    0113 0000      NOP
+(0269) 	NOP();
+    0114 0000      NOP
+(0270) 	NOP();
+    0115 0000      NOP
+(0271) 	NOP();
+    0116 0000      NOP
+    0117 9508      RET
+(0272) }
+(0273) void delayms(unsigned short	dly)//
+(0274) {
+(0275) 	for(;dly>0;dly--) ;
+_delayms:
+  dly                  --> R16
+    0118 C002      RJMP	0x011B
+    0119 5001      SUBI	R16,1
+    011A 4010      SBCI	R17,0
+    011B 3000      CPI	R16,0
+    011C 0701      CPC	R16,R17
+    011D F7D9      BNE	0x0119
+    011E 9508      RET
+(0276) }
+(0277) 
+(0278) void clear_buf(unsigned char	*ptr,unsigned char number)//清零buffer,指定字节个数
+(0279) {
+(0280) 	for (;number>0;number--) *ptr++=0;
+_clear_buf:
+  number               --> R18
+  ptr                  --> R16
+    011F C005      RJMP	0x0125
+    0120 2422      CLR	R2
+    0121 01F8      MOVW	R30,R16
+    0122 9221      ST	R2,Z+
+    0123 018F      MOVW	R16,R30
+    0124 952A      DEC	R18
+    0125 2422      CLR	R2
+    0126 1622      CP	R2,R18
+    0127 F3C0      BCS	0x0120
+    0128 9508      RET
+_SPI_RW:
+  bit_ctr              --> R20
+  byte                 --> R22
+    0129 D2DD      RCALL	push_gset2
+    012A 2F60      MOV	R22,R16
+(0281) }
+(0282) //------------------------------------------------------
+(0283) /**************************************************
+(0284) Function: SPI_RW();
+(0285) 
+(0286) Description:
+(0287)   Writes one byte to nRF24L01, and return the byte read
+(0288)   from nRF24L01 during write, according to SPI protocol  */
+(0289) /**************************************************/
+(0290) unsigned char SPI_RW(unsigned char byte)
+(0291) {
+(0292) 	unsigned char  bit_ctr;	
+(0293)    	for(bit_ctr=0;bit_ctr<8;bit_ctr++)   	// output 8-bit
+    012B 2744      CLR	R20
+    012C C00F      RJMP	0x013C
+(0294)    	{
+(0295)    		if(byte & 0x80) 
+    012D FF67      SBRS	R22,7
+    012E C002      RJMP	0x0131
+(0296)    			nRF24L01_MOSIH;
+    012F 9A28      SBI	0x05,0
+    0130 C001      RJMP	0x0132
+(0297)    		else 
+(0298)    			nRF24L01_MOSIL;
+    0131 9828      CBI	0x05,0
+(0299) 		delay();
+    0132 DFDE      RCALL	_delay
+(0300)    		byte = (byte << 1);           		// shift next bit into MSB..
+    0133 0F66      LSL	R22
+(0301)    		nRF24L01_SCKH;
+    0134 9A5F      SBI	0x0B,7
+(0302) 		delay();
+    0135 DFDB      RCALL	_delay
+(0303)  		if(PINB&nRF24L01_MISO) byte |= 1;
+    0136 9B19      SBIS	0x03,1
+    0137 C001      RJMP	0x0139
+    0138 6061      ORI	R22,1
+(0304)    		nRF24L01_SCKL;
+    0139 985F      CBI	0x0B,7
+(0305) 		delay();
+    013A DFD6      RCALL	_delay
+    013B 9543      INC	R20
+    013C 3048      CPI	R20,0x8
+    013D F378      BCS	0x012D
+(0306)    	}
+(0307)     return(byte);           		  		// return read byte
+    013E 2F06      MOV	R16,R22
+    013F D2BD      RCALL	pop_gset2
+    0140 9508      RET
+_SPI_RW_Reg:
+  status               --> R20
+  value                --> R22
+  reg                  --> R20
+    0141 D2C5      RCALL	push_gset2
+    0142 2F62      MOV	R22,R18
+    0143 2F40      MOV	R20,R16
+(0308) }
+(0309) /**************************************************
+(0310) Function: SPI_RW_Reg();
+(0311) 
+(0312) Description:
+(0313)   Writes value 'value' to register 'reg' */
+(0314) /**************************************************/
+(0315) unsigned char SPI_RW_Reg(unsigned char reg, unsigned char value)
+(0316) {
+(0317) 	unsigned char status;
+(0318) 	nRF24L01_CSNL;
+    0144 985E      CBI	0x0B,6
+(0319) 	delay();
+    0145 DFCB      RCALL	_delay
+(0320) 	status = SPI_RW(reg);      // select register
+    0146 2F04      MOV	R16,R20
+    0147 DFE1      RCALL	_SPI_RW
+    0148 2F40      MOV	R20,R16
+(0321)   	SPI_RW(value);             // ..and write value to it..
+    0149 2F06      MOV	R16,R22
+    014A DFDE      RCALL	_SPI_RW
+(0322) 	nRF24L01_CSNH;
+    014B 9A5E      SBI	0x0B,6
+(0323) 	delay();
+    014C DFC4      RCALL	_delay
+(0324)   	return(status);            // return nRF24L01 status byte
+    014D 2F04      MOV	R16,R20
+    014E D2AE      RCALL	pop_gset2
+    014F 9508      RET
+_SPI_Read:
+  reg_val              --> R20
+  reg                  --> R20
+    0150 D2B8      RCALL	push_gset1
+    0151 2F40      MOV	R20,R16
+(0325) }
+(0326) /**************************************************
+(0327) Function: SPI_Read();
+(0328) 
+(0329) Description:
+(0330)   Read one byte from nRF24L01 register, 'reg'  */
+(0331) /**************************************************/
+(0332) unsigned char SPI_Read(unsigned char reg)
+(0333) {
+(0334) 	unsigned char reg_val;
+(0335) 	nRF24L01_CSNL;
+    0152 985E      CBI	0x0B,6
+(0336) 	delay();
+    0153 DFBD      RCALL	_delay
+(0337)   	SPI_RW(reg);            // Select register to read from..
+    0154 2F04      MOV	R16,R20
+    0155 DFD3      RCALL	_SPI_RW
+(0338)   	reg_val = SPI_RW(0);    // ..then read registervalue
+    0156 2700      CLR	R16
+    0157 DFD1      RCALL	_SPI_RW
+    0158 2F40      MOV	R20,R16
+(0339) 	nRF24L01_CSNH;
+    0159 9A5E      SBI	0x0B,6
+(0340) 	delay();
+    015A DFB6      RCALL	_delay
+(0341)   	return(reg_val);        // return register value
+    015B 2F04      MOV	R16,R20
+    015C D2AF      RCALL	pop_gset1
+    015D 9508      RET
+_SPI_Read_Buf:
+  status               --> R20
+  byte_ctr             --> R22
+  bytes                --> R10
+  pBuf                 --> R12
+  reg                  --> R20
+    015E D2A4      RCALL	push_gset4
+    015F 0169      MOVW	R12,R18
+    0160 2F40      MOV	R20,R16
+    0161 84A8      LDD	R10,Y+8
+(0342) }
+(0343) /**************************************************
+(0344) Function: SPI_Read_Buf();
+(0345) 
+(0346) Description:
+(0347)   Reads 'bytes' #of bytes from register 'reg'
+(0348)   Typically used to read RX payload, Rx/Tx address */
+(0349) /**************************************************/
+(0350) unsigned char SPI_Read_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes)
+(0351) {
+(0352) 	unsigned char status,byte_ctr;
+(0353) 	nRF24L01_CSNL;
+    0162 985E      CBI	0x0B,6
+(0354) 	delay();
+    0163 DFAD      RCALL	_delay
+(0355)   	status = SPI_RW(reg);       		// Select register to write to and read status byte
+    0164 2F04      MOV	R16,R20
+    0165 DFC3      RCALL	_SPI_RW
+    0166 2F40      MOV	R20,R16
+(0356) 	for(byte_ctr=0;byte_ctr<bytes;byte_ctr++)
+    0167 2766      CLR	R22
+    0168 C008      RJMP	0x0171
+(0357)     	pBuf[byte_ctr] = SPI_RW(0);    // Perform SPI_RW to read byte from nRF24L01
+    0169 2700      CLR	R16
+    016A DFBE      RCALL	_SPI_RW
+    016B 2FE6      MOV	R30,R22
+    016C 27FF      CLR	R31
+    016D 0DEC      ADD	R30,R12
+    016E 1DFD      ADC	R31,R13
+    016F 8300      STD	Z+0,R16
+    0170 9563      INC	R22
+    0171 156A      CP	R22,R10
+    0172 F3B0      BCS	0x0169
+(0358) 	nRF24L01_CSNH;
+    0173 9A5E      SBI	0x0B,6
+(0359) 	delay();
+    0174 DF9C      RCALL	_delay
+(0360)   	return(status);                    // return nRF24L01 status byte
+    0175 2F04      MOV	R16,R20
+    0176 D288      RCALL	pop_gset4
+    0177 9508      RET
+_SPI_Write_Buf:
+  status               --> R20
+  byte_ctr             --> R22
+  bytes                --> R10
+  pBuf                 --> R12
+  reg                  --> R20
+    0178 D28A      RCALL	push_gset4
+    0179 0169      MOVW	R12,R18
+    017A 2F40      MOV	R20,R16
+    017B 84A8      LDD	R10,Y+8
+(0361) }
+(0362) /**************************************************
+(0363) Function: SPI_Write_Buf();
+(0364) 
+(0365) Description:
+(0366)   Writes contents of buffer '*pBuf' to nRF24L01
+(0367)   Typically used to write TX payload, Rx/Tx address */
+(0368) /**************************************************/
+(0369) unsigned char SPI_Write_Buf(unsigned char reg, unsigned char *pBuf, unsigned char bytes)
+(0370) {
+(0371) 	unsigned char status,byte_ctr;
+(0372) 	nRF24L01_CSNL;                   		// Set nRF24L01_CSN low, init SPI tranaction
+    017C 985E      CBI	0x0B,6
+(0373)   	delay();
+    017D DF93      RCALL	_delay
+(0374) 	status = SPI_RW(reg);    					// Select register to write to and read status byte
+    017E 2F04      MOV	R16,R20
+    017F DFA9      RCALL	_SPI_RW
+    0180 2F40      MOV	R20,R16
+(0375)   	for(byte_ctr=0; byte_ctr<bytes; byte_ctr++) // then write all byte in buffer(*pBuf)
+    0181 2766      CLR	R22
+    0182 C006      RJMP	0x0189
+(0376)     	status = SPI_RW(*pBuf++);            
+    0183 01F6      MOVW	R30,R12
+    0184 9101      LD	R16,Z+
+    0185 016F      MOVW	R12,R30
+    0186 DFA2      RCALL	_SPI_RW
+    0187 2F40      MOV	R20,R16
+    0188 9563      INC	R22
+    0189 156A      CP	R22,R10
+    018A F3C0      BCS	0x0183
+(0377) 	nRF24L01_CSNH; 								// Set nRF24L01_CSN high again
+    018B 9A5E      SBI	0x0B,6
+(0378) 	delay();
+    018C DF84      RCALL	_delay
+(0379)   	return(status);          					// return nRF24L01 status byte
+    018D 2F04      MOV	R16,R20
+    018E D270      RCALL	pop_gset4
+    018F 9508      RET
+_RX_Mode:
+    0190 9721      SBIW	R28,1
+(0380) }
+(0381) /**************************************************
+(0382) Function: RX_Mode();
+(0383) 
+(0384) Description:
+(0385)   This function initializes one nRF24L01 device to
+(0386)   RX Mode, set RX address, writes RX payload width,
+(0387)   select RF channel, datarate & LNA HCURR.
+(0388)   After init, CE is toggled high, which means that
+(0389)   this device is now ready to receive a datapacket. */
+(0390) /**************************************************/
+(0391) void RX_Mode(void)
+(0392) {
+(0393) 	nRF24L01_CEL;
+    0191 985D      CBI	0x0B,5
+(0394) 	delay();
+    0192 DF7E      RCALL	_delay
+(0395)   	SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, TX_ADDRESS, TX_ADR_WIDTH); // Use the same address on the RX device as the TX device
+    0193 E085      LDI	R24,5
+    0194 8388      STD	Y+0,R24
+    0195 E420      LDI	R18,0x40
+    0196 E031      LDI	R19,1
+    0197 E20A      LDI	R16,0x2A
+    0198 DFDF      RCALL	_SPI_Write_Buf
+(0396) 
+(0397)   	SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      // Enable Auto.Ack:Pipe0
+    0199 E021      LDI	R18,1
+    019A E201      LDI	R16,0x21
+    019B DFA5      RCALL	_SPI_RW_Reg
+(0398)   	SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  // Enable Pipe0
+    019C E021      LDI	R18,1
+    019D E202      LDI	R16,0x22
+    019E DFA2      RCALL	_SPI_RW_Reg
+(0399)   	SPI_RW_Reg(WRITE_REG + RF_CH, 40);        // Select RF channel 40
+    019F E228      LDI	R18,0x28
+    01A0 E205      LDI	R16,0x25
+    01A1 DF9F      RCALL	_SPI_RW_Reg
+(0400)   	SPI_RW_Reg(WRITE_REG + RX_PW_P0, TX_PLOAD_WIDTH); // Select same RX payload width as TX Payload width
+    01A2 E124      LDI	R18,0x14
+    01A3 E301      LDI	R16,0x31
+    01A4 DF9C      RCALL	_SPI_RW_Reg
+(0401)   	SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   // TX_PWR:0dBm, Datarate:2Mbps, LNA:HCURR
+    01A5 E027      LDI	R18,7
+    01A6 E206      LDI	R16,0x26
+    01A7 DF99      RCALL	_SPI_RW_Reg
+(0402)   	SPI_RW_Reg(WRITE_REG + CONFIG, 0x0f);     // Set PWR_UP bit, enable CRC(2 bytes) & Prim:RX. RX_DR enabled..
+    01A8 E02F      LDI	R18,0xF
+    01A9 E200      LDI	R16,0x20
+    01AA DF96      RCALL	_SPI_RW_Reg
+(0403)   	nRF24L01_CEH;
+    01AB 9A5D      SBI	0x0B,5
+(0404) 	delay();
+    01AC DF64      RCALL	_delay
+    01AD 9621      ADIW	R28,1
+    01AE 9508      RET
+_TX_Mode:
+    01AF 9721      SBIW	R28,1
+(0405) 	//  This device is now ready to receive one packet of 16 bytes payload from a TX device sending to address
+(0406)   //  '3443101001', with auto acknowledgment, retransmit count of 10, RF channel 40 and datarate = 2Mbps.
+(0407) 
+(0408) }
+(0409) /**************************************************/
+(0410) 
+(0411) /**************************************************
+(0412) Function: TX_Mode();
+(0413) 
+(0414) Description:
+(0415)   This function initializes one nRF24L01 device to
+(0416)   TX mode, set TX address, set RX address for auto.ack,
+(0417)   fill TX payload, select RF channel, datarate & TX pwr.
+(0418)   PWR_UP is set, CRC(2 bytes) is enabled, & PRIM:TX.
+(0419) 
+(0420)   ToDo: One high pulse(>10us) on CE will now send this
+(0421)   packet and expext an acknowledgment from the RX device. */
+(0422) /**************************************************/
+(0423) void TX_Mode(void)
+(0424) {
+(0425) 	nRF24L01_CEL;
+    01B0 985D      CBI	0x0B,5
+(0426) 	delay();
+    01B1 DF5F      RCALL	_delay
+(0427)   	SPI_Write_Buf(WRITE_REG + TX_ADDR, TX_ADDRESS, TX_ADR_WIDTH);    // Writes TX_Address to nRF24L01
+    01B2 E085      LDI	R24,5
+    01B3 8388      STD	Y+0,R24
+    01B4 E420      LDI	R18,0x40
+    01B5 E031      LDI	R19,1
+    01B6 E300      LDI	R16,0x30
+    01B7 DFC0      RCALL	_SPI_Write_Buf
+(0428)   	SPI_Write_Buf(WRITE_REG + RX_ADDR_P0, TX_ADDRESS, TX_ADR_WIDTH); // RX_Addr0 same as TX_Adr for Auto.Ack
+    01B8 E085      LDI	R24,5
+    01B9 8388      STD	Y+0,R24
+    01BA E420      LDI	R18,0x40
+    01BB E031      LDI	R19,1
+    01BC E20A      LDI	R16,0x2A
+    01BD DFBA      RCALL	_SPI_Write_Buf
+(0429)   	SPI_Write_Buf(WR_TX_PLOAD, Buffer, TX_PLOAD_WIDTH); // Writes data to TX payload
+    01BE E184      LDI	R24,0x14
+    01BF 8388      STD	Y+0,R24
+    01C0 E020      LDI	R18,0
+    01C1 E031      LDI	R19,1
+    01C2 EA00      LDI	R16,0xA0
+    01C3 DFB4      RCALL	_SPI_Write_Buf
+(0430) 
+(0431)   	SPI_RW_Reg(WRITE_REG + EN_AA, 0x01);      // Enable Auto.Ack:Pipe0
+    01C4 E021      LDI	R18,1
+    01C5 E201      LDI	R16,0x21
+    01C6 DF7A      RCALL	_SPI_RW_Reg
+(0432)   	SPI_RW_Reg(WRITE_REG + EN_RXADDR, 0x01);  // Enable Pipe0
+    01C7 E021      LDI	R18,1
+    01C8 E202      LDI	R16,0x22
+    01C9 DF77      RCALL	_SPI_RW_Reg
+(0433)   	SPI_RW_Reg(WRITE_REG + SETUP_RETR, 0x1a); // 500us + 86us, 10 retrans...
+    01CA E12A      LDI	R18,0x1A
+    01CB E204      LDI	R16,0x24
+    01CC DF74      RCALL	_SPI_RW_Reg
+(0434)   	SPI_RW_Reg(WRITE_REG + RF_CH, 40);        // Select RF channel 40
+    01CD E228      LDI	R18,0x28
+    01CE E205      LDI	R16,0x25
+    01CF DF71      RCALL	_SPI_RW_Reg
+(0435)   	SPI_RW_Reg(WRITE_REG + RF_SETUP, 0x07);   // TX_PWR:0dBm, Datarate:2Mbps, LNA:HCURR
+    01D0 E027      LDI	R18,7
+    01D1 E206      LDI	R16,0x26
+    01D2 DF6E      RCALL	_SPI_RW_Reg
+(0436)   	SPI_RW_Reg(WRITE_REG + CONFIG, 0x0e);     // Set PWR_UP bit, enable CRC(2 bytes) & Prim:TX. MAX_RT & TX_DS enabled..
+    01D3 E02E      LDI	R18,0xE
+    01D4 E200      LDI	R16,0x20
+    01D5 DF6B      RCALL	_SPI_RW_Reg
+(0437) 	nRF24L01_CEH;
+    01D6 9A5D      SBI	0x0B,5
+(0438) 	delay();
+    01D7 DF39      RCALL	_delay
+    01D8 9621      ADIW	R28,1
+    01D9 9508      RET
+(0439) 	
+(0440) }
+(0441) //------------------------------------------------------
+(0442) void timer0_init(void)
+(0443) {
+(0444)  TCCR0B = 0x00; //stop
+_timer0_init:
+    01DA 2422      CLR	R2
+    01DB BC25      OUT	0x25,R2
+(0445)  TCNT0 = 0x06; //set count
+    01DC E086      LDI	R24,6
+    01DD BD86      OUT	0x26,R24
+(0446)  TCCR0A = 0x00; 
+    01DE BC24      OUT	0x24,R2
+(0447)  TCCR0B = 0x02; //start timer
+    01DF E082      LDI	R24,2
+    01E0 BD85      OUT	0x25,R24
+    01E1 9508      RET
+_timer0_ovf_isr:
+    01E2 922A      ST	R2,-Y
+    01E3 923A      ST	R3,-Y
+    01E4 938A      ST	R24,-Y
+    01E5 939A      ST	R25,-Y
+    01E6 B62F      IN	R2,0x3F
+    01E7 922A      ST	R2,-Y
+(0448) }
+(0449) #pragma interrupt_handler timer0_ovf_isr:17
+(0450) void timer0_ovf_isr(void)		// 5ms
+(0451) {
+(0452) 
+(0453)  	TCNT0 = 0x06; //reload counter value
+    01E8 E086      LDI	R24,6
+    01E9 BD86      OUT	0x26,R24
+(0454) 
+(0455)  	if((--t20ms)==0)
+    01EA 91800163  LDS	R24,t20ms
+    01EC 5081      SUBI	R24,1
+    01ED 2E28      MOV	R2,R24
+    01EE 92200163  STS	t20ms,R2
+    01F0 2388      TST	R24
+    01F1 F009      BEQ	0x01F3
+    01F2 C203      RJMP	0x03F6
+(0456)  		{
+(0457) 	 	set(flag,bit20ms);
+    01F3 91800162  LDS	R24,flag
+    01F5 6081      ORI	R24,1
+    01F6 93800162  STS	flag,R24
+(0458) 		t20ms=t20msC;
+    01F8 E184      LDI	R24,0x14
+    01F9 93800163  STS	t20ms,R24
+(0459) 		if(PIND& key1)
+    01FB 9B4C      SBIS	0x09,4
+    01FC C009      RJMP	0x0206
+(0460) 		{
+(0461) 		 	key1_pulse<<=1;
+    01FD 90200161  LDS	R2,key1_pulse
+    01FF 0C22      LSL	R2
+    0200 92200161  STS	key1_pulse,R2
+(0462)     		key1_pulse&=0xfe;
+    0202 2D82      MOV	R24,R2
+    0203 7F8E      ANDI	R24,0xFE
+    0204 93800161  STS	key1_pulse,R24
+(0463) 		}
+(0464) 		if(!(PIND& key1))
+    0206 994C      SBIC	0x09,4
+    0207 C009      RJMP	0x0211
+(0465) 		{
+(0466) 			key1_pulse<<=1;
+    0208 90200161  LDS	R2,key1_pulse
+    020A 0C22      LSL	R2
+    020B 92200161  STS	key1_pulse,R2
+(0467)     		key1_pulse|=0x01;
+    020D 2D82      MOV	R24,R2
+    020E 6081      ORI	R24,1
+    020F 93800161  STS	key1_pulse,R24
+(0468) 		}
+(0469) 		if(key1_pulse==0x0f)
+    0211 91800161  LDS	R24,key1_pulse
+    0213 308F      CPI	R24,0xF
+    0214 F459      BNE	0x0220
+(0470) 		{
+(0471) 		 	key1_flag=1;
+    0215 E081      LDI	R24,1
+    0216 93800159  STS	key1_flag,R24
+(0472) 			send_flag=1;	
+    0218 93800146  STS	send_flag,R24
+(0473) 			accept_time=0;
+    021A 2422      CLR	R2
+    021B 2433      CLR	R3
+    021C 92300148  STS	accept_time+1,R3
+    021E 92200147  STS	accept_time,R2
+(0474) 		}
+(0475) 		if(key1_pulse==0xff)
+    0220 91800161  LDS	R24,key1_pulse
+    0222 3F8F      CPI	R24,0xFF
+    0223 F4B9      BNE	0x023B
+(0476) 		{
+(0477) 		    key1_time++;
+    0224 91800150  LDS	R24,key1_time
+    0226 5F8F      SUBI	R24,0xFF
+    0227 93800150  STS	key1_time,R24
+(0478) 			if(key1_time>10)
+    0229 E08A      LDI	R24,0xA
+    022A 90200150  LDS	R2,key1_time
+    022C 1582      CP	R24,R2
+    022D F468      BCC	0x023B
+(0479) 			{
+(0480) 			  key1_time=0;
+    022E 2422      CLR	R2
+    022F 92200150  STS	key1_time,R2
+(0481) 			  key1_flag=1;
+    0231 E081      LDI	R24,1
+    0232 93800159  STS	key1_flag,R24
+(0482) 			  send_flag=1;
+    0234 93800146  STS	send_flag,R24
+(0483) 			  accept_time=0;
+    0236 2433      CLR	R3
+    0237 92300148  STS	accept_time+1,R3
+    0239 92200147  STS	accept_time,R2
+(0484) 			}
+(0485) 		}
+(0486) 		if(PIND& key2)
+    023B 9B4B      SBIS	0x09,3
+    023C C009      RJMP	0x0246
+(0487) 		{
+(0488) 		 	key2_pulse<<=1;
+    023D 90200160  LDS	R2,key2_pulse
+    023F 0C22      LSL	R2
+    0240 92200160  STS	key2_pulse,R2
+(0489)     		key2_pulse&=0xfe;
+    0242 2D82      MOV	R24,R2
+    0243 7F8E      ANDI	R24,0xFE
+    0244 93800160  STS	key2_pulse,R24
+(0490) 		}
+(0491) 		if(!(PIND& key2))
+    0246 994B      SBIC	0x09,3
+    0247 C009      RJMP	0x0251
+(0492) 		{
+(0493) 			key2_pulse<<=1;
+    0248 90200160  LDS	R2,key2_pulse
+    024A 0C22      LSL	R2
+    024B 92200160  STS	key2_pulse,R2
+(0494)     		key2_pulse|=0x01;
+    024D 2D82      MOV	R24,R2
+    024E 6081      ORI	R24,1
+    024F 93800160  STS	key2_pulse,R24
+(0495) 		}
+(0496) 		if(key2_pulse==0x0f)
+    0251 91800160  LDS	R24,key2_pulse
+    0253 308F      CPI	R24,0xF
+    0254 F459      BNE	0x0260
+(0497) 		{
+(0498) 		 	key2_flag=1;
+    0255 E081      LDI	R24,1
+    0256 93800158  STS	key2_flag,R24
+(0499) 			send_flag=1;	
+    0258 93800146  STS	send_flag,R24
+(0500) 			accept_time=0;
+    025A 2422      CLR	R2
+    025B 2433      CLR	R3
+    025C 92300148  STS	accept_time+1,R3
+    025E 92200147  STS	accept_time,R2
+(0501) 		}
+(0502) 		if(key2_pulse==0xff)
+    0260 91800160  LDS	R24,key2_pulse
+    0262 3F8F      CPI	R24,0xFF
+    0263 F4B9      BNE	0x027B
+(0503) 		{
+(0504) 		    key2_time++;
+    0264 9180014F  LDS	R24,key2_time
+    0266 5F8F      SUBI	R24,0xFF
+    0267 9380014F  STS	key2_time,R24
+(0505) 			if(key2_time>10)
+    0269 E08A      LDI	R24,0xA
+    026A 9020014F  LDS	R2,key2_time
+    026C 1582      CP	R24,R2
+    026D F468      BCC	0x027B
+(0506) 			{
+(0507) 			  key2_time=0;
+    026E 2422      CLR	R2
+    026F 9220014F  STS	key2_time,R2
+(0508) 			  key2_flag=1;
+    0271 E081      LDI	R24,1
+    0272 93800158  STS	key2_flag,R24
+(0509) 			  send_flag=1;
+    0274 93800146  STS	send_flag,R24
+(0510) 			  accept_time=0;
+    0276 2433      CLR	R3
+    0277 92300148  STS	accept_time+1,R3
+    0279 92200147  STS	accept_time,R2
+(0511) 			}
+(0512) 		}
+(0513) 		if(PIND& key3)
+    027B 9B4A      SBIS	0x09,2
+    027C C009      RJMP	0x0286
+(0514) 		{
+(0515) 		 	key3_pulse<<=1;
+    027D 9020015F  LDS	R2,key3_pulse
+    027F 0C22      LSL	R2
+    0280 9220015F  STS	key3_pulse,R2
+(0516)     		key3_pulse&=0xfe;
+    0282 2D82      MOV	R24,R2
+    0283 7F8E      ANDI	R24,0xFE
+    0284 9380015F  STS	key3_pulse,R24
+(0517) 		}
+(0518) 		if(!(PIND& key3))
+    0286 994A      SBIC	0x09,2
+    0287 C009      RJMP	0x0291
+(0519) 		{
+(0520) 			key3_pulse<<=1;
+    0288 9020015F  LDS	R2,key3_pulse
+    028A 0C22      LSL	R2
+    028B 9220015F  STS	key3_pulse,R2
+(0521)     		key3_pulse|=0x01;
+    028D 2D82      MOV	R24,R2
+    028E 6081      ORI	R24,1
+    028F 9380015F  STS	key3_pulse,R24
+(0522) 		}
+(0523) 		if(key3_pulse==0x0f)
+    0291 9180015F  LDS	R24,key3_pulse
+    0293 308F      CPI	R24,0xF
+    0294 F459      BNE	0x02A0
+(0524) 		{
+(0525) 		 	key3_flag=1;
+    0295 E081      LDI	R24,1
+    0296 93800157  STS	key3_flag,R24
+(0526) 			send_flag=1;	
+    0298 93800146  STS	send_flag,R24
+(0527) 			accept_time=0;
+    029A 2422      CLR	R2
+    029B 2433      CLR	R3
+    029C 92300148  STS	accept_time+1,R3
+    029E 92200147  STS	accept_time,R2
+(0528) 		}
+(0529) 		if(key3_pulse==0xff)
+    02A0 9180015F  LDS	R24,key3_pulse
+    02A2 3F8F      CPI	R24,0xFF
+    02A3 F4B9      BNE	0x02BB
+(0530) 		{
+(0531) 		    key3_time++;
+    02A4 9180014E  LDS	R24,key3_time
+    02A6 5F8F      SUBI	R24,0xFF
+    02A7 9380014E  STS	key3_time,R24
+(0532) 			if(key3_time>10)
+    02A9 E08A      LDI	R24,0xA
+    02AA 9020014E  LDS	R2,key3_time
+    02AC 1582      CP	R24,R2
+    02AD F468      BCC	0x02BB
+(0533) 			{
+(0534) 			  key3_time=0;
+    02AE 2422      CLR	R2
+    02AF 9220014E  STS	key3_time,R2
+(0535) 			  key3_flag=1;
+    02B1 E081      LDI	R24,1
+    02B2 93800157  STS	key3_flag,R24
+(0536) 			  send_flag=1;
+    02B4 93800146  STS	send_flag,R24
+(0537) 			  accept_time=0;
+    02B6 2433      CLR	R3
+    02B7 92300148  STS	accept_time+1,R3
+    02B9 92200147  STS	accept_time,R2
+(0538) 			}
+(0539) 		}
+(0540) 		if(PINC& key4)
+    02BB 9B35      SBIS	0x06,5
+    02BC C009      RJMP	0x02C6
+(0541) 		{
+(0542) 		 	key4_pulse<<=1;
+    02BD 9020015E  LDS	R2,key4_pulse
+    02BF 0C22      LSL	R2
+    02C0 9220015E  STS	key4_pulse,R2
+(0543)     		key4_pulse&=0xfe;
+    02C2 2D82      MOV	R24,R2
+    02C3 7F8E      ANDI	R24,0xFE
+    02C4 9380015E  STS	key4_pulse,R24
+(0544) 		}
+(0545) 		if(!(PINC& key4))
+    02C6 9935      SBIC	0x06,5
+    02C7 C009      RJMP	0x02D1
+(0546) 		{
+(0547) 			key4_pulse<<=1;
+    02C8 9020015E  LDS	R2,key4_pulse
+    02CA 0C22      LSL	R2
+    02CB 9220015E  STS	key4_pulse,R2
+(0548)     		key4_pulse|=0x01;
+    02CD 2D82      MOV	R24,R2
+    02CE 6081      ORI	R24,1
+    02CF 9380015E  STS	key4_pulse,R24
+(0549) 		}
+(0550) 		if(key4_pulse==0x0f)
+    02D1 9180015E  LDS	R24,key4_pulse
+    02D3 308F      CPI	R24,0xF
+    02D4 F459      BNE	0x02E0
+(0551) 		{
+(0552) 		 	key4_flag=1;
+    02D5 E081      LDI	R24,1
+    02D6 93800156  STS	key4_flag,R24
+(0553) 			send_flag=1;	
+    02D8 93800146  STS	send_flag,R24
+(0554) 			accept_time=0;
+    02DA 2422      CLR	R2
+    02DB 2433      CLR	R3
+    02DC 92300148  STS	accept_time+1,R3
+    02DE 92200147  STS	accept_time,R2
+(0555) 		}
+(0556) 		if(key4_pulse==0xff)
+    02E0 9180015E  LDS	R24,key4_pulse
+    02E2 3F8F      CPI	R24,0xFF
+    02E3 F4B9      BNE	0x02FB
+(0557) 		{
+(0558) 		    key4_time++;
+    02E4 9180014D  LDS	R24,key4_time
+    02E6 5F8F      SUBI	R24,0xFF
+    02E7 9380014D  STS	key4_time,R24
+(0559) 			if(key4_time>10)
+    02E9 E08A      LDI	R24,0xA
+    02EA 9020014D  LDS	R2,key4_time
+    02EC 1582      CP	R24,R2
+    02ED F468      BCC	0x02FB
+(0560) 			{
+(0561) 			  key4_time=0;
+    02EE 2422      CLR	R2
+    02EF 9220014D  STS	key4_time,R2
+(0562) 			  key4_flag=1;
+    02F1 E081      LDI	R24,1
+    02F2 93800156  STS	key4_flag,R24
+(0563) 			  send_flag=1;
+    02F4 93800146  STS	send_flag,R24
+(0564) 			  accept_time=0;
+    02F6 2433      CLR	R3
+    02F7 92300148  STS	accept_time+1,R3
+    02F9 92200147  STS	accept_time,R2
+(0565) 			}
+(0566) 		}
+(0567) 		if(PINC& key5)
+    02FB 9B34      SBIS	0x06,4
+    02FC C009      RJMP	0x0306
+(0568) 		{
+(0569) 		 	key5_pulse<<=1;
+    02FD 9020015D  LDS	R2,key5_pulse
+    02FF 0C22      LSL	R2
+    0300 9220015D  STS	key5_pulse,R2
+(0570)     		key5_pulse&=0xfe;
+    0302 2D82      MOV	R24,R2
+    0303 7F8E      ANDI	R24,0xFE
+    0304 9380015D  STS	key5_pulse,R24
+(0571) 		}
+(0572) 		if(!(PINC& key5))
+    0306 9934      SBIC	0x06,4
+    0307 C009      RJMP	0x0311
+(0573) 		{
+(0574) 			key5_pulse<<=1;
+    0308 9020015D  LDS	R2,key5_pulse
+    030A 0C22      LSL	R2
+    030B 9220015D  STS	key5_pulse,R2
+(0575)     		key5_pulse|=0x01;
+    030D 2D82      MOV	R24,R2
+    030E 6081      ORI	R24,1
+    030F 9380015D  STS	key5_pulse,R24
+(0576) 		}
+(0577) 		if(key5_pulse==0x0f)
+    0311 9180015D  LDS	R24,key5_pulse
+    0313 308F      CPI	R24,0xF
+    0314 F459      BNE	0x0320
+(0578) 		{
+(0579) 		 	key5_flag=1;
+    0315 E081      LDI	R24,1
+    0316 93800155  STS	key5_flag,R24
+(0580) 			send_flag=1;	
+    0318 93800146  STS	send_flag,R24
+(0581) 			accept_time=0;
+    031A 2422      CLR	R2
+    031B 2433      CLR	R3
+    031C 92300148  STS	accept_time+1,R3
+    031E 92200147  STS	accept_time,R2
+(0582) 		}
+(0583) 		if(key5_pulse==0xff)
+    0320 9180015D  LDS	R24,key5_pulse
+    0322 3F8F      CPI	R24,0xFF
+    0323 F4B9      BNE	0x033B
+(0584) 		{
+(0585) 		    key5_time++;
+    0324 9180014C  LDS	R24,key5_time
+    0326 5F8F      SUBI	R24,0xFF
+    0327 9380014C  STS	key5_time,R24
+(0586) 			if(key5_time>10)
+    0329 E08A      LDI	R24,0xA
+    032A 9020014C  LDS	R2,key5_time
+    032C 1582      CP	R24,R2
+    032D F468      BCC	0x033B
+(0587) 			{
+(0588) 			  key5_time=0;
+    032E 2422      CLR	R2
+    032F 9220014C  STS	key5_time,R2
+(0589) 			  key5_flag=1;
+    0331 E081      LDI	R24,1
+    0332 93800155  STS	key5_flag,R24
+(0590) 			  send_flag=1;
+    0334 93800146  STS	send_flag,R24
+(0591) 			  accept_time=0;
+    0336 2433      CLR	R3
+    0337 92300148  STS	accept_time+1,R3
+    0339 92200147  STS	accept_time,R2
+(0592) 			}
+(0593) 		}
+(0594) 		if(PINC& key6)
+    033B 9B33      SBIS	0x06,3
+    033C C009      RJMP	0x0346
+(0595) 		{
+(0596) 		 	key6_pulse<<=1;
+    033D 9020015C  LDS	R2,key6_pulse
+    033F 0C22      LSL	R2
+    0340 9220015C  STS	key6_pulse,R2
+(0597)     		key6_pulse&=0xfe;
+    0342 2D82      MOV	R24,R2
+    0343 7F8E      ANDI	R24,0xFE
+    0344 9380015C  STS	key6_pulse,R24
+(0598) 		}
+(0599) 		if(!(PINC& key6))
+    0346 9933      SBIC	0x06,3
+    0347 C009      RJMP	0x0351
+(0600) 		{
+(0601) 			key6_pulse<<=1;
+    0348 9020015C  LDS	R2,key6_pulse
+    034A 0C22      LSL	R2
+    034B 9220015C  STS	key6_pulse,R2
+(0602)     		key6_pulse|=0x01;
+    034D 2D82      MOV	R24,R2
+    034E 6081      ORI	R24,1
+    034F 9380015C  STS	key6_pulse,R24
+(0603) 		}
+(0604) 		if(key6_pulse==0x0f)
+    0351 9180015C  LDS	R24,key6_pulse
+    0353 308F      CPI	R24,0xF
+    0354 F459      BNE	0x0360
+(0605) 		{
+(0606) 		 	key6_flag=1;
+    0355 E081      LDI	R24,1
+    0356 93800154  STS	key6_flag,R24
+(0607) 			send_flag=1;	
+    0358 93800146  STS	send_flag,R24
+(0608) 			accept_time=0;
+    035A 2422      CLR	R2
+    035B 2433      CLR	R3
+    035C 92300148  STS	accept_time+1,R3
+    035E 92200147  STS	accept_time,R2
+(0609) 		}
+(0610) 		if(key6_pulse==0xff)
+    0360 9180015C  LDS	R24,key6_pulse
+    0362 3F8F      CPI	R24,0xFF
+    0363 F4B9      BNE	0x037B
+(0611) 		{
+(0612) 		    key6_time++;
+    0364 9180014B  LDS	R24,key6_time
+    0366 5F8F      SUBI	R24,0xFF
+    0367 9380014B  STS	key6_time,R24
+(0613) 			if(key6_time>10)
+    0369 E08A      LDI	R24,0xA
+    036A 9020014B  LDS	R2,key6_time
+    036C 1582      CP	R24,R2
+    036D F468      BCC	0x037B
+(0614) 			{
+(0615) 			  key6_time=0;
+    036E 2422      CLR	R2
+    036F 9220014B  STS	key6_time,R2
+(0616) 			  key6_flag=1;
+    0371 E081      LDI	R24,1
+    0372 93800154  STS	key6_flag,R24
+(0617) 			  send_flag=1;
+    0374 93800146  STS	send_flag,R24
+(0618) 			  accept_time=0;
+    0376 2433      CLR	R3
+    0377 92300148  STS	accept_time+1,R3
+    0379 92200147  STS	accept_time,R2
+(0619) 			}
+(0620) 		}
+(0621) 		if(PINC& key7)
+    037B 9B32      SBIS	0x06,2
+    037C C009      RJMP	0x0386
+(0622) 		{
+(0623) 		 	key7_pulse<<=1;
+    037D 9020015B  LDS	R2,key7_pulse
+    037F 0C22      LSL	R2
+    0380 9220015B  STS	key7_pulse,R2
+(0624)     		key7_pulse&=0xfe;
+    0382 2D82      MOV	R24,R2
+    0383 7F8E      ANDI	R24,0xFE
+    0384 9380015B  STS	key7_pulse,R24
+(0625) 		}
+(0626) 		if(!(PINC& key7))
+    0386 9932      SBIC	0x06,2
+    0387 C009      RJMP	0x0391
+(0627) 		{
+(0628) 			key7_pulse<<=1;
+    0388 9020015B  LDS	R2,key7_pulse
+    038A 0C22      LSL	R2
+    038B 9220015B  STS	key7_pulse,R2
+(0629)     		key7_pulse|=0x01;
+    038D 2D82      MOV	R24,R2
+    038E 6081      ORI	R24,1
+    038F 9380015B  STS	key7_pulse,R24
+(0630) 		}
+(0631) 		if(key7_pulse==0x0f)
+    0391 9180015B  LDS	R24,key7_pulse
+    0393 308F      CPI	R24,0xF
+    0394 F459      BNE	0x03A0
+(0632) 		{
+(0633) 		 	key7_flag=1;
+    0395 E081      LDI	R24,1
+    0396 93800153  STS	key7_flag,R24
+(0634) 			send_flag=1;	
+    0398 93800146  STS	send_flag,R24
+(0635) 			accept_time=0;
+    039A 2422      CLR	R2
+    039B 2433      CLR	R3
+    039C 92300148  STS	accept_time+1,R3
+    039E 92200147  STS	accept_time,R2
+(0636) 		}
+(0637) 		if(key7_pulse==0xff)
+    03A0 9180015B  LDS	R24,key7_pulse
+    03A2 3F8F      CPI	R24,0xFF
+    03A3 F4B9      BNE	0x03BB
+(0638) 		{
+(0639) 		    key7_time++;
+    03A4 9180014A  LDS	R24,key7_time
+    03A6 5F8F      SUBI	R24,0xFF
+    03A7 9380014A  STS	key7_time,R24
+(0640) 			if(key7_time>10)
+    03A9 E08A      LDI	R24,0xA
+    03AA 9020014A  LDS	R2,key7_time
+    03AC 1582      CP	R24,R2
+    03AD F468      BCC	0x03BB
+(0641) 			{
+(0642) 			  key7_time=0;
+    03AE 2422      CLR	R2
+    03AF 9220014A  STS	key7_time,R2
+(0643) 			  key7_flag=1;
+    03B1 E081      LDI	R24,1
+    03B2 93800153  STS	key7_flag,R24
+(0644) 			  send_flag=1;
+    03B4 93800146  STS	send_flag,R24
+(0645) 			  accept_time=0;
+    03B6 2433      CLR	R3
+    03B7 92300148  STS	accept_time+1,R3
+    03B9 92200147  STS	accept_time,R2
+(0646) 			}
+(0647) 		}
+(0648) 		if(PINC& key8)
+    03BB 9B31      SBIS	0x06,1
+    03BC C009      RJMP	0x03C6
+(0649) 		{
+(0650) 		 	key8_pulse<<=1;
+    03BD 9020015A  LDS	R2,key8_pulse
+    03BF 0C22      LSL	R2
+    03C0 9220015A  STS	key8_pulse,R2
+(0651)     		key8_pulse&=0xfe;
+    03C2 2D82      MOV	R24,R2
+    03C3 7F8E      ANDI	R24,0xFE
+    03C4 9380015A  STS	key8_pulse,R24
+(0652) 		}
+(0653) 		if(!(PINC& key8))
+    03C6 9931      SBIC	0x06,1
+    03C7 C009      RJMP	0x03D1
+(0654) 		{
+(0655) 			key8_pulse<<=1;
+    03C8 9020015A  LDS	R2,key8_pulse
+    03CA 0C22      LSL	R2
+    03CB 9220015A  STS	key8_pulse,R2
+(0656)     		key8_pulse|=0x01;
+    03CD 2D82      MOV	R24,R2
+    03CE 6081      ORI	R24,1
+    03CF 9380015A  STS	key8_pulse,R24
+(0657) 		}
+(0658) 		if(key8_pulse==0x0f)
+    03D1 9180015A  LDS	R24,key8_pulse
+    03D3 308F      CPI	R24,0xF
+    03D4 F431      BNE	0x03DB
+(0659) 		{
+(0660) //		 	key8_flag=1;
+(0661) //			send_flag=1;	
+(0662) 			accept_time=0;
+    03D5 2422      CLR	R2
+    03D6 2433      CLR	R3
+    03D7 92300148  STS	accept_time+1,R3
+    03D9 92200147  STS	accept_time,R2
+(0663) 		}
+(0664) 		if(key8_pulse==0xff)
+    03DB 9180015A  LDS	R24,key8_pulse
+    03DD 3F8F      CPI	R24,0xFF
+    03DE F4B9      BNE	0x03F6
+(0665) 		{
+(0666) 		    key8_time++;
+    03DF 91800149  LDS	R24,key8_time
+    03E1 5F8F      SUBI	R24,0xFF
+    03E2 93800149  STS	key8_time,R24
+(0667) 			if(key8_time>50)
+    03E4 E382      LDI	R24,0x32
+    03E5 90200149  LDS	R2,key8_time
+    03E7 1582      CP	R24,R2
+    03E8 F468      BCC	0x03F6
+(0668) 			{
+(0669) 			  key8_time=0;
+    03E9 2422      CLR	R2
+    03EA 92200149  STS	key8_time,R2
+(0670) 			  key8_long_flag=1;
+    03EC E081      LDI	R24,1
+    03ED 93800151  STS	key8_long_flag,R24
+(0671) 			  send_flag=0;
+    03EF 92200146  STS	send_flag,R2
+(0672) 			  accept_time=0;
+    03F1 2433      CLR	R3
+    03F2 92300148  STS	accept_time+1,R3
+    03F4 92200147  STS	accept_time,R2
+(0673) 			}
+(0674) 		}
+(0675) //=================================
+(0676)  		}
+FILE: <library>
+    03F6 9029      LD	R2,Y+
+    03F7 BE2F      OUT	0x3F,R2
+    03F8 9199      LD	R25,Y+
+    03F9 9189      LD	R24,Y+
+    03FA 9039      LD	R3,Y+
+    03FB 9029      LD	R2,Y+
+    03FC 9518      RETI
+pop_gset2:
+    03FD E0E2      LDI	R30,2
+    03FE C00E      RJMP	pop
+pop_gset4:
+    03FF E0E8      LDI	R30,0x8
+    0400 C00C      RJMP	pop
+push_gset5:
+    0401 92FA      ST	R15,-Y
+    0402 92EA      ST	R14,-Y
+push_gset4:
+    0403 92DA      ST	R13,-Y
+    0404 92CA      ST	R12,-Y
+push_gset3:
+    0405 92BA      ST	R11,-Y
+    0406 92AA      ST	R10,-Y
+push_gset2:
+    0407 937A      ST	R23,-Y
+    0408 936A      ST	R22,-Y
+push_gset1:
+    0409 935A      ST	R21,-Y
+    040A 934A      ST	R20,-Y
+    040B 9508      RET
+pop_gset1:
+    040C E0E1      LDI	R30,1
+pop:
+    040D 9149      LD	R20,Y+
+    040E 9159      LD	R21,Y+
+    040F FDE0      SBRC	R30,0
+    0410 9508      RET
+    0411 9169      LD	R22,Y+
+    0412 9179      LD	R23,Y+
+    0413 FDE1      SBRC	R30,1
+    0414 9508      RET
+    0415 90A9      LD	R10,Y+
+    0416 90B9      LD	R11,Y+
+    0417 FDE2      SBRC	R30,2
+    0418 9508      RET
+    0419 90C9      LD	R12,Y+
+    041A 90D9      LD	R13,Y+
+    041B FDE3      SBRC	R30,3
+    041C 9508      RET
+    041D 90E9      LD	R14,Y+
+    041E 90F9      LD	R15,Y+
+    041F 9508      RET

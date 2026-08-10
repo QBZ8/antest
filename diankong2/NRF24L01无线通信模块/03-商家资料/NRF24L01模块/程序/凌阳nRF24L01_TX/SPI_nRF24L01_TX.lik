@@ -1,0 +1,14 @@
+Version: 3.0
+Options: m37
+Obj: "D:\PROGRA~1\Sunplus\UNSPID~1\unSPIDE\startupD.obj"
+Obj: "E:\lingyang\SPI_nRF24L01_TX\Debug\Resource.obj"
+Obj: "E:\lingyang\SPI_nRF24L01_TX\Debug\main.obj"
+Output: "E:\lingyang\SPI_nRF24L01_TX\Debug\SPI_nRF24L01_TX.S37"
+;Locate: TEXT in "main.obj" at 8009 
+;Align: TEXT in "main.obj" with 0 
+;Locate: IRAM in "main.obj" at 83AE  linkat 11 
+;Align: IRAM in "main.obj" with 0 
+;Locate: RAM in "main.obj" at 0 
+;Align: RAM in "main.obj" with 0 
+;Locate: CODE in "main.obj" at 802B 
+;Align: CODE in "main.obj" with 0 

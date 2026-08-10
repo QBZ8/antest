@@ -1,0 +1,128 @@
+C51 COMPILER V7.06   KEY                                                                   03/17/2009 16:24:23 PAGE 1   
+
+
+C51 COMPILER V7.06, COMPILATION OF MODULE KEY
+OBJECT MODULE PLACED IN key.obj
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE source\key.c ROM(COMPACT) BROWSE DEBUG OBJECTEXTEND PRINT(.\key.lst) OBJECT
+                    -(key.obj)
+
+stmt level    source
+
+   1          /**********************************************************
+   2          ;copyright              :shenzhen coolwaveasia 
+   3          ;filename               :key.c
+   4          ;writeb                 :dengyihong
+   5          ;describe               :按键扫描
+   6          ;notice                 :
+   7          ;*********************************************************/
+   8          
+   9          #include "..\header\key.h"
+  10          
+  11          
+  12          enum Key_Info Key_Value;                // 按键值
+  13          
+  14          U8  Key_Old_Buf = MASK_KEY;
+  15          
+  16          bit Key_Msg = 0;                                // 处理按键消息标志
+  17          bit Have_Key_Push = 0;                  // 按键按下标志
+  18          
+  19          
+  20          
+  21          /**********************************************************
+  22          name:        key_scan
+  23          input:       none
+  24          output:      none
+  25          describe:    按键扫描
+  26          notice:
+  27          creat date:  2008-6-10
+  28          creator:     dengyihong
+  29          **********************************************************/
+  30          void key_scan(void)
+  31          {
+  32   1          U8 i = 0;
+  33   1          U8 key_buf = 0;
+  34   1          U8 temp_buf = 0;
+  35   1          
+  36   1          KEY_PIN_INPUT();
+  37   1          delay_2us(1);
+  38   1          key_buf = GET_KEY_VALUE();
+  39   1          for(i=0; i<3; i++)
+  40   1          {   
+  41   2              delay_2us(500);         
+  42   2              temp_buf = GET_KEY_VALUE();
+  43   2              if(key_buf != temp_buf)
+  44   2              {
+  45   3                  return;     
+  46   3              }
+  47   2          }
+  48   1                  
+  49   1          if(key_buf != Key_Old_Buf)
+  50   1          {
+  51   2              if(key_buf != MASK_KEY)                                 // 新键按下
+  52   2              {
+  53   3                  switch(key_buf)
+  54   3                  {
+C51 COMPILER V7.06   KEY                                                                   03/17/2009 16:24:23 PAGE 2   
+
+  55   4                      case 0x70: 
+  56   4                           Key_Value = SEND_KEY;              // send key
+  57   4                      break;
+  58   4                             
+  59   4                      case 0xb0:  
+  60   4                           Key_Value = ADD_KEY;               // + key
+  61   4                      break;
+  62   4                          
+  63   4                      case 0xd0:  
+  64   4                           Key_Value = DEC_KEY;               // - key
+  65   4                      break; 
+  66   4                          
+  67   4                      case 0xe0:  
+  68   4                           Key_Value = MODE_KEY;              // mode key
+  69   4                      break;                 
+  70   4                                                                                        
+  71   4                      default:    
+  72   4                           Key_Value = NONE_KEY;      
+  73   4                      break;
+  74   4                              }
+  75   3                              if(Key_Value != NONE_KEY)               // 是否有按键按下
+  76   3                              {
+  77   4                                      Have_Key_Push = 1;
+  78   4                                      Key_Old_Buf = key_buf;  
+  79   4                              }
+  80   3                      }
+  81   2                      else if(Have_Key_Push)                          // 按键释放
+  82   2                      {
+  83   3                              Have_Key_Push = 0;
+  84   3                              Key_Old_Buf = MASK_KEY;
+  85   3                              switch(Key_Value)
+  86   3                              {
+  87   4                                      case 0x04:
+  88   4                                      case 0x03:
+  89   4                                      case 0x02:
+  90   4                                      case 0x01:
+  91   4                                               Key_Msg = 1 ;
+  92   4                                      break; 
+  93   4                                      
+  94   4                                      default:
+  95   4                                              Key_Msg = 0;  
+  96   4                                      break;                  
+  97   4                              }
+  98   3                      }       
+  99   2              }       
+ 100   1      }
+ 101          
+ 102          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    137    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
